@@ -23,6 +23,4 @@ public class ErrorResponseEntity {
                                 .build())
                         .build());
     }
-
-
 }

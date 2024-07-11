@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ResultType {
     SUCCESS("0000", "success"),
+
+    INVALID_TOKEN("1001", "invalid token"),
+
     SERVER_ERROR("9999", "server error");
 
     private final String code;
