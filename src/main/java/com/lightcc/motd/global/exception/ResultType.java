@@ -10,6 +10,10 @@ public enum ResultType {
 
     INVALID_TOKEN("1001", "invalid token"),
 
+    USER_NOT_FOUND("2001", "user not found"),
+    USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
+    USER_DUPLICATED("2003", "user duplicated"),
+
     SERVER_ERROR("9999", "server error");
 
     private final String code;

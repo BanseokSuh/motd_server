@@ -1,7 +1,9 @@
 package com.lightcc.motd.domain.user.api;
 
 import com.lightcc.motd.domain.user.api.dto.request.UserJoinRequest;
+import com.lightcc.motd.domain.user.api.dto.request.UserLoginRequest;
 import com.lightcc.motd.domain.user.api.dto.response.UserJoinResponse;
+import com.lightcc.motd.domain.user.api.dto.response.UserLoginResponse;
 import com.lightcc.motd.domain.user.application.UserService;
 
 import com.lightcc.motd.domain.user.domain.User;
@@ -31,6 +33,12 @@ public class UserController {
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
         User user = userService.join(request.getLoginId(), request.getUserName(), request.getPassword());
-        return Response.success(UserJoinResponse.fromUser(user));
+        return Response.success(UserJoinResponse.from(user));
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
+        String token = userService.login(request.getLoginId(), request.getPassword());
+        return Response.success(UserLoginResponse.from(token));
     }
 }

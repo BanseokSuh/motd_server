@@ -1,5 +1,6 @@
 package com.lightcc.motd.global.exception;
 
+import com.lightcc.motd.global.response.ResultObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<?> applicationExceptionHandler(ApplicationException e) {
         log.error("########### Application error occurs: {}", e.toString());
-        return ErrorResponseEntity.toResponseEntity(e.getData().getMessage());
+        return ErrorResponseEntity.toResponseEntity(e.getResult(), e.getData().getMessage());
     }
 
     /**
@@ -24,6 +25,6 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> globalExceptionHandler(RuntimeException e) {
         log.error("########### Unexpected error occurs: {}", e.toString());
-        return ErrorResponseEntity.toResponseEntity(null);
+        return ErrorResponseEntity.toResponseEntity(ResultObject.error(), null);
     }
 }

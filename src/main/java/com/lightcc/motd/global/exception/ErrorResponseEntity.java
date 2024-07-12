@@ -13,11 +13,11 @@ public class ErrorResponseEntity {
     private ResultObject result;
     private ErrorResult data;
 
-    public static ResponseEntity<ErrorResponseEntity> toResponseEntity(String message) {
+    public static ResponseEntity<ErrorResponseEntity> toResponseEntity(ResultObject result, String message) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponseEntity.builder()
-                        .result(ResultObject.error())
+                        .result(result)
                         .data(ErrorResult.builder()
                                 .message(message)
                                 .build())
