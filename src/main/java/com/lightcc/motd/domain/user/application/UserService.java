@@ -9,4 +9,6 @@ public interface UserService {
     String helloUserException();
 
     User join(String loginId, String userName, String password);
+
+    String login(String loginId, String password);
 }
