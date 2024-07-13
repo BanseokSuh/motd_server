@@ -9,6 +9,8 @@ import com.lightcc.motd.domain.post.domain.Post;
 import com.lightcc.motd.domain.user.domain.User;
 import com.lightcc.motd.global.response.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,13 @@ public class PostController {
         Post post = postService.createPost(request.getTitle(), request.getContent(), user.getId());
 
         return Response.success(PostCreateResponse.from(post));
+    }
+
+    @GetMapping
+    public Response<Page<PostResponse>> getPostList(Pageable pageable) {
+        Page<Post> posts = postService.getPostList(pageable);
+
+        return Response.success(posts.map(PostResponse::from));
     }
 
     @GetMapping("/{id}")

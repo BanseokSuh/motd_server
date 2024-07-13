@@ -10,9 +10,8 @@ public class UserResponse {
     private Long id;
     private String loginId;
     private String userName;
-    private String email;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getId(), user.getLoginId(), user.getUsername(), user.getEmail());
+        return new UserResponse(user.getId(), user.getLoginId(), user.getUsername());
     }
 }

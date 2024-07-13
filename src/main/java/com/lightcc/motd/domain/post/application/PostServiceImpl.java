@@ -9,6 +9,8 @@ import com.lightcc.motd.global.exception.ApplicationException;
 import com.lightcc.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -24,6 +26,11 @@ public class PostServiceImpl implements PostService {
         UserEntity userEntity = getUserEntityOrException(userId);
 
         return postRepository.save(PostEntity.of(title, content, userEntity)).toDomain();
+    }
+
+    @Override
+    public Page<Post> getPostList(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostEntity::toDomain);
     }
 
     @Override
