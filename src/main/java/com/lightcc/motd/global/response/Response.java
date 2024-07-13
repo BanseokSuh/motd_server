@@ -20,6 +20,12 @@ public class Response<T> {
         return response;
     }
 
+    public static <T> Response<T> success() {
+        Response<T> response = new Response<>();
+        response.setResult(ResultObject.success());
+        return response;
+    }
+
     public static <T> Response<T> error() {
         Response<T> response = new Response<>();
         response.setResult(ResultObject.error());

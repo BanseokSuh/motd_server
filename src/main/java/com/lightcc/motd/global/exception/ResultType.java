@@ -15,8 +15,10 @@ public enum ResultType {
     USER_DUPLICATED("2003", "user duplicated"),
 
     POST_NOT_FOUND("3001", "post not found"),
+    INVALID_PERMISSION("3002", "invalid permission"),
 
     SERVER_ERROR("9999", "server error");
+
 
     private final String code;
     private final String desc;

@@ -1,6 +1,7 @@
 package com.lightcc.motd.domain.post.api;
 
 import com.lightcc.motd.domain.post.api.dto.request.PostCreateRequest;
+import com.lightcc.motd.domain.post.api.dto.request.PostModifyRequest;
 import com.lightcc.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.lightcc.motd.domain.post.api.dto.response.PostResponse;
 import com.lightcc.motd.domain.post.application.PostService;
@@ -29,7 +30,15 @@ public class PostController {
     @GetMapping("/{id}")
     public Response<PostResponse> getPost(@PathVariable Long id) {
         Post post = postService.getPost(id);
-        
+
         return Response.success(PostResponse.from(post));
+    }
+
+    @PutMapping("/{id}")
+    public Response<Void> modifyPost(@PathVariable Long id, @RequestBody PostModifyRequest request, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        postService.modifyPost(id, request.getTitle(), request.getContent(), user.getId());
+
+        return Response.success();
     }
 }

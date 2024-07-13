@@ -7,4 +7,6 @@ public interface PostService {
     Post createPost(String title, String content, Long userId);
 
     Post getPost(Long postId);
+
+    void modifyPost(Long postId, String title, String content, Long userId);
 }
