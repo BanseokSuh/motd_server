@@ -49,6 +49,18 @@ public class PostServiceImpl implements PostService {
         postRepository.saveAndFlush(postEntity);
     }
 
+    @Override
+    public void deletePost(Long postId, Long userId) {
+        UserEntity userEntity = getUserEntityOrException(userId);
+        PostEntity postEntity = getPostEntityOrException(postId);
+
+        if (!postEntity.getUser().equals(userEntity)) {
+            throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+        }
+
+        postRepository.delete(postEntity);
+    }
+
     public UserEntity getUserEntityOrException(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));

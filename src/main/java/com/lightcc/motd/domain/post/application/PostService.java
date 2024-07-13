@@ -9,4 +9,6 @@ public interface PostService {
     Post getPost(Long postId);
 
     void modifyPost(Long postId, String title, String content, Long userId);
+
+    void deletePost(Long postId, Long userId);
 }

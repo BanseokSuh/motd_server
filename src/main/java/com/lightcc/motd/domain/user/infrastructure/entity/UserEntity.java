@@ -6,9 +6,13 @@ import com.lightcc.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Setter
+@SQLRestriction("deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"user\"", uniqueConstraints = {
         @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")
 })
