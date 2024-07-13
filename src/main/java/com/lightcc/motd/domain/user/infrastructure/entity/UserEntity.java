@@ -38,7 +38,7 @@ public class UserEntity extends BaseEntity {
     public static UserEntity from(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setLoginId(user.getLoginId());
-        userEntity.setUserName(user.getUserName());
+        userEntity.setUserName(user.getUsername());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
         userEntity.setRole(user.getRole());

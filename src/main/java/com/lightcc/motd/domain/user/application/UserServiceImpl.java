@@ -48,9 +48,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(password));
         user.setRole(UserRole.USER);
 
-        UserEntity userEntity = userRepository.save(UserEntity.from(user));
-
-        return userEntity.toDomain();
+        return userRepository.save(UserEntity.from(user)).toDomain();
     }
 
     @Override
@@ -63,5 +61,12 @@ public class UserServiceImpl implements UserService {
         }
 
         return JwtTokenUtils.generateToken(userEntity.toDomain(), secretKey, accessExpiredTimeMs);
+    }
+
+    @Override
+    public User loadUserByLoginId(String loginId) {
+        return userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)))
+                .toDomain();
     }
 }

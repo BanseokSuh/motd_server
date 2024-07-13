@@ -11,4 +11,6 @@ public interface UserService {
     User join(String loginId, String userName, String password);
 
     String login(String loginId, String password);
+
+    User loadUserByLoginId(String loginId);
 }
