@@ -18,6 +18,6 @@ public class ApplicationException extends RuntimeException {
 
     public ApplicationException(ResultType resultType) {
         this.result = new ResultObject(resultType);
-        this.data = null;
+        this.data = new ErrorResult(null);
     }
 }

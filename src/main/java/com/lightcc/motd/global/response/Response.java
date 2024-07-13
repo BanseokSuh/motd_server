@@ -31,6 +31,8 @@ public class Response<T> {
                 "\"result\":" + "{" +
                 "\"code\":" + "\"" + ResultType.INVALID_TOKEN.getCode() + "\"," +
                 "\"desc\":" + "\"" + ResultType.INVALID_TOKEN.getDesc() + "\"" + "}," +
-                "\"data\":" + "\"" + data + "\"" + "}";
+                "\"data\":" + "{" +
+                "\"message\":" + null + "}" +
+                "}";
     }
 }

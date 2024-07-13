@@ -58,11 +58,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));
 
-        System.out.println("password = " + password);
-        System.out.println("userEntity.getPassword() = " + userEntity.getPassword());
-
         if (!encoder.matches(password, userEntity.getPassword())) {
-//            throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH);
             throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 

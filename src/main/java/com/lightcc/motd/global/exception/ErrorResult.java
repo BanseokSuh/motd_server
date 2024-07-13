@@ -12,4 +12,8 @@ import lombok.Setter;
 public class ErrorResult {
 
     private String message;
+
+    public static ErrorResult error() {
+        return new ErrorResult(null);
+    }
 }

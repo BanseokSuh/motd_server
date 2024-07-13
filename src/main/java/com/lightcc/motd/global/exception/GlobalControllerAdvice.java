@@ -16,7 +16,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<?> applicationExceptionHandler(ApplicationException e) {
         log.error("########### Application error occurs: {}", e.toString());
-        return ErrorResponseEntity.toResponseEntity(e.getResult(), e.getData().getMessage());
+        return ErrorResponseEntity.toResponseEntity(e.getResult(), e.getData());
     }
 
     /**
@@ -25,6 +25,6 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> globalExceptionHandler(RuntimeException e) {
         log.error("########### Unexpected error occurs: {}", e.toString());
-        return ErrorResponseEntity.toResponseEntity(ResultObject.error(), null);
+        return ErrorResponseEntity.toResponseEntity(ResultObject.error(), ErrorResult.error());
     }
 }
