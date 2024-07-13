@@ -32,6 +32,7 @@ public class PostEntity extends BaseEntity {
         postEntity.setTitle(post.getTitle());
         postEntity.setContent(post.getContent());
         postEntity.setUser(UserEntity.from(post.getUser()));
+
         return postEntity;
     }
 
@@ -41,6 +42,8 @@ public class PostEntity extends BaseEntity {
         post.setTitle(title);
         post.setContent(content);
         post.setUser(user.toDomain());
+        post.setCreatedAt(user.getCreatedAt());
+
         return post;
     }
 
@@ -49,7 +52,7 @@ public class PostEntity extends BaseEntity {
         postEntity.setTitle(title);
         postEntity.setContent(content);
         postEntity.setUser(user);
-        
+
         return postEntity;
     }
 }

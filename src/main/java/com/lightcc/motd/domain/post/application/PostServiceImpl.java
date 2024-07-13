@@ -22,7 +22,16 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(String title, String content, Long userId) {
         UserEntity userEntity = getUserEntityOrException(userId);
+        
         return postRepository.save(PostEntity.of(title, content, userEntity)).toDomain();
+    }
+
+    @Override
+    public Post getPost(Long postId) {
+        PostEntity postEntity = postRepository.findById(postId)
+                .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+
+        return postEntity.toDomain();
     }
 
     public UserEntity getUserEntityOrException(Long userId) {

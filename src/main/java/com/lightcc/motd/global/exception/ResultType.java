@@ -14,6 +14,8 @@ public enum ResultType {
     USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
     USER_DUPLICATED("2003", "user duplicated"),
 
+    POST_NOT_FOUND("3001", "post not found"),
+
     SERVER_ERROR("9999", "server error");
 
     private final String code;
