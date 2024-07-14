@@ -1,5 +1,6 @@
 package com.lightcc.motd.domain.user.application;
 
+import com.lightcc.motd.domain.user.domain.Gender;
 import com.lightcc.motd.domain.user.domain.User;
 import com.lightcc.motd.domain.user.domain.UserRole;
 import com.lightcc.motd.domain.user.domain.repository.UserRepository;
@@ -8,10 +9,12 @@ import com.lightcc.motd.global.exception.ApplicationException;
 import com.lightcc.motd.global.exception.ResultType;
 import com.lightcc.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User join(String loginId, String userName, String password) {
+    public User join(String loginId, String userName, String password, String gender) {
 
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
             throw new ApplicationException(ResultType.USER_DUPLICATED, String.format("User %s is duplicated", loginId));
@@ -47,6 +50,7 @@ public class UserServiceImpl implements UserService {
         user.setUserName(userName);
         user.setPassword(encoder.encode(password));
         user.setRole(UserRole.USER);
+        user.setGender(Gender.valueOf(gender));
 
         return userRepository.save(UserEntity.from(user)).toDomain();
     }

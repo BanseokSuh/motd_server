@@ -8,7 +8,7 @@ public interface UserService {
 
     String helloUserException();
 
-    User join(String loginId, String userName, String password);
+    User join(String loginId, String userName, String password, String gender);
 
     String login(String loginId, String password);
 

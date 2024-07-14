@@ -32,7 +32,7 @@ public class UserController {
 
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
-        User user = userService.join(request.getLoginId(), request.getUserName(), request.getPassword());
+        User user = userService.join(request.getLoginId(), request.getUserName(), request.getPassword(), request.getGender());
         return Response.success(UserJoinResponse.from(user));
     }
 

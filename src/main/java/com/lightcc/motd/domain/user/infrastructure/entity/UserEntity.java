@@ -1,5 +1,6 @@
 package com.lightcc.motd.domain.user.infrastructure.entity;
 
+import com.lightcc.motd.domain.user.domain.Gender;
 import com.lightcc.motd.domain.user.domain.User;
 import com.lightcc.motd.domain.user.domain.UserRole;
 import com.lightcc.motd.global.entity.BaseEntity;
@@ -35,6 +36,10 @@ public class UserEntity extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -46,7 +51,9 @@ public class UserEntity extends BaseEntity {
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
         userEntity.setRole(user.getRole());
+        userEntity.setGender(user.getGender());
         return userEntity;
+        // todo: modelMapper.map(user, UserEntity.class);
     }
 
     public User toDomain() {
@@ -57,7 +64,9 @@ public class UserEntity extends BaseEntity {
         user.setEmail(email);
         user.setPassword(password);
         user.setRole(role);
+        user.setGender(gender);
         return user;
+        // todo: modelMapper.map(this, User.class);
     }
 }
 

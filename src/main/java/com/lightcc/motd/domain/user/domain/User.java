@@ -22,6 +22,7 @@ public class User implements UserDetails {
     private String userName;
     private String email;
     private String password;
+    private Gender gender;
     private UserRole role;
     private Timestamp createdAt;
     private Timestamp updatedAt;

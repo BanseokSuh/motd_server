@@ -8,4 +8,5 @@ public class UserJoinRequest {
     private String loginId;
     private String userName;
     private String password;
+    private String gender;
 }
