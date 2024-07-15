@@ -17,6 +17,8 @@ public enum ResultType {
     POST_NOT_FOUND("3001", "post not found"),
     INVALID_PERMISSION("3002", "invalid permission"),
 
+    ALREADY_LIKED("4001", "already liked"),
+
     SERVER_ERROR("9999", "server error");
 
 

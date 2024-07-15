@@ -58,4 +58,12 @@ public class PostController {
 
         return Response.success();
     }
+
+    @PostMapping("/{id}/like")
+    public Response<Void> likePost(@PathVariable Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        postService.likePost(id, user.getId());
+
+        return Response.success();
+    }
 }
