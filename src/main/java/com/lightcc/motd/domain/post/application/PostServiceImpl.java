@@ -1,9 +1,7 @@
 package com.lightcc.motd.domain.post.application;
 
 import com.lightcc.motd.domain.post.domain.Post;
-import com.lightcc.motd.domain.post.domain.repository.LikeRepository;
 import com.lightcc.motd.domain.post.domain.repository.PostRepository;
-import com.lightcc.motd.domain.post.infrastructure.entity.LikeEntity;
 import com.lightcc.motd.domain.post.infrastructure.entity.PostEntity;
 import com.lightcc.motd.domain.user.domain.repository.UserRepository;
 import com.lightcc.motd.domain.user.infrastructure.entity.UserEntity;
@@ -22,7 +20,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final LikeRepository likeRepository;
 
     @Override
     public Post createPost(String title, String content, Long userId) {
@@ -69,21 +66,6 @@ public class PostServiceImpl implements PostService {
         }
 
         postRepository.delete(postEntity);
-    }
-
-    @Override
-    public void likePost(Long postId, Long userId) {
-        UserEntity userEntity = getUserEntityOrException(userId);
-        PostEntity postEntity = getPostEntityOrException(postId);
-
-//        postEntity.like(userEntity);
-        likeRepository.findByUserAndPost(userEntity, postEntity).ifPresent(it -> {
-            throw new ApplicationException(ResultType.ALREADY_LIKED, String.format("UserId %s already liked PostId %s", userId, postId));
-        });
-
-        likeRepository.save(LikeEntity.of(userEntity, postEntity));
-
-        postRepository.saveAndFlush(postEntity);
     }
 
     public UserEntity getUserEntityOrException(Long userId) {

@@ -15,6 +15,4 @@ public interface PostService {
     void modifyPost(Long postId, String title, String content, Long userId);
 
     void deletePost(Long postId, Long userId);
-
-    void likePost(Long postId, Long userId);
 }
