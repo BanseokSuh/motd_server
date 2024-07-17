@@ -1,7 +1,6 @@
 package com.lightcc.motd.domain.post.api.dto.response;
 
 import com.lightcc.motd.domain.post.domain.Post;
-import com.lightcc.motd.domain.user.api.dto.response.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,7 +13,7 @@ public class PostResponse {
     private String title;
     private String content;
     private Timestamp createdAt;
-    private UserResponse user;
+    private Long userId;
 
     public static PostResponse from(Post post) {
         return new PostResponse(
@@ -22,7 +21,7 @@ public class PostResponse {
                 post.getTitle(),
                 post.getContent(),
                 post.getCreatedAt(),
-                UserResponse.from(post.getUser())
+                post.getUserId()
         );
     }
 }

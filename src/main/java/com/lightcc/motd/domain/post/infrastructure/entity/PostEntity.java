@@ -1,7 +1,6 @@
 package com.lightcc.motd.domain.post.infrastructure.entity;
 
 import com.lightcc.motd.domain.post.domain.Post;
-import com.lightcc.motd.domain.user.infrastructure.entity.UserEntity;
 import com.lightcc.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,15 +26,14 @@ public class PostEntity extends BaseEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     public static PostEntity from(Post post) {
         PostEntity postEntity = new PostEntity();
         postEntity.setTitle(post.getTitle());
         postEntity.setContent(post.getContent());
-        postEntity.setUser(UserEntity.from(post.getUser()));
+        postEntity.setUserId(post.getUserId());
 
         return postEntity;
     }
@@ -45,17 +43,17 @@ public class PostEntity extends BaseEntity {
         post.setId(id);
         post.setTitle(title);
         post.setContent(content);
-        post.setUser(user.toDomain());
-        post.setCreatedAt(user.getCreatedAt());
+        post.setUserId(userId);
+        post.setCreatedAt(getCreatedAt());
 
         return post;
     }
 
-    public static PostEntity of(String title, String content, UserEntity user) {
+    public static PostEntity of(String title, String content, Long userId) {
         PostEntity postEntity = new PostEntity();
         postEntity.setTitle(title);
         postEntity.setContent(content);
-        postEntity.setUser(user);
+        postEntity.setUserId(userId);
 
         return postEntity;
     }

@@ -23,9 +23,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post createPost(String title, String content, Long userId) {
-        UserEntity userEntity = getUserEntityOrException(userId);
+        getUserEntityOrException(userId);
 
-        return postRepository.save(PostEntity.of(title, content, userEntity)).toDomain();
+        return postRepository.save(PostEntity.of(title, content, userId)).toDomain();
     }
 
     @Override
@@ -45,11 +45,10 @@ public class PostServiceImpl implements PostService {
         UserEntity userEntity = getUserEntityOrException(userId);
         PostEntity postEntity = getPostEntityOrException(postId);
 
-        if (!postEntity.getUser().equals(userEntity)) {
+        if (!postEntity.getUserId().equals(userEntity.getId())) {
             throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
-        // todo: 비즈니스 로직은 도메인 객체가 처리하도록 수정
         postEntity.setTitle(title);
         postEntity.setContent(content);
 
@@ -61,7 +60,7 @@ public class PostServiceImpl implements PostService {
         UserEntity userEntity = getUserEntityOrException(userId);
         PostEntity postEntity = getPostEntityOrException(postId);
 
-        if (!postEntity.getUser().equals(userEntity)) {
+        if (!postEntity.getUserId().equals(userEntity.getId())) {
             throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 

@@ -52,8 +52,8 @@ public class UserEntity extends BaseEntity {
         userEntity.setPassword(user.getPassword());
         userEntity.setRole(user.getRole());
         userEntity.setGender(user.getGender());
+
         return userEntity;
-        // todo: modelMapper.map(user, UserEntity.class);
     }
 
     public User toDomain() {
@@ -65,8 +65,8 @@ public class UserEntity extends BaseEntity {
         user.setPassword(password);
         user.setRole(role);
         user.setGender(gender);
+        
         return user;
-        // todo: modelMapper.map(this, User.class);
     }
 }
 
