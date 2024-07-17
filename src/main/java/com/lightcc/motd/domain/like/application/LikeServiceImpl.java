@@ -26,12 +26,12 @@ public class LikeServiceImpl implements LikeService {
         UserEntity userEntity = getUserEntityOrException(userId);
         PostEntity postEntity = getPostEntityOrException(postId);
 
-        if (likeRepository.findByUserAndPost(userEntity, postEntity).isEmpty()) {
+        if (likeRepository.findByUserIdAndPostId(userEntity.getId(), postEntity.getId()).isEmpty()) {
             // 좋아요를 누르지 않았다면
-            likeRepository.save(LikeEntity.of(userEntity, postEntity));
+            likeRepository.save(LikeEntity.of(userEntity.getId(), postEntity.getId()));
         } else {
             // 좋아요를 누른 상태라면
-            likeRepository.deleteByUserAndPost(userEntity, postEntity);
+            likeRepository.deleteByUserIdAndPostId(userEntity.getId(), postEntity.getId());
         }
     }
 

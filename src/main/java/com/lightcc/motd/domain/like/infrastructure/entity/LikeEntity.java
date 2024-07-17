@@ -1,8 +1,6 @@
 package com.lightcc.motd.domain.like.infrastructure.entity;
 
 import com.lightcc.motd.domain.like.domain.Like;
-import com.lightcc.motd.domain.post.infrastructure.entity.PostEntity;
-import com.lightcc.motd.domain.user.infrastructure.entity.UserEntity;
 import com.lightcc.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,18 +23,16 @@ public class LikeEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private PostEntity post;
+    @Column(name = "post_id")
+    private Long postId;
 
-    public static LikeEntity of(UserEntity userEntity, PostEntity postEntity) {
+    public static LikeEntity of(Long userId, Long postId) {
         LikeEntity entity = new LikeEntity();
-        entity.setUser(userEntity);
-        entity.setPost(postEntity);
+        entity.setUserId(userId);
+        entity.setPostId(postId);
 
         return entity;
     }
@@ -44,8 +40,8 @@ public class LikeEntity extends BaseEntity {
     public Like toDomain() {
         Like like = new Like();
         like.setId(id);
-        like.setUser(user.toDomain());
-        like.setPost(post.toDomain());
+        like.setUserId(userId);
+        like.setPostId(postId);
 
         return like;
     }
