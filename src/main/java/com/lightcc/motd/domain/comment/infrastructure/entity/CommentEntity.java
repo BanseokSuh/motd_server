@@ -1,8 +1,6 @@
 package com.lightcc.motd.domain.comment.infrastructure.entity;
 
 import com.lightcc.motd.domain.comment.domain.Comment;
-import com.lightcc.motd.domain.post.infrastructure.entity.PostEntity;
-import com.lightcc.motd.domain.user.infrastructure.entity.UserEntity;
 import com.lightcc.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,21 +20,19 @@ public class CommentEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private PostEntity post;
+    @Column(name = "post_id")
+    private Long postId;
 
     @Column(name = "comment")
     private String comment;
 
-    public static CommentEntity of(UserEntity userEntity, PostEntity postEntity, String comment) {
+    public static CommentEntity of(Long userId, Long postId, String comment) {
         CommentEntity entity = new CommentEntity();
-        entity.setUser(userEntity);
-        entity.setPost(postEntity);
+        entity.setUserId(userId);
+        entity.setPostId(postId);
         entity.setComment(comment);
 
         return entity;
@@ -45,8 +41,8 @@ public class CommentEntity extends BaseEntity {
     public Comment toDomain() {
         Comment commment = new Comment();
         commment.setId(id);
-        commment.setUser(user.toDomain());
-        commment.setPost(post.toDomain());
+        commment.setUserId(userId);
+        commment.setPostId(postId);
         commment.setComment(comment);
 
         return commment;

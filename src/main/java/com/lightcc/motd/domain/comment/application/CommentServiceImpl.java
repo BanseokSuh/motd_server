@@ -24,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
         PostEntity postEntity = getPostEntityOrException(postId);
         UserEntity userEntity = getUserEntityOrException(userId);
 
-        commentRepository.save(CommentEntity.of(userEntity, postEntity, comment));
+        commentRepository.save(CommentEntity.of(userEntity.getId(), postEntity.getId(), comment));
     }
 
     public UserEntity getUserEntityOrException(Long userId) {
