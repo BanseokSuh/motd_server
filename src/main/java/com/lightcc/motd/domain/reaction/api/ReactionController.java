@@ -1,6 +1,6 @@
-package com.lightcc.motd.domain.like.api;
+package com.lightcc.motd.domain.reaction.api;
 
-import com.lightcc.motd.domain.like.application.LikeService;
+import com.lightcc.motd.domain.reaction.application.ReactionService;
 import com.lightcc.motd.domain.user.domain.User;
 import com.lightcc.motd.global.response.Response;
 import lombok.RequiredArgsConstructor;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/like")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class LikeController {
+public class ReactionController {
 
-    private final LikeService likeService;
+    private final ReactionService reactionService;
 
-    @PostMapping("/post/{postId}")
+    @PostMapping("/like/post/{postId}")
     public Response<Void> likePost(@PathVariable Long postId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        likeService.likePost(postId, user.getId());
+        reactionService.likePost(postId, user.getId());
 
         return Response.success();
     }
