@@ -1,5 +1,6 @@
 package com.lightcc.motd.domain.like.infrastructure.entity;
 
+import com.lightcc.motd.domain.like.domain.Like;
 import com.lightcc.motd.domain.post.infrastructure.entity.PostEntity;
 import com.lightcc.motd.domain.user.infrastructure.entity.UserEntity;
 import com.lightcc.motd.global.entity.BaseEntity;
@@ -38,5 +39,14 @@ public class LikeEntity extends BaseEntity {
         entity.setPost(postEntity);
 
         return entity;
+    }
+
+    public Like toDomain() {
+        Like like = new Like();
+        like.setId(id);
+        like.setUser(user.toDomain());
+        like.setPost(post.toDomain());
+
+        return like;
     }
 }
