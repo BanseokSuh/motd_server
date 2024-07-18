@@ -1,6 +1,6 @@
-package com.lightcc.motd.global.response;
+package com.banny.motd.global.response;
 
-import com.lightcc.motd.global.exception.ResultType;
+import com.banny.motd.global.exception.ResultType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +26,9 @@ public class ResultObject {
 
     public static ResultObject error() {
         return new ResultObject(ResultType.SERVER_ERROR);
+    }
+
+    public static ResultObject validateError() {
+        return new ResultObject(ResultType.VALIDATE_ERROR);
     }
 }

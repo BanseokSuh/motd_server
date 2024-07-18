@@ -1,10 +1,15 @@
-package com.lightcc.motd.global.exception;
+package com.banny.motd.global.exception;
 
-import com.lightcc.motd.global.response.ResultObject;
+import com.banny.motd.global.response.ResultObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -38,5 +43,22 @@ public class GlobalControllerAdvice {
                 e.toString());
 
         return ErrorResponseEntity.toResponseEntity(ResultObject.error(), ErrorResult.error());
+    }
+
+    /**
+     * Dto Validation 에러 핸들링
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        return ErrorResponseEntity.toResponseEntity(ResultObject.validateError(), errors);
     }
 }

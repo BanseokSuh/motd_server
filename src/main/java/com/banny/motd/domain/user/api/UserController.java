@@ -1,13 +1,13 @@
-package com.lightcc.motd.domain.user.api;
+package com.banny.motd.domain.user.api;
 
-import com.lightcc.motd.domain.user.api.dto.request.UserJoinRequest;
-import com.lightcc.motd.domain.user.api.dto.request.UserLoginRequest;
-import com.lightcc.motd.domain.user.api.dto.response.UserJoinResponse;
-import com.lightcc.motd.domain.user.api.dto.response.UserLoginResponse;
-import com.lightcc.motd.domain.user.application.UserService;
-
-import com.lightcc.motd.domain.user.domain.User;
-import com.lightcc.motd.global.response.Response;
+import com.banny.motd.domain.user.api.dto.request.UserJoinRequest;
+import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
+import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
+import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
+import com.banny.motd.domain.user.application.UserService;
+import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.response.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
+    public Response<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
         User user = userService.join(request.getLoginId(), request.getUserName(), request.getPassword(), request.getGender());
         return Response.success(UserJoinResponse.from(user));
     }
 
     @PostMapping("/login")
-    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
+    public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         String token = userService.login(request.getLoginId(), request.getPassword());
         return Response.success(UserLoginResponse.from(token));
     }
