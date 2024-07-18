@@ -1,7 +1,8 @@
-package com.lightcc.motd.domain.comment.infrastructure.entity;
+package com.banny.motd.domain.comment.infrastructure.entity;
 
-import com.lightcc.motd.domain.comment.domain.Comment;
-import com.lightcc.motd.global.entity.BaseEntity;
+import com.banny.motd.domain.comment.domain.Comment;
+import com.banny.motd.global.entity.BaseEntity;
+import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,19 +21,24 @@ public class CommentEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "post_id")
-    private Long postId;
+    @Column(name = "target_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TargetType targetType;
 
-    @Column(name = "comment")
+    @Column(name = "target_id", nullable = false)
+    private Long targetId;
+
+    @Column(name = "comment", columnDefinition = "TEXT", nullable = false)
     private String comment;
 
-    public static CommentEntity of(Long userId, Long postId, String comment) {
+    public static CommentEntity of(Long userId, TargetType targetType, Long targetId, String comment) {
         CommentEntity entity = new CommentEntity();
         entity.setUserId(userId);
-        entity.setPostId(postId);
+        entity.setTargetType(targetType);
+        entity.setTargetId(targetId);
         entity.setComment(comment);
 
         return entity;
@@ -42,7 +48,8 @@ public class CommentEntity extends BaseEntity {
         Comment commment = new Comment();
         commment.setId(id);
         commment.setUserId(userId);
-        commment.setPostId(postId);
+        commment.setTargetType(targetType);
+        commment.setTargetId(targetId);
         commment.setComment(comment);
 
         return commment;
