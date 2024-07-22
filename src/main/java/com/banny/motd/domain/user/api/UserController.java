@@ -5,6 +5,7 @@ import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
 import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
 import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
 import com.banny.motd.domain.user.application.UserService;
+import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.response.Response;
 import jakarta.validation.Valid;
@@ -38,7 +39,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
-        String token = userService.login(request.getLoginId(), request.getPassword());
+        Tokens token = userService.login(request.getLoginId(), request.getPassword());
         return Response.success(UserLoginResponse.from(token));
     }
 }

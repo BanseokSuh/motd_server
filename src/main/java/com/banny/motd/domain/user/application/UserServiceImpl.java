@@ -1,13 +1,13 @@
 package com.banny.motd.domain.user.application;
 
 import com.banny.motd.domain.user.domain.Gender;
+import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
 import com.banny.motd.domain.user.domain.repository.UserRepository;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
-import com.banny.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,12 +21,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+    private final TokenService jwtTokenService;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.token.access-expired-time-ms}")
     private Long accessExpiredTimeMs;
+
+    @Value("${jwt.token.refresh-expired-time-ms}")
+    private Long refreshExpiredTimeMs;
+
 
     @Override
     public String helloUser() {
@@ -56,15 +61,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String loginId, String password) {
+    public Tokens login(String loginId, String password) {
         UserEntity userEntity = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));
 
-        if (!encoder.matches(password, userEntity.getPassword())) {
+        User user = userEntity.toDomain();
+
+        if (!encoder.matches(password, user.getPassword())) {
             throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
-        return JwtTokenUtils.generateToken(userEntity.toDomain(), secretKey, accessExpiredTimeMs);
+        String accessToken = jwtTokenService.generateAccessToken(user);
+        String refreshToken = jwtTokenService.generateAndSaveRefreshToken(user);
+
+        return Tokens.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     @Override

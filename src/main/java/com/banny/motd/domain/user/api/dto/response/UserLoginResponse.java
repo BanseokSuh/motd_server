@@ -1,5 +1,6 @@
 package com.banny.motd.domain.user.api.dto.response;
 
+import com.banny.motd.domain.user.domain.Tokens;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,9 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserLoginResponse {
 
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 
-    public static UserLoginResponse from(String token) {
-        return new UserLoginResponse(token);
+    public static UserLoginResponse from(Tokens token) {
+        return new UserLoginResponse(token.getAccessToken(), token.getRefreshToken());
     }
 }
