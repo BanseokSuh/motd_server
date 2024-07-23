@@ -1,4 +1,4 @@
-package com.banny.motd.domain.reaction.domain.repository;
+package com.banny.motd.domain.reaction.application.repository;
 
 import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;

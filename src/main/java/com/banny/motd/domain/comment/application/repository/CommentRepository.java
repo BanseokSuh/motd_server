@@ -1,4 +1,4 @@
-package com.banny.motd.domain.comment.domain.repository;
+package com.banny.motd.domain.comment.application.repository;
 
 import com.banny.motd.domain.comment.infrastructure.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

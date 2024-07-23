@@ -1,9 +1,9 @@
 package com.banny.motd.domain.post.application;
 
 import com.banny.motd.domain.post.domain.Post;
-import com.banny.motd.domain.post.domain.repository.PostRepository;
+import com.banny.motd.domain.post.application.repository.PostRepository;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
-import com.banny.motd.domain.user.domain.repository.UserRepository;
+import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;

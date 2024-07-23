@@ -1,9 +1,9 @@
 package com.banny.motd.domain.comment.application;
 
-import com.banny.motd.domain.comment.domain.repository.CommentRepository;
+import com.banny.motd.domain.comment.application.repository.CommentRepository;
 import com.banny.motd.domain.comment.infrastructure.entity.CommentEntity;
-import com.banny.motd.domain.post.domain.repository.PostRepository;
-import com.banny.motd.domain.user.domain.repository.UserRepository;
+import com.banny.motd.domain.post.application.repository.PostRepository;
+import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;

@@ -4,7 +4,7 @@ import com.banny.motd.domain.user.domain.Gender;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
-import com.banny.motd.domain.user.domain.repository.UserRepository;
+import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;

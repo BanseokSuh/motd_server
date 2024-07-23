@@ -1,4 +1,4 @@
-package com.banny.motd.domain.user.domain.repository;
+package com.banny.motd.domain.user.application.repository;
 
 import com.banny.motd.domain.user.infrastructure.UserRepositoryCustom;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;

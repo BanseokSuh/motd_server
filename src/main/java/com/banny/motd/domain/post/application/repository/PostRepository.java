@@ -1,4 +1,4 @@
-package com.banny.motd.domain.post.domain.repository;
+package com.banny.motd.domain.post.application.repository;
 
 import com.banny.motd.domain.post.infrastructure.PostRepositoryCustom;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;

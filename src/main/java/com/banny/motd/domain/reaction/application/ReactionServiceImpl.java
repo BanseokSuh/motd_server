@@ -1,10 +1,10 @@
 package com.banny.motd.domain.reaction.application;
 
-import com.banny.motd.domain.post.domain.repository.PostRepository;
+import com.banny.motd.domain.post.application.repository.PostRepository;
 import com.banny.motd.domain.reaction.domain.ReactionType;
-import com.banny.motd.domain.reaction.domain.repository.ReactionRepository;
+import com.banny.motd.domain.reaction.application.repository.ReactionRepository;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
-import com.banny.motd.domain.user.domain.repository.UserRepository;
+import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
