@@ -5,10 +5,6 @@ import com.banny.motd.domain.user.domain.User;
 
 public interface UserService {
 
-    String helloUser();
-
-    String helloUserException();
-
     User join(String loginId, String userName, String password, String gender);
 
     Tokens login(String loginId, String password);

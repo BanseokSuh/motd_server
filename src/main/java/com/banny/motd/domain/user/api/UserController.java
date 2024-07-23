@@ -19,18 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/hello")
-    public Response<String> helloUser() {
-        String helloUser = userService.helloUser();
-        return Response.success(helloUser);
-    }
-
-    @GetMapping("/hello-exception")
-    public Response<String> helloUserException() {
-        String helloUser = userService.helloUserException();
-        return Response.success(helloUser);
-    }
-
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
         User user = userService.join(request.getLoginId(), request.getUserName(), request.getPassword(), request.getGender());

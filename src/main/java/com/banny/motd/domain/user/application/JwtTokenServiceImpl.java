@@ -24,6 +24,7 @@ public class JwtTokenServiceImpl implements TokenService {
     @Value("${jwt.token.refresh-expired-time-ms}")
     private Long refreshExpiredTimeMs;
 
+
     @Override
     public String generateAccessToken(User user) {
         return JwtTokenUtils.generateJwtToken(user, secretKey, accessExpiredTimeMs);

@@ -10,7 +10,6 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +21,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
     private final TokenService jwtTokenService;
-
-    @Value("${jwt.secret-key}")
-    private String secretKey;
-
-    @Value("${jwt.token.access-expired-time-ms}")
-    private Long accessExpiredTimeMs;
-
-    @Value("${jwt.token.refresh-expired-time-ms}")
-    private Long refreshExpiredTimeMs;
-
-
-    @Override
-    public String helloUser() {
-        return "helloUser";
-    }
-
-    @Override
-    public String helloUserException() {
-        throw new ApplicationException(ResultType.SERVER_ERROR, "helloUserException");
-    }
 
     @Override
     public User join(String loginId, String userName, String password, String gender) {
