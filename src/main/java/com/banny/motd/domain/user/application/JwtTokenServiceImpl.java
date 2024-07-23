@@ -31,12 +31,13 @@ public class JwtTokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String generateAndSaveRefreshToken(User user) {
-        String refreshToken = JwtTokenUtils.generateJwtToken(user, secretKey, refreshExpiredTimeMs);
+    public String generateRefreshToken(User user) {
+        return JwtTokenUtils.generateJwtToken(user, secretKey, refreshExpiredTimeMs);
+    }
 
-        redisTemplate.opsForValue().set(user.getId().toString(), refreshToken);
-
-        return refreshToken;
+    @Override
+    public void saveRefreshToken(Long userId, String refreshToken) {
+        redisTemplate.opsForValue().set(userId.toString(), refreshToken);
     }
 
     @Override

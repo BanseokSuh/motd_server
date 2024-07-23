@@ -51,7 +51,9 @@ public class UserServiceImpl implements UserService {
         }
 
         String accessToken = jwtTokenService.generateAccessToken(user);
-        String refreshToken = jwtTokenService.generateAndSaveRefreshToken(user);
+        String refreshToken = jwtTokenService.generateRefreshToken(user);
+
+        jwtTokenService.saveRefreshToken(user.getId(), refreshToken);
 
         return Tokens.builder()
                 .accessToken(accessToken)
