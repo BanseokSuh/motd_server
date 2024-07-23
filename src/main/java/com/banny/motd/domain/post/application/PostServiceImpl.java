@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -22,6 +23,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public Post createPost(String title, String content, Long userId) {
         getUserEntityOrException(userId);
 
@@ -41,6 +43,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void modifyPost(Long postId, String title, String content, Long userId) {
         UserEntity userEntity = getUserEntityOrException(userId);
         PostEntity postEntity = getPostEntityOrException(postId);
@@ -56,6 +59,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void deletePost(Long postId, Long userId) {
         UserEntity userEntity = getUserEntityOrException(userId);
         PostEntity postEntity = getPostEntityOrException(postId);

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final TokenService jwtTokenService;
 
     @Override
+    @Transactional
     public User join(String loginId, String userName, String password, String gender) {
 
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
@@ -39,7 +41,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(UserEntity.from(user)).toDomain();
     }
 
+
     @Override
+    @Transactional
     public Tokens login(String loginId, String password) {
         UserEntity userEntity = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));

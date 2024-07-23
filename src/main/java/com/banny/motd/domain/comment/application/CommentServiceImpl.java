@@ -9,6 +9,7 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
 
     @Override
+    @Transactional
     public void commentPost(Long postId, Long userId, String comment) {
         checkUserExistById(userId);
         checkPostExistById(postId);
