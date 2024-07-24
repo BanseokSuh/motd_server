@@ -22,6 +22,8 @@ public enum ResultType {
 
     ALREADY_LIKED("4001", "already liked"),
 
+    ALARM_CONNECT_ERROR("5001", "alarm connect error"),
+
     VALIDATE_ERROR("9998", "validate error"),
     SERVER_ERROR("9999", "server error");
 
