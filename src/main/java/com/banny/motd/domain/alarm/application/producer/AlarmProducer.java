@@ -1,6 +1,6 @@
 package com.banny.motd.domain.alarm.application.producer;
 
-import com.banny.motd.domain.alarm.application.helper.AlarmMessageHelper;
+import com.banny.motd.global.helper.SerializeHelper;
 import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,16 +13,27 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AlarmProducer {
 
-    private final KafkaTemplate<Long, String> kafkaTemplate;
+    private final KafkaTemplate<Long, AlarmEvent> kafkaTemplate;
 
     @Value("${spring.kafka.topic.alarm}")
     private String topic;
 
     public void send(AlarmEvent event) {
-        String message = AlarmMessageHelper.serialize(event);
-
-        kafkaTemplate.send(topic, event.getReceiverUserId(), message);
+        kafkaTemplate.send(topic, event.getReceiverUserId(), event);
 
         log.info("Send to kafka finished: {}", event);
     }
+
+//    private final KafkaTemplate<Long, String> kafkaTemplate;
+//
+//    @Value("${spring.kafka.topic.alarm}")
+//    private String topic;
+//
+//    public void send(AlarmEvent event) {
+//        String message = SerializeHelper.serialize(event);
+//
+//        kafkaTemplate.send(topic, event.getReceiverUserId(), message);
+//
+//        log.info("Send to kafka finished: {}", message);
+//    }
 }

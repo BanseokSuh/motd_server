@@ -2,6 +2,7 @@ package com.banny.motd.domain.alarm.application;
 
 import com.banny.motd.domain.alarm.application.repository.AlarmRepository;
 import com.banny.motd.domain.alarm.application.repository.EmitterRepository;
+import com.banny.motd.domain.alarm.domain.Alarm;
 import com.banny.motd.domain.alarm.domain.AlarmArgs;
 import com.banny.motd.domain.alarm.domain.AlarmType;
 import com.banny.motd.domain.alarm.infrastructure.entity.AlarmEntity;
@@ -11,6 +12,8 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -28,20 +31,8 @@ public class AlarmServiceImpl implements AlarmService {
     private final UserRepository userRepository;
 
     @Override
-    public void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId) {
-        UserEntity userEntity = userRepository.findById(receiverUserId).orElseThrow(
-                () -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", receiverUserId)));
-
-        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(userEntity.getId(), alarmType, alarmArgs));
-
-        emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
-            try {
-                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data("new alarm"));
-            } catch (IOException e) {
-                emitterRepository.delete(receiverUserId);
-                throw new ApplicationException(ResultType.ALARM_CONNECT_ERROR);
-            }
-        }, () -> log.info("No emitter found"));
+    public Page<Alarm> getAlarmList(Long userId, Pageable pageable) {
+        return null;
     }
 
     @Override
@@ -60,5 +51,22 @@ public class AlarmServiceImpl implements AlarmService {
         }
 
         return sseEmitter;
+    }
+
+    @Override
+    public void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId) {
+        UserEntity userEntity = userRepository.findById(receiverUserId).orElseThrow(
+                () -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", receiverUserId)));
+
+        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(userEntity.getId(), alarmType, alarmArgs));
+
+        emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
+            try {
+                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data("new alarm"));
+            } catch (IOException e) {
+                emitterRepository.delete(receiverUserId);
+                throw new ApplicationException(ResultType.ALARM_CONNECT_ERROR);
+            }
+        }, () -> log.info("No emitter found"));
     }
 }

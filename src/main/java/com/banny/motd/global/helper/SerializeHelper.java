@@ -1,4 +1,4 @@
-package com.banny.motd.domain.alarm.application.helper;
+package com.banny.motd.global.helper;
 
 import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import com.banny.motd.global.exception.ApplicationException;
@@ -7,8 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
+@Deprecated
 @Slf4j
-public class AlarmMessageHelper {
+public class SerializeHelper {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
