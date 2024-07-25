@@ -9,5 +9,7 @@ public interface UserService {
 
     Tokens login(String loginId, String password);
 
+    User getMyInfo(Long id);
+
     User loadUserByLoginId(String loginId);
 }

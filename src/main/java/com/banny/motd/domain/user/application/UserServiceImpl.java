@@ -66,6 +66,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getMyInfo(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %d is not found", id)))
+                .toDomain();
+
+        // TODO: Implement more logic to get user's information
+
+        return user;
+    }
+
+    @Override
     public User loadUserByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)))

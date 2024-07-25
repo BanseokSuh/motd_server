@@ -4,12 +4,14 @@ import com.banny.motd.domain.user.api.dto.request.UserJoinRequest;
 import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
 import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
 import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
+import com.banny.motd.domain.user.api.dto.response.UserResponse;
 import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.response.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,5 +31,11 @@ public class UserController {
     public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         Tokens token = userService.login(request.getLoginId(), request.getPassword());
         return Response.success(UserLoginResponse.from(token));
+    }
+
+    @GetMapping("/me")
+    public Response<UserResponse> getMyInfo(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return Response.success(UserResponse.from(userService.getMyInfo(user.getId())));
     }
 }
