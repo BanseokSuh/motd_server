@@ -12,7 +12,9 @@ import org.hibernate.annotations.SQLRestriction;
 @Setter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() where id = ?")
-@Table(name = "\"post\"")
+@Table(name = "\"post\"", indexes = {
+        @Index(name = "index_post_user_id", columnList = "user_id"),
+})
 @Entity
 public class PostEntity extends BaseEntity {
 
@@ -38,6 +40,15 @@ public class PostEntity extends BaseEntity {
         return postEntity;
     }
 
+    public static PostEntity of(String title, String content, Long userId) {
+        PostEntity postEntity = new PostEntity();
+        postEntity.setTitle(title);
+        postEntity.setContent(content);
+        postEntity.setUserId(userId);
+
+        return postEntity;
+    }
+
     public Post toDomain() {
         Post post = new Post();
         post.setId(id);
@@ -47,14 +58,5 @@ public class PostEntity extends BaseEntity {
         post.setCreatedAt(getCreatedAt());
 
         return post;
-    }
-
-    public static PostEntity of(String title, String content, Long userId) {
-        PostEntity postEntity = new PostEntity();
-        postEntity.setTitle(title);
-        postEntity.setContent(content);
-        postEntity.setUserId(userId);
-
-        return postEntity;
     }
 }

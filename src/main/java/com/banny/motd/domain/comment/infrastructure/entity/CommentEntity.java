@@ -13,7 +13,9 @@ import org.hibernate.annotations.SQLRestriction;
 @Setter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"comment\" SET deleted_at = NOW() where id = ?")
-@Table(name = "\"comment\"")
+@Table(name = "\"comment\"", indexes = {
+        @Index(name = "index_comment_user_id_target_type_target_id", columnList = "user_id, target_type, target_id"),
+})
 @Entity
 public class CommentEntity extends BaseEntity {
 

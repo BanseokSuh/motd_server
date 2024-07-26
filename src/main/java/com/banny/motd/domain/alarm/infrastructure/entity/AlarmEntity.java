@@ -16,7 +16,9 @@ import org.hibernate.type.SqlTypes;
 @Convert(attributeName = "jsonb", converter = AttributeConverter.class)
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"alarm\" SET deleted_at = NOW() where id = ?")
-@Table(name = "\"alarm\"")
+@Table(name = "\"alarm\"", indexes = {
+        @Index(name = "index_alarm_user_id_alarm_type", columnList = "user_id, alarm_type"),
+})
 @Entity
 public class AlarmEntity extends BaseEntity {
 
