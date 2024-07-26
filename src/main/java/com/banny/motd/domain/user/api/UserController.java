@@ -33,7 +33,7 @@ public class UserController {
         return Response.success(UserLoginResponse.from(token));
     }
 
-    @GetMapping("/me")
+    @GetMapping("/my")
     public Response<UserMyResponse> getMyInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return Response.success(UserMyResponse.from(userService.getMyInfo(user.getId())));
