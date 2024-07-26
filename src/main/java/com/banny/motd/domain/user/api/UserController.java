@@ -4,7 +4,7 @@ import com.banny.motd.domain.user.api.dto.request.UserJoinRequest;
 import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
 import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
 import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
-import com.banny.motd.domain.user.api.dto.response.UserResponse;
+import com.banny.motd.domain.user.api.dto.response.UserMyResponse;
 import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public Response<UserResponse> getMyInfo(Authentication authentication) {
+    public Response<UserMyResponse> getMyInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return Response.success(UserResponse.from(userService.getMyInfo(user.getId())));
+        return Response.success(UserMyResponse.from(userService.getMyInfo(user.getId())));
     }
 }

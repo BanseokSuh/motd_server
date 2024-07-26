@@ -26,21 +26,45 @@ public class UserTokenManager {
     private Long refreshExpiredTimeMs;
 
 
+    /**
+     * Generate access token
+     *
+     * @param user
+     * @return access token
+     */
     public String generateAccessToken(User user) {
         return JwtTokenUtils.generateJwtToken(user, secretKey, accessExpiredTimeMs);
     }
 
+    /**
+     * Generate refresh token
+     *
+     * @param user
+     * @return refresh token
+     */
     public String generateRefreshToken(User user) {
         return JwtTokenUtils.generateJwtToken(user, secretKey, refreshExpiredTimeMs);
     }
 
+    /**
+     * Save refresh token
+     *
+     * @param userId
+     * @param refreshToken
+     */
     public void saveRefreshToken(Long userId, String refreshToken) {
-        String key = getKey(userId);
+        String key = getRefreshTokenKey(userId);
         redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
-    private String getKey(Long userId) {
-        return "token:" + userId.toString();
+    /**
+     * Get the key for the refresh token
+     *
+     * @param userId
+     * @return
+     */
+    private String getRefreshTokenKey(Long userId) {
+        return "R_TOKEN:" + userId;
     }
 
     public boolean validateAccessToken(String token) {

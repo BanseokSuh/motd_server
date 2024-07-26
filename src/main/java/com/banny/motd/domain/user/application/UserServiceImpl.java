@@ -72,9 +72,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getMyInfo(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %d is not found", id)))
-                .toDomain();
+        User user = userCacheRepository.getUser(id).orElseGet(() ->
+                userRepository.findById(id).map(UserEntity::toDomain).orElseThrow(() ->
+                        new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)))
+                );
 
         // TODO: Implement more logic to get user's information
 
