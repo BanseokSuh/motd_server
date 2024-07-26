@@ -1,5 +1,6 @@
 package com.banny.motd.global.configuration;
 
+import com.banny.motd.domain.user.domain.User;
 import io.lettuce.core.RedisURI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -33,9 +34,18 @@ public class RedisConfiguration {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-        // Key, Value Serializer 설정
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, User> userRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        redisTemplate.setKeySerializer(new StringRedisSerializer()); // Key를 String으로 사용했기 때문에 해당 serializer 설정
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<User>(User.class)); // Value를 User로 사용했기 때문에 해당 serializer 설정
         return redisTemplate;
     }
 }

@@ -1,5 +1,6 @@
 package com.banny.motd.domain.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,31 +32,37 @@ public class User implements UserDetails {
     /*
      * action
      */
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.toString()));
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return this.userName;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return UserDetails.super.isAccountNonLocked();
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return UserDetails.super.isCredentialsNonExpired();
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();

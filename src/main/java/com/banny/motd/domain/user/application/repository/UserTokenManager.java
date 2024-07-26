@@ -1,19 +1,20 @@
-package com.banny.motd.domain.user.application;
+package com.banny.motd.domain.user.application.repository;
 
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Slf4j
-@Service
+import java.time.Duration;
+
+@Repository
 @RequiredArgsConstructor
-public class JwtTokenServiceImpl implements TokenService {
+public class UserTokenManager {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final static Duration REFRESH_TOKEN_CACHE_TTL = Duration.ofDays(1); // 1 day
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -25,27 +26,27 @@ public class JwtTokenServiceImpl implements TokenService {
     private Long refreshExpiredTimeMs;
 
 
-    @Override
     public String generateAccessToken(User user) {
         return JwtTokenUtils.generateJwtToken(user, secretKey, accessExpiredTimeMs);
     }
 
-    @Override
     public String generateRefreshToken(User user) {
         return JwtTokenUtils.generateJwtToken(user, secretKey, refreshExpiredTimeMs);
     }
 
-    @Override
     public void saveRefreshToken(Long userId, String refreshToken) {
-        redisTemplate.opsForValue().set(userId.toString(), refreshToken);
+        String key = getKey(userId);
+        redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
-    @Override
+    private String getKey(Long userId) {
+        return "token:" + userId.toString();
+    }
+
     public boolean validateAccessToken(String token) {
         return false;
     }
 
-    @Override
     public boolean validateRefreshToken(String token) {
         return false;
     }

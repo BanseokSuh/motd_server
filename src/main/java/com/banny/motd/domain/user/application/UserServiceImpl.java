@@ -1,5 +1,7 @@
 package com.banny.motd.domain.user.application;
 
+import com.banny.motd.domain.user.application.repository.UserCacheRepository;
+import com.banny.motd.domain.user.application.repository.UserTokenManager;
 import com.banny.motd.domain.user.domain.Gender;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
@@ -21,7 +23,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
-    private final TokenService jwtTokenService;
+    private final UserCacheRepository userCacheRepository;
+    private final UserTokenManager userTokenManager;
 
     @Override
     @Transactional
@@ -54,10 +57,12 @@ public class UserServiceImpl implements UserService {
             throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
-        String accessToken = jwtTokenService.generateAccessToken(user);
-        String refreshToken = jwtTokenService.generateRefreshToken(user);
+        String accessToken = userTokenManager.generateAccessToken(user);
+        String refreshToken = userTokenManager.generateRefreshToken(user);
 
-        jwtTokenService.saveRefreshToken(user.getId(), refreshToken);
+        userTokenManager.saveRefreshToken(user.getId(), refreshToken);
+
+        userCacheRepository.setUser(user);
 
         return Tokens.builder()
                 .accessToken(accessToken)
