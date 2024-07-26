@@ -15,9 +15,6 @@ import java.util.List;
 @Setter
 public class User implements UserDetails {
 
-    /*
-     * data
-     */
     private Long id;
     private String loginId;
     private String userName;
@@ -29,9 +26,6 @@ public class User implements UserDetails {
     private Timestamp updatedAt;
     private Timestamp deletedAt;
 
-    /*
-     * action
-     */
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

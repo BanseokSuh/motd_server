@@ -5,7 +5,9 @@ import com.banny.motd.domain.alarm.domain.AlarmArgs;
 import com.banny.motd.domain.alarm.domain.AlarmType;
 import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import com.banny.motd.domain.post.application.repository.PostRepository;
+import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
+import com.banny.motd.domain.reaction.domain.Reaction;
 import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.domain.reaction.application.repository.ReactionRepository;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
@@ -33,20 +35,21 @@ public class ReactionServiceImpl implements ReactionService {
     public void likePost(Long postId, Long userId) {
         checkUserExistById(userId);
 
-        PostEntity postEntity = getPostEntityById(postId);
-
         ReactionEntity reactionEntity = reactionRepository.findByUserIdAndTargetTypeAndTargetIdAndReactionType(
                 userId, TargetType.POST, postId, ReactionType.LIKE
         );
 
-        if (reactionEntity == null) {
-            reactionRepository.save(ReactionEntity.of(
-                    userId, TargetType.POST, postId, ReactionType.LIKE)
-            );
+        Post post = getPostEntityById(postId).toDomain();
 
-            alarmProducer.send(new AlarmEvent(postEntity.getUserId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
+        /*
+         * 기존 좋아요가 없으면 좋아요 추가
+         * 기존 좋아요가 있으면 좋아요 삭제
+         */
+        if (reactionEntity == null) {
+            reactionRepository.save(ReactionEntity.of(userId, TargetType.POST, postId, ReactionType.LIKE));
+            alarmProducer.send(new AlarmEvent(post.getUserId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
         } else {
-            // TODO: Activate reaction
+            reactionRepository.delete(reactionEntity);
         }
     }
 
