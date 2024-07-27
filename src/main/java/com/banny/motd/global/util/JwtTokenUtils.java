@@ -21,7 +21,7 @@ public class JwtTokenUtils {
         claims.put("userId", user.getId());
         claims.put("loginId", user.getLoginId());
         claims.put("userName", user.getUsername());
-        claims.put("role", user.getRole().name());
+        claims.put("email", user.getEmail());
 
         return Jwts.builder()
                 .setClaims(claims)
