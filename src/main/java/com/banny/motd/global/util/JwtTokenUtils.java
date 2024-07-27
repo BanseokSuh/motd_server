@@ -31,6 +31,10 @@ public class JwtTokenUtils {
                 .compact();
     }
 
+    public static boolean isTokenValid(String token, String loginId, String key) {
+        return getLoginId(token, key).equals(loginId);
+    }
+
     public static String getLoginId(String token, String key) {
         return extractAllClaims(token, key).get("loginId", String.class);
     }
@@ -46,9 +50,5 @@ public class JwtTokenUtils {
     public static Key getSigningKey(String key) {
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public static boolean isTokenValid(String token, String loginId, String key) {
-        return getLoginId(token, key).equals(loginId);
     }
 }

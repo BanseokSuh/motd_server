@@ -20,6 +20,11 @@ public class RedisConfiguration {
 
     private final RedisProperties redisProperties;
 
+    /**
+     * RedisConnectionFactory Bean 등록
+     *
+     * @return RedisConnectionFactory
+     */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisURI redisURI = RedisURI.create(redisProperties.getHost(), redisProperties.getPort());
@@ -29,6 +34,12 @@ public class RedisConfiguration {
         return factory;
     }
 
+    /**
+     * RedisTemplate Bean 등록
+     *
+     * @param redisConnectionFactory
+     * @return RedisTemplate<String, Object>
+     */
     @Bean
     public RedisTemplate<String, Object> tokenRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -39,6 +50,12 @@ public class RedisConfiguration {
         return redisTemplate;
     }
 
+    /**
+     * RedisTemplate Bean 등록
+     *
+     * @param redisConnectionFactory
+     * @return RedisTemplate<String, User>
+     */
     @Bean
     public RedisTemplate<String, User> userRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();

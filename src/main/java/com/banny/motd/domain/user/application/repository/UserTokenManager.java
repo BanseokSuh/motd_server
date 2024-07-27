@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-@Repository
+@Repository // 스프링 빈으로 등록
 @RequiredArgsConstructor
 public class UserTokenManager {
 
@@ -25,9 +25,8 @@ public class UserTokenManager {
     @Value("${jwt.token.refresh-expired-time-ms}")
     private Long refreshExpiredTimeMs;
 
-
     /**
-     * Generate access token
+     * access token 발급
      *
      * @param user
      * @return access token
@@ -37,7 +36,7 @@ public class UserTokenManager {
     }
 
     /**
-     * Generate refresh token
+     * refresh token 발급
      *
      * @param user
      * @return refresh token
@@ -47,7 +46,7 @@ public class UserTokenManager {
     }
 
     /**
-     * Save refresh token
+     * refresh token redis에 저장
      *
      * @param userId
      * @param refreshToken
@@ -58,10 +57,10 @@ public class UserTokenManager {
     }
 
     /**
-     * Get the key for the refresh token
+     * refresh token을 저장하기 위한 key 조회
      *
      * @param userId
-     * @return
+     * @return refresh token key
      */
     private String getRefreshTokenKey(Long userId) {
         return "R_TOKEN:" + userId;

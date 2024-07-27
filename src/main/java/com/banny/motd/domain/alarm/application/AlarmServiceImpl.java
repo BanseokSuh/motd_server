@@ -64,7 +64,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
             try {
-                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data(message.toString()));
+                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data(message));
             } catch (IOException e) {
                 emitterRepository.delete(receiverUserId);
                 throw new ApplicationException(ResultType.ALARM_CONNECT_ERROR);
