@@ -55,18 +55,39 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId) {
-        UserEntity userEntity = userRepository.findById(receiverUserId).orElseThrow(
-                () -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", receiverUserId)));
+        UserEntity receiverUserEntity = getUserEntityById(receiverUserId);
+        UserEntity senderUserEntity = getUserEntityById(alarmArgs.getFromUserId());
 
-        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(userEntity.getId(), alarmType, alarmArgs));
+        String message = getAlarmMessage(alarmType, alarmArgs, senderUserEntity);
+
+        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(receiverUserEntity.getId(), alarmType, alarmArgs));
 
         emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
             try {
-                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data("new alarm"));
+                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data(message.toString()));
             } catch (IOException e) {
                 emitterRepository.delete(receiverUserId);
                 throw new ApplicationException(ResultType.ALARM_CONNECT_ERROR);
             }
         }, () -> log.info("No emitter found"));
+    }
+
+    private UserEntity getUserEntityById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", userId)));
+    }
+
+    private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, UserEntity senderUserEntity) {
+        StringBuilder message = new StringBuilder();
+
+        if (alarmType == AlarmType.COMMENT) {
+            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUserEntity.getUserName()));
+        } else if (alarmType == AlarmType.LIKE) {
+            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUserEntity.getUserName()));
+        } else {
+            message.append(String.format("New alarm %s", senderUserEntity.getUserName()));
+        }
+
+        return message.toString();
     }
 }

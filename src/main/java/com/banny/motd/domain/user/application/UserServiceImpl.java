@@ -30,10 +30,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User join(String loginId, String userName, String password, String gender) {
 
+        // 이미 가입된 사용자인지 확인
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
             throw new ApplicationException(ResultType.USER_DUPLICATED, String.format("User %s is duplicated", loginId));
         });
 
+        // 신규 유저 객체 생성
         User user = new User();
         user.setLoginId(loginId);
         user.setUserName(userName);
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(UserRole.USER);
         user.setGender(Gender.valueOf(gender));
 
+        // 유저 저장
         return userRepository.save(UserEntity.from(user)).toDomain();
     }
 
@@ -48,20 +51,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Tokens login(String loginId, String password) {
-        UserEntity userEntity = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));
 
-        User user = userEntity.toDomain();
+        // 로그인 아이디로 유저 조회
+        User user = loadUserByLoginId(loginId);
 
+        // 비밀번호 일치 여부 확인
         if (!encoder.matches(password, user.getPassword())) {
             throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
+        // 토큰 생성
         String accessToken = userTokenManager.generateAccessToken(user);
         String refreshToken = userTokenManager.generateRefreshToken(user);
 
+        // refresh token 저장
         userTokenManager.saveRefreshToken(user.getId(), refreshToken);
 
+        // 유저 정보 캐시 저장
         userCacheRepository.setUser(user);
 
         return Tokens.builder()
@@ -72,14 +78,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getMyInfo(Long id) {
-        User user = userCacheRepository.getUser(id).orElseGet(() ->
+        return userCacheRepository.getUser(id).orElseGet(() ->
                 userRepository.findById(id).map(UserEntity::toDomain).orElseThrow(() ->
                         new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)))
                 );
-
-        // TODO: Implement more logic to get user's information
-
-        return user;
     }
 
     @Override
