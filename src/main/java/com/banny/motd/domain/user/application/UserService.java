@@ -5,7 +5,7 @@ import com.banny.motd.domain.user.domain.User;
 
 public interface UserService {
 
-    User join(String loginId, String userName, String password, String gender);
+    User join(String loginId, String userName, String password, String email, String gender);
 
     Tokens login(String loginId, String password);
 

@@ -38,6 +38,7 @@ class UserServiceTest {
         String loginId = "loginId";
         String userName = "userName";
         String password = "password";
+        String email = "test@gmail.com";
         String gender = "M";
         String role = "USER";
 
@@ -47,7 +48,7 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender, role));
 
         // then
-        assertDoesNotThrow(() -> userService.join(loginId, userName, password, gender));
+        assertDoesNotThrow(() -> userService.join(loginId, userName, password, email, gender));
     }
 
     @Test
@@ -57,6 +58,7 @@ class UserServiceTest {
         String loginId = "loginId123";
         String userName = "userName123";
         String password = "password123";
+        String email = "test@gmail.com";
         String gender = "M";
         String role = "USER";
 
@@ -68,7 +70,7 @@ class UserServiceTest {
         when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender, role));
 
         // then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, password, gender));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, email, password, gender));
         assertEquals(ResultType.USER_DUPLICATED.getCode(), e.getResult().getCode());
     }
 
