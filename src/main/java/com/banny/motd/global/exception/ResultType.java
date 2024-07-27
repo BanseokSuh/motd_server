@@ -24,6 +24,7 @@ public enum ResultType {
 
     ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
+    INVALID_PARAMETER("9997", "invalid parameter"),
     VALIDATE_ERROR("9998", "validate error"),
     SERVER_ERROR("9999", "server error");
 
