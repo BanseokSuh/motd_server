@@ -15,7 +15,7 @@ public class UserMyResponse {
     private String userName;
     private String email;
     private Gender gender;
-    private UserRole role;
+    private UserRole userRole;
 
     public static UserMyResponse from(User user) {
         return new UserMyResponse(
@@ -24,7 +24,7 @@ public class UserMyResponse {
                 user.getUsername(),
                 user.getEmail(),
                 user.getGender(),
-                user.getRole()
+                user.getUserRole()
         );
     }
 }

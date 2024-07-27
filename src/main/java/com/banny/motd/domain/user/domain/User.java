@@ -1,5 +1,7 @@
 package com.banny.motd.domain.user.domain;
 
+import com.banny.motd.global.exception.ApplicationException;
+import com.banny.motd.global.exception.ResultType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -23,15 +25,31 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Gender gender;
-    private UserRole role;
+    private UserRole userRole;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
 
+    public void setGender(String gender) {
+        try {
+            this.gender = Gender.valueOf(gender);
+        } catch (Exception e) {
+            throw new ApplicationException(ResultType.INVALID_PARAMETER, String.format("Gender %s is invalid", gender));
+        }
+    }
+
+    public void setUserRole(String userRole) {
+        try {
+            this.userRole = UserRole.valueOf(userRole);
+        } catch (Exception e) {
+            throw new ApplicationException(ResultType.INVALID_PARAMETER, String.format("Role %s is invalid", userRole));
+        }
+    }
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.toString()));
+        return List.of(new SimpleGrantedAuthority(this.userRole.toString()));
     }
 
     @JsonIgnore

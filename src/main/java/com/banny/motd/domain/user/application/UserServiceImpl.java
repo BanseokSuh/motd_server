@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
         user.setUserName(userName);
         user.setPassword(encoder.encode(password));
         user.setEmail(email);
-        user.setRole(UserRole.USER);
-        user.setGender(Gender.valueOf(gender));
+        user.setGender(gender);
+        user.setUserRole("USER");
 
         // 유저 저장
         return userRepository.save(UserEntity.from(user)).toDomain();

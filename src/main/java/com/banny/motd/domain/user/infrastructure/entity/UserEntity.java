@@ -40,9 +40,9 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "userRole", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole userRole;
 
     public static UserEntity from(User user) {
         UserEntity userEntity = new UserEntity();
@@ -50,7 +50,7 @@ public class UserEntity extends BaseEntity {
         userEntity.setUserName(user.getUsername());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
-        userEntity.setRole(user.getRole());
+        userEntity.setUserRole(user.getUserRole());
         userEntity.setGender(user.getGender());
 
         return userEntity;
@@ -63,8 +63,8 @@ public class UserEntity extends BaseEntity {
         user.setUserName(userName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setRole(role);
-        user.setGender(gender);
+        user.setUserRole(String.valueOf(userRole));
+        user.setGender(String.valueOf(gender));
 
         return user;
     }

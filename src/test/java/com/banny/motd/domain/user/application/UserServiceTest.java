@@ -40,12 +40,11 @@ class UserServiceTest {
         String password = "password";
         String email = "test@gmail.com";
         String gender = "M";
-        String role = "USER";
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
         when(encoder.encode(password)).thenReturn("encrypt_password");
-        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender, role));
+        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender));
 
         // when, then
         assertDoesNotThrow(() -> userService.join(loginId, userName, password, email, gender));
@@ -60,14 +59,13 @@ class UserServiceTest {
         String password = "password123";
         String email = "test@gmail.com";
         String gender = "M";
-        String role = "USER";
 
-        UserEntity fixture = UserEntityFixture.get(loginId, userName, password, gender, role);
+        UserEntity fixture = UserEntityFixture.get(loginId, userName, password, gender);
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
         when(encoder.encode(password)).thenReturn("encrypt_password");
-        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender, role));
+        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, gender));
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, email, password, gender));
@@ -81,7 +79,7 @@ class UserServiceTest {
         String loginId = "loginId";
         String password = "password";
 
-        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "M", "USER");
+        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "M");
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
@@ -113,7 +111,7 @@ class UserServiceTest {
         String loginId = "loginId";
         String password = "password";
 
-        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "M", "USER");
+        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "M");
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
