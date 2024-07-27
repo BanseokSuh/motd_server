@@ -17,12 +17,15 @@ public class EmitterRepository {
     public void save(Long userId, SseEmitter sseEmitter) {
         final String key = getKey(userId);
         emitterMap.put(key, sseEmitter);
+
         log.info("Set sseEmitter {}", userId);
     }
 
     public Optional<SseEmitter> get(Long userId) {
         final String key = getKey(userId);
+
         log.info("Get sseEmitter {}", userId);
+
         return Optional.ofNullable(emitterMap.get(key));
     }
 
