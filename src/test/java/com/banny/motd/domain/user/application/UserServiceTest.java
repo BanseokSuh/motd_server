@@ -33,7 +33,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입")
-    void test1() {
+    void join() {
         // given
         String loginId = "loginId";
         String userName = "userName";
@@ -53,7 +53,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입시_loginId로_회원가입한_유저가_이미_있다")
-    void test2() {
+    void join_already_exist_loginId() {
         // given
         String loginId = "loginId123";
         String userName = "userName123";
@@ -76,7 +76,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("로그인")
-    void test3() {
+    void login() {
         // given
         String loginId = "loginId";
         String password = "password";
@@ -92,8 +92,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("로그인시_아이디가_없음")
-    void test4() {
+    @DisplayName("로그인시_아이디가_없다")
+    void login_not_found_user() {
         // given
         String loginId = "loginId";
         String password = "password";
@@ -104,6 +104,24 @@ class UserServiceTest {
         // then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
         assertEquals(ResultType.USER_NOT_FOUND.getCode(), e.getResult().getCode());
+    }
+
+    @Test
+    @DisplayName("로그인시_비밀번호가_맞지_않다")
+    void login_password_mismatch() {
+        // given
+        String loginId = "loginId";
+        String password = "password";
+
+        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "M", "USER");
+
+        // when
+        when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
+        when(encoder.matches(password, fixture.getPassword())).thenReturn(false);
+
+        // then
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
+        assertEquals(ResultType.USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
     }
 
 }
