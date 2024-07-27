@@ -90,4 +90,20 @@ class UserServiceTest {
         // then
         assertDoesNotThrow(() -> userService.login(loginId, password));
     }
+
+    @Test
+    @DisplayName("로그인시_아이디가_없음")
+    void test4() {
+        // given
+        String loginId = "loginId";
+        String password = "password";
+
+        // when
+        when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
+
+        // then
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
+        assertEquals(ResultType.USER_NOT_FOUND.getCode(), e.getResult().getCode());
+    }
+
 }
