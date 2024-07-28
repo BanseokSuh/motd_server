@@ -53,6 +53,14 @@ public class GlobalControllerAdvice {
 
         Map<String, String> errors = new HashMap<>();
 
+        /*
+         * validation에 걸린 모든 필드와 메시지를 map에 담는다.
+         * {
+         *   "field1": "message1",
+         *   "field2": "message2",
+         *   ...
+         * }
+         */
         e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();

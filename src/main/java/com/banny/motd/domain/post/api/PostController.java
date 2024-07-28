@@ -8,6 +8,7 @@ import com.banny.motd.domain.post.application.PostService;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.response.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public Response<PostCreateResponse> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
+    public Response<PostCreateResponse> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Post post = postService.createPost(request.getTitle(), request.getContent(), user.getId());
 
