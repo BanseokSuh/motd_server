@@ -6,8 +6,6 @@
 
 ## 프로젝트 소개
 
-<hr>
-
 MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 선한 일을 하여 세상에 선한 영향력을 퍼뜨리는데에 동참하는 사람들을 위한 커뮤니티 서비스입니다.
 
 (2024.07.28 기준) <br>
@@ -23,8 +21,6 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 <br>
 
 ## 기술 스택
-
-<hr>
 
 <div align=center> 
   <img src="https://img.shields.io/badge/java 17-007396?style=for-the-badge&logo=java&logoColor=white" alt=""> 
@@ -47,15 +43,11 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 ## API 문서
 
-<hr>
-
 - [MOTD API Document](https://documenter.getpostman.com/view/10226658/2sA3kaBdxn)
 
 <br>
 
 ## 주요 기능
-
-<hr>
 
 - 로그인 / 회원가입 - Spring Security를 이용한 JWT 토큰 기반 인증
 - Redis를 이용한 유저 정보 caching
@@ -67,8 +59,6 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 <br>
 
 ## 시작 가이드
-
-<hr>
 
 준비중입니다.
 
