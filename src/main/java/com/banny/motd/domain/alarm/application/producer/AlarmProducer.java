@@ -1,6 +1,5 @@
 package com.banny.motd.domain.alarm.application.producer;
 
-import com.banny.motd.global.helper.SerializeHelper;
 import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
