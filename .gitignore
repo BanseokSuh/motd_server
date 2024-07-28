@@ -342,4 +342,3 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,java,gradle,intellij,intellij+all,intellij+iml
-/README.md
