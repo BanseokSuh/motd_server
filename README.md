@@ -58,6 +58,12 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 <br>
 
+## 프로젝트 구조
+
+- [프로젝트 구조](https://github.com/BanseokSuh/motd/wiki/Project-structure)
+
+<br>
+
 ## 시작 가이드
 
 준비중입니다.
