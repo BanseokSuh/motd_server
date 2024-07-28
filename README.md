@@ -64,6 +64,12 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 <br>
 
+## 트러블슈팅
+
+- [트러블슈팅](https://github.com/BanseokSuh/motd/wiki/%5BTroubleShooting%5D-troubleshooting-1)
+
+<br>
+
 ## 시작 가이드
 
 준비중입니다.
