@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.event.ApplicationEventsTestExecutionListener;
 
 import java.util.Optional;
 
@@ -91,4 +90,20 @@ class PostServiceTest {
         assertEquals(ResultType.POST_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
+    // TODO: Is it right?
+    @Test
+    @DisplayName("게시글_수정")
+    void post_modify() {
+        // given
+        Long postId = 1L;
+        Long userId = 1L;
+
+        // mock
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
+
+        PostEntity postEntity = mock(PostEntity.class);
+        when(postEntity.getUserId()).thenReturn(userId);
+        when(postRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+        when(postRepository.saveAndFlush(postEntity)).thenReturn(postEntity);
+    }
 }
