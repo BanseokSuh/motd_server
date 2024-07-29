@@ -77,4 +77,18 @@ class PostServiceTest {
         assertDoesNotThrow(() -> postService.getPost(postId));
     }
 
+    @Test
+    @DisplayName("게시글_단건_조회시_게시글이_존재하지_않을_경우")
+    void post_get_not_found() {
+        // given
+        Long postId = 1L;
+
+        // mock
+        when(postRepository.findById(postId)).thenReturn(Optional.empty());
+
+        // when, then
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.getPost(postId));
+        assertEquals(ResultType.POST_NOT_FOUND.getCode(), e.getResult().getCode());
+    }
+
 }
