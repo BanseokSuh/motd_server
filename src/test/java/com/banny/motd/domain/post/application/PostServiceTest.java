@@ -64,4 +64,17 @@ class PostServiceTest {
         assertEquals(ResultType.USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
+    @Test
+    @DisplayName("게시글_단건_조회")
+    void post_get() {
+        // given
+        Long postId = 1L;
+
+        // mock
+        when(postRepository.findById(postId)).thenReturn(Optional.of(mock(PostEntity.class)));
+
+        // when, then
+        assertDoesNotThrow(() -> postService.getPost(postId));
+    }
+
 }
