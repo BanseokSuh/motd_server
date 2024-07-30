@@ -63,8 +63,8 @@ public class UserEntity extends BaseEntity {
         user.setUserName(userName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setUserRole(String.valueOf(userRole));
-        user.setGender(String.valueOf(gender));
+        user.setUserRole(userRole);
+        user.setGender(gender);
 
         return user;
     }
