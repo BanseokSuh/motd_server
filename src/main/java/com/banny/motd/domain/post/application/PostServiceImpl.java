@@ -1,5 +1,6 @@
 package com.banny.motd.domain.post.application;
 
+import com.banny.motd.domain.post.api.dto.request.PostSearchRequest;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.application.repository.PostRepository;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
@@ -9,10 +10,11 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,8 +33,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Post> getPostList(Pageable pageable) {
-        return postRepository.findAll(pageable).map(PostEntity::toDomain);
+    public List<Post> getPostList(PostSearchRequest request) {
+        return postRepository.getPostList(request)
+                .stream()
+                .map(PostEntity::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override

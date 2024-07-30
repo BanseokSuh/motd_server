@@ -1,14 +1,15 @@
 package com.banny.motd.domain.post.application;
 
+import com.banny.motd.domain.post.api.dto.request.PostSearchRequest;
 import com.banny.motd.domain.post.domain.Post;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface PostService {
 
     Post createPost(String title, String content, Long userId);
 
-    Page<Post> getPostList(Pageable pageable);
+    List<Post> getPostList(PostSearchRequest request);
 
     Post getPost(Long postId);
 
