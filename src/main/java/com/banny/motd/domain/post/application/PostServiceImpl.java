@@ -1,5 +1,7 @@
 package com.banny.motd.domain.post.application;
 
+import com.banny.motd.domain.post.domain.PostAuthor;
+import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.application.repository.PostRepository;
@@ -33,16 +35,30 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostList(SearchRequest request) {
+    public List<PostAuthor> getPostList(SearchRequest request) {
+//        List<PostEntity> postAuthorList = postRepository.getPostListCustom(request);
+
         return postRepository.getPostList(request)
                 .stream()
-                .map(PostEntity::toDomain)
-                .collect(Collectors.toList());
+                .map(postEntity -> {
+                    User user = getUserEntityOrException(postEntity.getUserId()).toDomain();
+                    return PostAuthor.builder()
+                            .post(postEntity.toDomain())
+                            .user(user)
+                            .build();
+                })
+                .toList();
     }
 
     @Override
-    public Post getPost(Long postId) {
-        return getPostEntityOrException(postId).toDomain();
+    public PostAuthor getPost(Long postId) {
+        Post post = getPostEntityOrException(postId).toDomain();
+        User user = getUserEntityOrException(post.getUserId()).toDomain();
+
+        return PostAuthor.builder()
+                .post(post)
+                .user(user)
+                .build();
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.banny.motd.domain.post.infrastructure;
 
+import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.domain.user.infrastructure.entity.QUserEntity;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
 import com.banny.motd.domain.post.infrastructure.entity.QPostEntity;
@@ -21,4 +24,16 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .orderBy(QPostEntity.postEntity.id.desc())
                 .fetch();
     }
+
+    @Override
+    public List<PostEntity> getPostListCustom(SearchRequest request) {
+        return jpaQueryFactory.selectFrom(QPostEntity.postEntity)
+                .limit(request.getSize())
+                .offset(request.getOffset())
+                .innerJoin(QUserEntity.userEntity).on(QPostEntity.postEntity.userId.eq(QUserEntity.userEntity.id))
+                .orderBy(QPostEntity.postEntity.id.desc())
+                .fetch();
+    }
+
+
 }

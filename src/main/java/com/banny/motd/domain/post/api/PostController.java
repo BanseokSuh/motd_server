@@ -2,6 +2,8 @@ package com.banny.motd.domain.post.api;
 
 import com.banny.motd.domain.post.api.dto.request.PostCreateRequest;
 import com.banny.motd.domain.post.api.dto.request.PostModifyRequest;
+import com.banny.motd.domain.post.api.dto.response.PostAuthorResponse;
+import com.banny.motd.domain.post.domain.PostAuthor;
 import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
@@ -34,21 +36,21 @@ public class PostController {
     }
 
     @GetMapping
-    public Response<List<PostResponse>> getPostList(SearchRequest request) {
-        List<Post> posts = postService.getPostList(request);
+    public Response<List<PostAuthorResponse>> getPostList(SearchRequest request) {
+        List<PostAuthor> posts = postService.getPostList(request);
 
-        List<PostResponse> postResponses = posts.stream()
-                .map(PostResponse::from)
+        List<PostAuthorResponse> postResponses = posts.stream()
+                .map(PostAuthorResponse::from)
                 .toList();
 
         return Response.success(postResponses);
     }
 
     @GetMapping("/{id}")
-    public Response<PostResponse> getPost(@PathVariable Long id) {
-        Post post = postService.getPost(id);
+    public Response<PostAuthorResponse> getPost(@PathVariable Long id) {
+        PostAuthor post = postService.getPost(id);
 
-        return Response.success(PostResponse.from(post));
+        return Response.success(PostAuthorResponse.from(post));
     }
 
     @PutMapping("/{id}")

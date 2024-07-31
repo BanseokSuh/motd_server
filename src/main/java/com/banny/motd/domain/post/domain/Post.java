@@ -14,7 +14,6 @@ public class Post {
     private String title;
     private String content;
     private Long userId;
-//    private User user;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;

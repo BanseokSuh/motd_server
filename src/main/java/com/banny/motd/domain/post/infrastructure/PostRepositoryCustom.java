@@ -8,4 +8,6 @@ import java.util.List;
 public interface PostRepositoryCustom {
 
     List<PostEntity> getPostList(SearchRequest request);
+
+    List<PostEntity> getPostListCustom(SearchRequest request);
 }
