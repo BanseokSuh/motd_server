@@ -12,4 +12,6 @@ public interface UserService {
     User getMyInfo(Long id);
 
     User loadUserByLoginId(String loginId);
+
+    User getUserById(Long id);
 }
