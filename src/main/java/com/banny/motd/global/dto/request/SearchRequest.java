@@ -1,11 +1,11 @@
-package com.banny.motd.domain.post.api.dto.request;
+package com.banny.motd.global.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class PostSearchRequest {
+public class SearchRequest {
 
     private static final int MAX_SIZE = 2000;
 

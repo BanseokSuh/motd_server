@@ -1,6 +1,6 @@
 package com.banny.motd.domain.post.application;
 
-import com.banny.motd.domain.post.api.dto.request.PostSearchRequest;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.application.repository.PostRepository;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostList(PostSearchRequest request) {
+    public List<Post> getPostList(SearchRequest request) {
         return postRepository.getPostList(request)
                 .stream()
                 .map(PostEntity::toDomain)
@@ -42,9 +42,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPost(Long postId) {
-        PostEntity postEntity = getPostEntityOrException(postId);
-
-        return postEntity.toDomain();
+        return getPostEntityOrException(postId).toDomain();
     }
 
     @Override

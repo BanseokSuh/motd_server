@@ -3,7 +3,7 @@ package com.banny.motd.domain.comment.api;
 import com.banny.motd.domain.comment.api.dto.request.CommentCreateRequest;
 import com.banny.motd.domain.comment.application.CommentService;
 import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.global.response.Response;
+import com.banny.motd.global.dto.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;

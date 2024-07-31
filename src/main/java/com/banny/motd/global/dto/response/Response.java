@@ -1,4 +1,4 @@
-package com.banny.motd.global.response;
+package com.banny.motd.global.dto.response;
 
 import com.banny.motd.global.exception.ResultType;
 import lombok.Getter;

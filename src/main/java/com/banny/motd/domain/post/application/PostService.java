@@ -1,6 +1,6 @@
 package com.banny.motd.domain.post.application;
 
-import com.banny.motd.domain.post.api.dto.request.PostSearchRequest;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
 
 import java.util.List;
@@ -9,7 +9,7 @@ public interface PostService {
 
     Post createPost(String title, String content, Long userId);
 
-    List<Post> getPostList(PostSearchRequest request);
+    List<Post> getPostList(SearchRequest request);
 
     Post getPost(Long postId);
 

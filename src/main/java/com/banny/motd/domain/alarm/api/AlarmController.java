@@ -5,7 +5,7 @@ import com.banny.motd.domain.alarm.domain.Alarm;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
-import com.banny.motd.global.response.Response;
+import com.banny.motd.global.dto.response.Response;
 import com.banny.motd.global.util.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

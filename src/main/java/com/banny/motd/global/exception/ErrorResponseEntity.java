@@ -1,6 +1,6 @@
 package com.banny.motd.global.exception;
 
-import com.banny.motd.global.response.ResultObject;
+import com.banny.motd.global.dto.response.ResultObject;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;

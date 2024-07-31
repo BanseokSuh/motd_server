@@ -2,7 +2,7 @@ package com.banny.motd.domain.reaction.api;
 
 import com.banny.motd.domain.reaction.application.ReactionService;
 import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.global.response.Response;
+import com.banny.motd.global.dto.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;

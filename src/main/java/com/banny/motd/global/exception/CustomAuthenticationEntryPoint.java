@@ -1,6 +1,6 @@
 package com.banny.motd.global.exception;
 
-import com.banny.motd.global.response.Response;
+import com.banny.motd.global.dto.response.Response;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

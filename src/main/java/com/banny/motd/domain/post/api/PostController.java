@@ -2,13 +2,14 @@ package com.banny.motd.domain.post.api;
 
 import com.banny.motd.domain.post.api.dto.request.PostCreateRequest;
 import com.banny.motd.domain.post.api.dto.request.PostModifyRequest;
-import com.banny.motd.domain.post.api.dto.request.PostSearchRequest;
+import com.banny.motd.domain.user.application.UserService;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.banny.motd.domain.post.api.dto.response.PostResponse;
 import com.banny.motd.domain.post.application.PostService;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.global.response.Response;
+import com.banny.motd.global.dto.response.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @PostMapping
     public Response<PostCreateResponse> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
@@ -32,10 +34,14 @@ public class PostController {
     }
 
     @GetMapping
-    public Response<List<PostResponse>> getPostList(PostSearchRequest request) {
+    public Response<List<PostResponse>> getPostList(SearchRequest request) {
         List<Post> posts = postService.getPostList(request);
 
-        return Response.success(posts.stream().map(PostResponse::from).toList());
+        List<PostResponse> postResponses = posts.stream()
+                .map(PostResponse::from)
+                .toList();
+
+        return Response.success(postResponses);
     }
 
     @GetMapping("/{id}")
