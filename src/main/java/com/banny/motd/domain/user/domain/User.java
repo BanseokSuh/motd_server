@@ -1,5 +1,7 @@
 package com.banny.motd.domain.user.domain;
 
+import com.banny.motd.global.exception.ApplicationException;
+import com.banny.motd.global.exception.ResultType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -27,6 +29,14 @@ public class User implements UserDetails {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
+
+    public void setGenderString(String genderStr) {
+        try {
+            this.gender = Gender.valueOf(genderStr);
+        } catch (Exception e) {
+            throw new ApplicationException(ResultType.INVALID_PARAMETER, "Invalid gender");
+        }
+    }
 
     @JsonIgnore
     @Override
