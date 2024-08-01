@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,18 +35,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostAuthor> getPostList(SearchRequest request) {
-//        List<PostEntity> postAuthorList = postRepository.getPostListCustom(request);
-
-        return postRepository.getPostList(request)
+        return postRepository.getPostListCustom(request)
                 .stream()
-                .map(postEntity -> {
-                    User user = getUserEntityOrException(postEntity.getUserId()).toDomain();
-                    return PostAuthor.builder()
-                            .post(postEntity.toDomain())
-                            .user(user)
-                            .build();
-                })
-                .toList();
+                .map(postEntity -> PostAuthor.builder()
+                        .post(postEntity.toDomain())
+                        .user(getUserEntityOrException(postEntity.getUserId()).toDomain())
+                        .build()).toList();
     }
 
     @Override
