@@ -4,8 +4,10 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
@@ -23,6 +27,7 @@ public class User implements UserDetails {
     private String loginId;
     private String userName;
     private String email;
+    @JsonIgnore
     private String password;
     private Gender gender;
     private UserRole userRole;

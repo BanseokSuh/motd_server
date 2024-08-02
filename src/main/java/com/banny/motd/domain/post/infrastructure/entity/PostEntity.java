@@ -3,11 +3,15 @@ package com.banny.motd.domain.post.infrastructure.entity;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @SQLRestriction("deleted_at IS NULL")
@@ -50,7 +54,6 @@ public class PostEntity extends BaseEntity {
                 .content(content)
                 .userId(userId)
                 .build();
-
     }
 
     public Post toDomain() {

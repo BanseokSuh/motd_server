@@ -4,13 +4,17 @@ import com.banny.motd.domain.comment.domain.Comment;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-@Builder
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"comment\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"comment\"", indexes = {

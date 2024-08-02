@@ -5,11 +5,15 @@ import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @SQLRestriction("deleted_at IS NULL")

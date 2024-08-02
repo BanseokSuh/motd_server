@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         String refreshToken = userTokenManager.generateRefreshToken(user);
 
         // refresh token 저장
+        userTokenManager.saveAccessToken(user.getId(), accessToken);
         userTokenManager.saveRefreshToken(user.getId(), refreshToken);
 
         // 유저 정보 캐시 저장

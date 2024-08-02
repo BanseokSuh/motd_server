@@ -1,13 +1,17 @@
 package com.banny.motd.domain.comment.domain;
 
 import com.banny.motd.global.enums.TargetType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-@Builder
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Comment {
 
     private Long id;

@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reaction {

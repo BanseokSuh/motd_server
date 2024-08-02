@@ -6,11 +6,14 @@ import com.banny.motd.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-@Builder
+
 @Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostResponse {
     private Long id;

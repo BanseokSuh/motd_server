@@ -5,13 +5,18 @@ import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"user\"", uniqueConstraints = {

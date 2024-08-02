@@ -4,6 +4,7 @@ import com.banny.motd.domain.post.domain.PostAuthor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
@@ -16,9 +17,8 @@ public class PostAuthorResponse {
     private Timestamp createdAt;
     private AuthorResponse author;
 
-    @Builder
     @Getter
-    @AllArgsConstructor
+    @Builder
     public static class AuthorResponse {
         private Long id;
         private String loginId;
