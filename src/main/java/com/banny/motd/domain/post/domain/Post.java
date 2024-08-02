@@ -20,6 +20,4 @@ public class Post {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
-
-
 }

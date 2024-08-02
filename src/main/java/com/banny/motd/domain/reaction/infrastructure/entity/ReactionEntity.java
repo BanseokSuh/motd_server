@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"reaction\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"reaction\"", indexes = {

@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Getter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"post\"", indexes = {
@@ -66,3 +66,5 @@ public class PostEntity extends BaseEntity {
                 .build();
     }
 }
+
+

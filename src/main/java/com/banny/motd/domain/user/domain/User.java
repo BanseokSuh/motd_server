@@ -16,8 +16,8 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
-@Builder
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -34,7 +34,6 @@ public class User implements UserDetails {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
-
 
     public void setGenderString(String genderStr) {
         try {
