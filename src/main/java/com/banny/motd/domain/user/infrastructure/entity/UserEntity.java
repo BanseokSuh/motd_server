@@ -5,13 +5,13 @@ import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Builder
 @Getter
-@Setter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"user\"", uniqueConstraints = {
@@ -45,28 +45,26 @@ public class UserEntity extends BaseEntity {
     private UserRole userRole;
 
     public static UserEntity from(User user) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setLoginId(user.getLoginId());
-        userEntity.setUserName(user.getUsername());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPassword(user.getPassword());
-        userEntity.setUserRole(user.getUserRole());
-        userEntity.setGender(user.getGender());
-
-        return userEntity;
+        return UserEntity.builder()
+                .loginId(user.getLoginId())
+                .userName(user.getUsername())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .userRole(user.getUserRole())
+                .gender(user.getGender())
+                .build();
     }
 
     public User toDomain() {
-        User user = new User();
-        user.setId(id);
-        user.setLoginId(loginId);
-        user.setUserName(userName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setUserRole(userRole);
-        user.setGender(gender);
-
-        return user;
+        return User.builder()
+                .id(id)
+                .loginId(loginId)
+                .userName(userName)
+                .email(email)
+                .password(password)
+                .userRole(userRole)
+                .gender(gender)
+                .build();
     }
 }
 

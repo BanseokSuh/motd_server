@@ -4,13 +4,13 @@ import com.banny.motd.domain.comment.domain.Comment;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Builder
 @Getter
-@Setter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"comment\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"comment\"", indexes = {
@@ -37,23 +37,22 @@ public class CommentEntity extends BaseEntity {
     private String comment;
 
     public static CommentEntity of(Long userId, TargetType targetType, Long targetId, String comment) {
-        CommentEntity entity = new CommentEntity();
-        entity.setUserId(userId);
-        entity.setTargetType(targetType);
-        entity.setTargetId(targetId);
-        entity.setComment(comment);
-
-        return entity;
+        return CommentEntity.builder()
+                .userId(userId)
+                .targetType(targetType)
+                .targetId(targetId)
+                .comment(comment)
+                .build();
     }
 
     public Comment toDomain() {
-        Comment commment = new Comment();
-        commment.setId(id);
-        commment.setUserId(userId);
-        commment.setTargetType(targetType);
-        commment.setTargetId(targetId);
-        commment.setComment(comment);
-
-        return commment;
+        return Comment.builder()
+                .id(id)
+                .userId(userId)
+                .targetType(targetType)
+                .targetId(targetId)
+                .comment(comment)
+                .createdAt(getCreatedAt())
+                .build();
     }
 }

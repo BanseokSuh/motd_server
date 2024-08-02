@@ -64,8 +64,7 @@ public class PostServiceImpl implements PostService {
             throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
-        postEntity.setTitle(title);
-        postEntity.setContent(content);
+        postEntity.setTitleAndContent(title, content);
 
         postRepository.saveAndFlush(postEntity);
     }

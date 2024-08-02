@@ -1,15 +1,12 @@
 package com.banny.motd.domain.reaction.domain;
 
 import com.banny.motd.global.enums.TargetType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
+@Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reaction {

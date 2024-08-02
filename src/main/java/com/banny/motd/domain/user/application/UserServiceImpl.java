@@ -2,7 +2,6 @@ package com.banny.motd.domain.user.application;
 
 import com.banny.motd.domain.user.application.repository.UserCacheRepository;
 import com.banny.motd.domain.user.application.repository.UserTokenManager;
-import com.banny.motd.domain.user.domain.Gender;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
@@ -36,13 +35,14 @@ public class UserServiceImpl implements UserService {
         });
 
         // 신규 유저 객체 생성
-        User user = new User();
-        user.setLoginId(loginId);
-        user.setUserName(userName);
-        user.setPassword(encoder.encode(password));
-        user.setEmail(email);
+        User user = User.builder()
+                .loginId(loginId)
+                .userName(userName)
+                .password(encoder.encode(password))
+                .email(email)
+                .userRole(UserRole.USER)
+                .build();
         user.setGenderString(gender);
-        user.setUserRole(UserRole.USER);
 
         // 유저 저장
         return userRepository.save(UserEntity.from(user)).toDomain();

@@ -1,13 +1,12 @@
 package com.banny.motd.domain.post.domain;
 
-import com.banny.motd.domain.user.domain.User;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Timestamp;
 
+@Builder
 @Getter
-@Setter
 public class Post {
 
     private Long id;
@@ -17,4 +16,6 @@ public class Post {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
+
+
 }

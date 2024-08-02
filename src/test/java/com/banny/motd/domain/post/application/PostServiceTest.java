@@ -67,7 +67,7 @@ class PostServiceTest {
     @DisplayName("게시글_단건_조회")
     void post_get() {
         // given
-        Long postId = 1L;
+        Long postId = 6L;
 
         // mock
         when(postRepository.findById(postId)).thenReturn(Optional.of(mock(PostEntity.class)));

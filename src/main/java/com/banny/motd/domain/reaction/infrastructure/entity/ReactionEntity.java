@@ -5,13 +5,13 @@ import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+@Builder
 @Getter
-@Setter
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"reaction\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"reaction\"", indexes = {
@@ -39,26 +39,24 @@ public class ReactionEntity extends BaseEntity {
     private ReactionType reactionType;
 
     public static ReactionEntity of(Long userId, TargetType targetType, Long targetId, ReactionType reactionType) {
-        ReactionEntity entity = new ReactionEntity();
-        entity.setUserId(userId);
-        entity.setTargetType(targetType);
-        entity.setTargetId(targetId);
-        entity.setReactionType(reactionType);
-
-        return entity;
+        return ReactionEntity.builder()
+                .userId(userId)
+                .targetType(targetType)
+                .targetId(targetId)
+                .reactionType(reactionType)
+                .build();
     }
 
     public Reaction toDomain() {
-        Reaction reaction = new Reaction();
-        reaction.setId(id);
-        reaction.setUserId(userId);
-        reaction.setTargetType(targetType);
-        reaction.setTargetId(targetId);
-        reaction.setReactionType(reactionType);
-        reaction.setCreatedAt(getCreatedAt());
-        reaction.setUpdatedAt(getUpdatedAt());
-        reaction.setDeletedAt(getDeletedAt());
-
-        return reaction;
+        return Reaction.builder()
+                .id(id)
+                .userId(userId)
+                .targetType(targetType)
+                .targetId(targetId)
+                .reactionType(reactionType)
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
+                .build();
     }
 }

@@ -6,13 +6,12 @@ import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 public class UserEntityFixture {
 
     public static UserEntity get(String loginId, String userName, String password, String email, String gender) {
-        UserEntity result = new UserEntity();
-        result.setLoginId(loginId);
-        result.setUserName(userName);
-        result.setPassword(password);
-        result.setEmail(email);
-        result.setGender(Gender.valueOf(gender));
-
-        return result;
+        return UserEntity.builder()
+                .loginId(loginId)
+                .userName(userName)
+                .password(password)
+                .email(email)
+                .gender(Gender.valueOf(gender))
+                .build();
     }
 }

@@ -1,35 +1,36 @@
 package com.banny.motd.global.dto.response;
 
 import com.banny.motd.global.exception.ResultType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Response<T> {
 
     private ResultObject result;
     private T data;
 
     public static <T> Response<T> success(T result) {
-        Response<T> response = new Response<>();
-        response.setResult(ResultObject.success());
-        response.setData(result);
-        return response;
+        return Response.<T>builder()
+                .result(ResultObject.success())
+                .data(result)
+                .build();
     }
 
     public static <T> Response<T> success() {
-        Response<T> response = new Response<>();
-        response.setResult(ResultObject.success());
-        return response;
+        return Response.<T>builder()
+                .result(ResultObject.success())
+                .data(null)
+                .build();
     }
 
     public static <T> Response<T> error() {
-        Response<T> response = new Response<>();
-        response.setResult(ResultObject.error());
-        return response;
+        return Response.<T>builder()
+                .result(ResultObject.error())
+                .data(null)
+                .build();
     }
 
     public String toStream() {

@@ -3,12 +3,10 @@ package com.banny.motd.domain.post.domain;
 import com.banny.motd.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 public class PostAuthor {
 
     private Long id;
