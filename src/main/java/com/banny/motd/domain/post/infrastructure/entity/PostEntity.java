@@ -38,13 +38,7 @@ public class PostEntity extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    public void setTitleAndContent(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
     public static PostEntity from(Post post) {
-
         return PostEntity.builder()
                 .id(post.getId())
                 .title(post.getTitle())

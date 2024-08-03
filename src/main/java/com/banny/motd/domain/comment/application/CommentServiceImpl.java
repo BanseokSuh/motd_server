@@ -7,6 +7,7 @@ import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import com.banny.motd.domain.comment.application.repository.CommentRepository;
 import com.banny.motd.domain.comment.infrastructure.entity.CommentEntity;
 import com.banny.motd.domain.post.application.repository.PostRepository;
+import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
 import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.global.enums.TargetType;
@@ -30,11 +31,11 @@ public class CommentServiceImpl implements CommentService {
     public void commentPost(Long postId, Long userId, String comment) {
         checkUserExistById(userId);
 
-        PostEntity postEntity = getPostEntityById(postId);
+        Post post = getPostEntityById(postId);
 
         commentRepository.save(CommentEntity.of(userId, TargetType.POST, postId, comment));
 
-        alarmProducer.send(new AlarmEvent(postEntity.getUser().getId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
+        alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
     }
 
     public void checkUserExistById(Long userId) {
@@ -42,8 +43,9 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
-    public PostEntity getPostEntityById(Long postId) {
+    public Post getPostEntityById(Long postId) {
         return postRepository.findById(postId)
+                .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 }

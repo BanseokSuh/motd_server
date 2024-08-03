@@ -51,7 +51,6 @@ public class UserEntity extends BaseEntity {
     private UserRole userRole;
 
     public static UserEntity from(User user) {
-
         return UserEntity.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())

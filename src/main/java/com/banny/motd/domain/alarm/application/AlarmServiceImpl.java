@@ -7,6 +7,7 @@ import com.banny.motd.domain.alarm.domain.AlarmArgs;
 import com.banny.motd.domain.alarm.domain.AlarmType;
 import com.banny.motd.domain.alarm.infrastructure.entity.AlarmEntity;
 import com.banny.motd.domain.user.application.repository.UserRepository;
+import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
@@ -55,12 +56,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId) {
-        UserEntity receiverUserEntity = getUserEntityById(receiverUserId);
-        UserEntity senderUserEntity = getUserEntityById(alarmArgs.getFromUserId());
+        User receiverUser = getUserById(receiverUserId);
+        User senderUser = getUserById(alarmArgs.getFromUserId());
 
-        String message = getAlarmMessage(alarmType, alarmArgs, senderUserEntity);
+        String message = getAlarmMessage(alarmType, alarmArgs, senderUser);
 
-        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(receiverUserEntity.getId(), alarmType, alarmArgs));
+        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(receiverUser.getId(), alarmType, alarmArgs));
 
         emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
             try {
@@ -72,20 +73,21 @@ public class AlarmServiceImpl implements AlarmService {
         }, () -> log.info("No emitter found"));
     }
 
-    private UserEntity getUserEntityById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                () -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", userId)));
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .map(UserEntity::toDomain)
+                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User not found: %d", userId)));
     }
 
-    private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, UserEntity senderUserEntity) {
+    private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, User senderUser) {
         StringBuilder message = new StringBuilder();
 
         if (alarmType == AlarmType.COMMENT) {
-            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUserEntity.getUserName()));
+            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUser.getUsername()));
         } else if (alarmType == AlarmType.LIKE) {
-            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUserEntity.getUserName()));
+            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUser.getUsername()));
         } else {
-            message.append(String.format("New alarm %s", senderUserEntity.getUserName()));
+            message.append(String.format("New alarm %s", senderUser.getUsername()));
         }
 
         return message.toString();

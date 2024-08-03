@@ -81,16 +81,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getMyInfo(Long id) {
         return userCacheRepository.getUser(id).orElseGet(() ->
-                userRepository.findById(id).map(UserEntity::toDomain).orElseThrow(() ->
-                        new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)))
+                userRepository.findById(id)
+                        .map(UserEntity::toDomain)
+                        .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)))
                 );
     }
 
     @Override
     public User loadUserByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)))
-                .toDomain();
+                .map(UserEntity::toDomain)
+                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));
     }
 
     @Override

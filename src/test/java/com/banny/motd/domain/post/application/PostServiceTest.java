@@ -78,6 +78,7 @@ class PostServiceTest {
 
         // mock
         PostEntity postEntity = mock(PostEntity.class);
+        UserEntity userEntity = mock(UserEntity.class);
         Post post = mock(Post.class);
         User author = mock(User.class);
 
@@ -85,7 +86,8 @@ class PostServiceTest {
         when(postEntity.toDomain()).thenReturn(post);
         when(post.getAuthor()).thenReturn(author);
         when(author.getId()).thenReturn(userId);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+        when(userEntity.toDomain()).thenReturn(author);
 
         // when, then
         assertDoesNotThrow(() -> postService.getPost(postId));

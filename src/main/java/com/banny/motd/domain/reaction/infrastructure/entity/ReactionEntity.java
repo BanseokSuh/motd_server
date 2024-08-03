@@ -43,6 +43,16 @@ public class ReactionEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
 
+    public static ReactionEntity from(Reaction reaction) {
+        return ReactionEntity.builder()
+                .id(reaction.getId())
+                .userId(reaction.getUserId())
+                .targetType(reaction.getTargetType())
+                .targetId(reaction.getTargetId())
+                .reactionType(reaction.getReactionType())
+                .build();
+    }
+
     public static ReactionEntity of(Long userId, TargetType targetType, Long targetId, ReactionType reactionType) {
         return ReactionEntity.builder()
                 .userId(userId)
