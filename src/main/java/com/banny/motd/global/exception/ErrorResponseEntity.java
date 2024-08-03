@@ -2,12 +2,12 @@ package com.banny.motd.global.exception;
 
 import com.banny.motd.global.dto.response.ResultObject;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@Getter
 @Builder
-@Data
 public class ErrorResponseEntity<T> {
 
     private ResultObject result;
