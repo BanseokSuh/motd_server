@@ -30,16 +30,16 @@ public class UserEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "login_id", nullable = false, unique = true, columnDefinition = "VARCHAR(50)")
+    @Column(name = "login_id", nullable = false, unique = true, columnDefinition = "VARCHAR(100)")
     private String loginId;
 
-    @Column(name = "user_name", nullable = false, columnDefinition = "VARCHAR(50)")
+    @Column(name = "user_name", nullable = false, columnDefinition = "VARCHAR(100)")
     private String userName;
 
     @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(50)")
     private String email;
 
-    @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(20)")
+    @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(100)")
     private String password;
 
     @Column(name = "gender", nullable = false, columnDefinition = "VARCHAR(10)")

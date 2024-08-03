@@ -4,7 +4,7 @@ import com.banny.motd.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 public class PostAuthor {
@@ -13,9 +13,9 @@ public class PostAuthor {
     private String title;
     private String content;
     private User author;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Timestamp deletedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 
     @Builder
     public PostAuthor(Post post, User user) {

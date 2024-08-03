@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
@@ -12,21 +12,21 @@ import java.sql.Timestamp;
 public abstract class BaseEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
 
     @PrePersist
     void createdAt() {
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     void updatedAt() {
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = LocalDateTime.now();
     }
 }

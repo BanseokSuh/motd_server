@@ -1,14 +1,12 @@
 package com.banny.motd.domain.post.api.dto.response;
 
 import com.banny.motd.domain.post.domain.Post;
-import com.banny.motd.domain.user.api.dto.response.UserResponse;
-import com.banny.motd.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -19,7 +17,7 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private Long writerUserId;
 
     public static PostResponse from(Post post) {
