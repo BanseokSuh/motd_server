@@ -1,10 +1,10 @@
 package com.banny.motd.domain.reaction.application.repository;
 
-import com.banny.motd.domain.reaction.domain.ReactionType;
+import com.banny.motd.domain.reaction.infrastructure.ReactionRepositoryCustom;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
-import com.banny.motd.global.enums.TargetType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ReactionRepository extends JpaRepository<ReactionEntity, Long> {
-    ReactionEntity findByUserIdAndTargetTypeAndTargetIdAndReactionType(Long userId, TargetType targetType, Long targetId, ReactionType reactionType);
+@Repository
+public interface ReactionRepository extends JpaRepository<ReactionEntity, Long>, ReactionRepositoryCustom {
 }

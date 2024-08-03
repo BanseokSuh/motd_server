@@ -2,6 +2,7 @@ package com.banny.motd.domain.reaction.infrastructure.entity;
 
 import com.banny.motd.domain.reaction.domain.Reaction;
 import com.banny.motd.domain.reaction.domain.ReactionType;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
@@ -29,8 +30,9 @@ public class ReactionEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Column(name = "target_type", nullable = false, columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
@@ -46,16 +48,16 @@ public class ReactionEntity extends BaseEntity {
     public static ReactionEntity from(Reaction reaction) {
         return ReactionEntity.builder()
                 .id(reaction.getId())
-                .userId(reaction.getUserId())
+                .user(UserEntity.from(reaction.getAuthor()))
                 .targetType(reaction.getTargetType())
                 .targetId(reaction.getTargetId())
                 .reactionType(reaction.getReactionType())
                 .build();
     }
 
-    public static ReactionEntity of(Long userId, TargetType targetType, Long targetId, ReactionType reactionType) {
+    public static ReactionEntity of(UserEntity userEntity, TargetType targetType, Long targetId, ReactionType reactionType) {
         return ReactionEntity.builder()
-                .userId(userId)
+                .user(userEntity)
                 .targetType(targetType)
                 .targetId(targetId)
                 .reactionType(reactionType)
@@ -65,7 +67,7 @@ public class ReactionEntity extends BaseEntity {
     public Reaction toDomain() {
         return Reaction.builder()
                 .id(id)
-                .userId(userId)
+                .author(user.toDomain())
                 .targetType(targetType)
                 .targetId(targetId)
                 .reactionType(reactionType)

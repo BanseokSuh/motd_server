@@ -2,10 +2,10 @@ package com.banny.motd.domain.post.api;
 
 import com.banny.motd.domain.post.api.dto.request.PostCreateRequest;
 import com.banny.motd.domain.post.api.dto.request.PostModifyRequest;
-import com.banny.motd.domain.post.api.dto.response.PostAuthorCommentResponse;
-import com.banny.motd.domain.post.api.dto.response.PostAuthorResponse;
-import com.banny.motd.domain.post.domain.PostAuthor;
-import com.banny.motd.domain.post.domain.PostAuthorComment;
+import com.banny.motd.domain.post.api.dto.response.PostDetailResponse;
+import com.banny.motd.domain.post.api.dto.response.PostListResponse;
+import com.banny.motd.domain.post.domain.PostList;
+import com.banny.motd.domain.post.domain.PostDetail;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.banny.motd.domain.post.application.PostService;
@@ -35,21 +35,21 @@ public class PostController {
     }
 
     @GetMapping
-    public Response<List<PostAuthorResponse>> getPostList(SearchRequest request) {
-        List<PostAuthor> posts = postService.getPostList(request);
+    public Response<List<PostListResponse>> getPostList(SearchRequest request) {
+        List<PostList> posts = postService.getPostList(request);
 
-        List<PostAuthorResponse> postResponses = posts.stream()
-                .map(PostAuthorResponse::from)
+        List<PostListResponse> postResponses = posts.stream()
+                .map(PostListResponse::from)
                 .toList();
 
         return Response.success(postResponses);
     }
 
     @GetMapping("/{id}")
-    public Response<PostAuthorCommentResponse> getPost(@PathVariable Long id) {
-        PostAuthorComment post = postService.getPost(id);
+    public Response<PostDetailResponse> getPost(@PathVariable Long id) {
+        PostDetail post = postService.getPost(id);
 
-        return Response.success(PostAuthorCommentResponse.from(post));
+        return Response.success(PostDetailResponse.from(post));
     }
 
     @PutMapping("/{id}")

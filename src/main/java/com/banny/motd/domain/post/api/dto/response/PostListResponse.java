@@ -1,6 +1,6 @@
 package com.banny.motd.domain.post.api.dto.response;
 
-import com.banny.motd.domain.post.domain.PostAuthor;
+import com.banny.motd.domain.post.domain.PostList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class PostAuthorResponse {
+public class PostListResponse {
     private Long id;
     private String title;
     private String content;
@@ -24,16 +24,16 @@ public class PostAuthorResponse {
         private String userName;
     }
 
-    public static PostAuthorResponse from(PostAuthor postAuthor) {
-        return new PostAuthorResponse(
-                postAuthor.getId(),
-                postAuthor.getTitle(),
-                postAuthor.getContent(),
-                postAuthor.getCreatedAt(),
+    public static PostListResponse from(PostList postList) {
+        return new PostListResponse(
+                postList.getId(),
+                postList.getTitle(),
+                postList.getContent(),
+                postList.getCreatedAt(),
                 AuthorResponse.builder()
-                        .id(postAuthor.getAuthor().getId())
-                        .loginId(postAuthor.getAuthor().getLoginId())
-                        .userName(postAuthor.getAuthor().getUsername())
+                        .id(postList.getAuthor().getId())
+                        .loginId(postList.getAuthor().getLoginId())
+                        .userName(postList.getAuthor().getUsername())
                         .build()
         );
     }

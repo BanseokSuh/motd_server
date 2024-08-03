@@ -2,8 +2,10 @@ package com.banny.motd.domain.post.application;
 
 import com.banny.motd.domain.comment.application.CommentService;
 import com.banny.motd.domain.comment.domain.Comment;
-import com.banny.motd.domain.post.domain.PostAuthor;
-import com.banny.motd.domain.post.domain.PostAuthorComment;
+import com.banny.motd.domain.post.domain.PostList;
+import com.banny.motd.domain.post.domain.PostDetail;
+import com.banny.motd.domain.reaction.application.ReactionService;
+import com.banny.motd.domain.reaction.domain.Reaction;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
@@ -27,6 +29,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final ReactionService reactionService;
     private final CommentService commentService;
 
     @Override
@@ -38,26 +41,28 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostAuthor> getPostList(SearchRequest request) {
+    public List<PostList> getPostList(SearchRequest request) {
         return postRepository.getPostListCustom(request)
                 .stream()
-                .map(postEntity -> PostAuthor.builder()
+                .map(postEntity -> PostList.builder()
                         .post(postEntity.toDomain())
                         .user(postEntity.getUser().toDomain())
                         .build()).toList();
     }
 
     @Override
-    public PostAuthorComment getPost(Long postId) {
+    public PostDetail getPost(Long postId) {
         Post post = getPostOrException(postId);
         User user = getUserOrException(post.getAuthor().getId());
 
+        List<Reaction> listList = reactionService.getLikeListByPostId(postId);
         List<Comment> commentList = commentService.getCommentListByPostId(postId);
 
-        return PostAuthorComment.builder()
+        return PostDetail.builder()
                 .post(post)
                 .user(user)
                 .commentList(commentList)
+                .likeList(listList)
                 .build();
     }
 

@@ -12,6 +12,8 @@ import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.domain.reaction.application.repository.ReactionRepository;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
 import com.banny.motd.domain.user.application.repository.UserRepository;
+import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
@@ -19,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -33,36 +37,45 @@ public class ReactionServiceImpl implements ReactionService {
     @Override
     @Transactional
     public void likePost(Long postId, Long userId) {
-        checkUserExistById(userId);
+        User user = getUserByIdOrException(userId);
+        Post post = getPostByIdOrException(postId);
 
-        Reaction reaction = getReaction(userId, postId);
-
-        Post post = getPostById(postId);
+        Reaction like = getUserPostLike(userId, postId);
 
         /*
          * 기존 좋아요가 없으면 좋아요 추가
          * 기존 좋아요가 있으면 좋아요 삭제
          */
-        if (reaction == null) {
-            reactionRepository.save(ReactionEntity.of(userId, TargetType.POST, postId, ReactionType.LIKE));
+        if (like == null) {
+            reactionRepository.save(ReactionEntity.of(UserEntity.from(user), TargetType.POST, postId, ReactionType.LIKE));
             alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
         } else {
-            reactionRepository.delete(ReactionEntity.from(reaction));
+            reactionRepository.delete(ReactionEntity.from(like));
         }
     }
 
-    public void checkUserExistById(Long userId) {
-        userRepository.findById(userId)
+    @Override
+    public List<Reaction> getLikeListByPostId(Long postId) {
+        return reactionRepository.findListByTargetIdAndTargetTypeAndReactionType(postId, TargetType.POST, ReactionType.LIKE)
+                .stream()
+                .map(ReactionEntity::toDomain)
+                .toList();
+    }
+
+    public User getUserByIdOrException(Long userId) {
+        return userRepository.findById(userId)
+                .map(UserEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
-    public Post getPostById(Long postId) {
+    public Post getPostByIdOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 
-    private Reaction getReaction(Long userId, Long targetId) {
-        return reactionRepository.findByUserIdAndTargetTypeAndTargetIdAndReactionType(userId, TargetType.POST, targetId, ReactionType.LIKE).toDomain();
+    private Reaction getUserPostLike(Long userId, Long targetId) {
+        ReactionEntity reactionEntity = reactionRepository.findByUserIdAndTargetTypeAndTargetIdAndReactionType(userId, TargetType.POST, targetId, ReactionType.LIKE);
+        return reactionEntity != null ? reactionEntity.toDomain() : null;
     }
 }

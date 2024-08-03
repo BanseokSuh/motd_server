@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PostAuthor {
+public class PostList {
 
     private Long id;
     private String title;
@@ -18,7 +18,7 @@ public class PostAuthor {
     private LocalDateTime deletedAt;
 
     @Builder
-    public PostAuthor(Post post, User user) {
+    public PostList(Post post, User user) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
