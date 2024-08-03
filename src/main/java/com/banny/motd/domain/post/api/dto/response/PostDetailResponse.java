@@ -17,7 +17,9 @@ public class PostDetailResponse {
     private LocalDateTime createdAt;
     private AuthorResponse author;
     private List<LikeResponse> likeList;
+    private Integer likeCount;
     private List<CommentResponse> commentList;
+    private Integer commentCount;
 
     @Getter
     @Builder
@@ -66,6 +68,7 @@ public class PostDetailResponse {
                                         .build())
                                 .build())
                         .toList(),
+                postDetail.getLikeList().size(), // 좋아요 개수
                 postDetail.getCommentList().stream() // 댓글 목록
                         .map(comment -> CommentResponse.builder() // 개별 댓글 인스턴스
                                 .id(comment.getId()) // 식별값
@@ -77,7 +80,8 @@ public class PostDetailResponse {
                                         .userName(comment.getAuthor().getUsername()) // 댓글 작성자 이름
                                         .build())
                                 .build())
-                        .toList()
+                        .toList(),
+                postDetail.getCommentList().size() // 댓글 개수
         );
     }
 }

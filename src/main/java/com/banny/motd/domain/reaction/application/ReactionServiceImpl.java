@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -75,7 +76,8 @@ public class ReactionServiceImpl implements ReactionService {
     }
 
     private Reaction getUserPostLike(Long userId, Long targetId) {
-        ReactionEntity reactionEntity = reactionRepository.findByUserIdAndTargetTypeAndTargetIdAndReactionType(userId, TargetType.POST, targetId, ReactionType.LIKE);
-        return reactionEntity != null ? reactionEntity.toDomain() : null;
+        return Optional.ofNullable(reactionRepository.findByUserIdAndTargetTypeAndTargetIdAndReactionType(userId, TargetType.POST, targetId, ReactionType.LIKE))
+                .map(ReactionEntity::toDomain)
+                .orElse(null);
     }
 }
