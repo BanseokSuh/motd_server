@@ -42,10 +42,11 @@ public class AlarmServiceImpl implements AlarmService {
 
         emitterRepository.save(userId, sseEmitter);
 
-        sseEmitter.onCompletion(() -> emitterRepository.delete(userId));
-        sseEmitter.onTimeout(() -> emitterRepository.delete(userId));
+        sseEmitter.onCompletion(() -> emitterRepository.delete(userId)); // 연결 종료 시 삭제
+        sseEmitter.onTimeout(() -> emitterRepository.delete(userId)); // 타임아웃 시 삭제
 
         try {
+            // 연결 완료 메시지 전송
             sseEmitter.send(SseEmitter.event().id("id").name(ALARM_NAME).data("connect completed"));
         } catch (IOException e) {
             throw new ApplicationException(ResultType.ALARM_CONNECT_ERROR);

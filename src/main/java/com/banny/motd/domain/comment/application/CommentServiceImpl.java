@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     public void commentPost(Long postId, Long userId, String comment) {
         checkUserExistById(userId);
 
-        Post post = getPostEntityById(postId);
+        Post post = getPostById(postId);
 
         commentRepository.save(CommentEntity.of(userId, TargetType.POST, postId, comment));
 
@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
-    public Post getPostEntityById(Long postId) {
+    public Post getPostById(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));

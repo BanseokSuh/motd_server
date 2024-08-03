@@ -41,6 +41,12 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 <br>
 
+## Architecture
+
+- [MOTD Architecture](https://github.com/BanseokSuh/motd/wiki)
+
+<br>
+
 ## API 문서
 
 - [MOTD API Document](https://documenter.getpostman.com/view/10226658/2sA3kaBdxn)
@@ -49,12 +55,13 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 ## 주요 기능
 
-- 로그인 / 회원가입 - Spring Security를 이용한 JWT 토큰 기반 인증
+- 로그인/회원가입 - Spring Security를 이용한 JWT 토큰 기반 인증
 - Redis를 이용한 유저 정보 caching
+- Redis를 Session storage로 사용하여 세션 관리
 - 게시글 조회/작성/수정/삭제
 - 댓글 작성
 - 좋아요 기능
-- Kafka/SSE를 이용한 실시간 알림
+- SSE/Kafka를 이용한 실시간 알림
 
 <br>
 
