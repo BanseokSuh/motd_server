@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(CommentEntity.of(userId, TargetType.POST, postId, comment));
 
-        alarmProducer.send(new AlarmEvent(postEntity.getUserId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
+        alarmProducer.send(new AlarmEvent(postEntity.getUser().getId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
     }
 
     public void checkUserExistById(Long userId) {

@@ -26,7 +26,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
-                .writerUserId(post.getUserId())
+                .writerUserId(post.getAuthor().getId())
                 .build();
     }
 }

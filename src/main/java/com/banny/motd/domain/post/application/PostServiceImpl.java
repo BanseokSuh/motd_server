@@ -28,9 +28,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post createPost(String title, String content, Long userId) {
-        getUserEntityOrException(userId);
+        User user = getUserOrException(userId);
 
-        return postRepository.save(PostEntity.of(title, content, userId)).toDomain();
+        return postRepository.save(PostEntity.of(title, content, UserEntity.from(user))).toDomain();
     }
 
     @Override
@@ -39,14 +39,14 @@ public class PostServiceImpl implements PostService {
                 .stream()
                 .map(postEntity -> PostAuthor.builder()
                         .post(postEntity.toDomain())
-                        .user(getUserEntityOrException(postEntity.getUserId()).toDomain())
+                        .user(postEntity.getUser().toDomain())
                         .build()).toList();
     }
 
     @Override
     public PostAuthor getPost(Long postId) {
-        Post post = getPostEntityOrException(postId).toDomain();
-        User user = getUserEntityOrException(post.getUserId()).toDomain();
+        Post post = getPostOrException(postId);
+        User user = getUserOrException(post.getAuthor().getId());
 
         return PostAuthor.builder()
                 .post(post)
@@ -57,38 +57,40 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void modifyPost(Long postId, String title, String content, Long userId) {
-        UserEntity userEntity = getUserEntityOrException(userId);
-        PostEntity postEntity = getPostEntityOrException(postId);
+        User user = getUserOrException(userId);
+        Post post = getPostOrException(postId);
 
-        if (!postEntity.getUserId().equals(userEntity.getId())) {
+        if (!post.isAuthor(user.getId())) {
             throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
-        postEntity.setTitleAndContent(title, content);
+        post.setTitleAndContent(title, content);
 
-        postRepository.saveAndFlush(postEntity);
+        postRepository.saveAndFlush(PostEntity.from(post));
     }
 
     @Override
     @Transactional
     public void deletePost(Long postId, Long userId) {
-        UserEntity userEntity = getUserEntityOrException(userId);
-        PostEntity postEntity = getPostEntityOrException(postId);
+        User user = getUserOrException(userId);
+        Post post = getPostOrException(postId);
 
-        if (!postEntity.getUserId().equals(userEntity.getId())) {
+        if (!post.getAuthor().getId().equals(user.getId())) {
             throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
-        postRepository.delete(postEntity);
+        postRepository.delete(PostEntity.from(post));
     }
 
-    public UserEntity getUserEntityOrException(Long userId) {
+    public User getUserOrException(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)))
+                .toDomain();
     }
 
-    public PostEntity getPostEntityOrException(Long postId) {
+    public Post getPostOrException(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)))
+                .toDomain();
     }
 }

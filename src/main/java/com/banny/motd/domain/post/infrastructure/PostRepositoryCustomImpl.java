@@ -28,7 +28,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         return jpaQueryFactory.selectFrom(QPostEntity.postEntity)
                 .limit(request.getSize())
                 .offset(request.getOffset())
-                .innerJoin(QUserEntity.userEntity).on(QPostEntity.postEntity.userId.eq(QUserEntity.userEntity.id))
+                .innerJoin(QUserEntity.userEntity).on(QPostEntity.postEntity.user.id.eq(QUserEntity.userEntity.id))
                 .orderBy(QPostEntity.postEntity.id.desc())
                 .fetch();
     }

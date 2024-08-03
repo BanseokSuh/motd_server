@@ -7,7 +7,6 @@ import com.banny.motd.domain.alarm.domain.event.AlarmEvent;
 import com.banny.motd.domain.post.application.repository.PostRepository;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
-import com.banny.motd.domain.reaction.domain.Reaction;
 import com.banny.motd.domain.reaction.domain.ReactionType;
 import com.banny.motd.domain.reaction.application.repository.ReactionRepository;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
@@ -47,7 +46,7 @@ public class ReactionServiceImpl implements ReactionService {
          */
         if (reactionEntity == null) {
             reactionRepository.save(ReactionEntity.of(userId, TargetType.POST, postId, ReactionType.LIKE));
-            alarmProducer.send(new AlarmEvent(post.getUserId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
+            alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
         } else {
             reactionRepository.delete(reactionEntity);
         }

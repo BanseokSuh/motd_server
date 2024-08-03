@@ -1,6 +1,7 @@
 package com.banny.motd.domain.post.infrastructure.entity;
 
 import com.banny.motd.domain.post.domain.Post;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,9 @@ public class PostEntity extends BaseEntity {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     public void setTitleAndContent(String title, String content) {
         this.title = title;
@@ -42,18 +44,20 @@ public class PostEntity extends BaseEntity {
     }
 
     public static PostEntity from(Post post) {
+
         return PostEntity.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .userId(post.getUserId())
+                .user(UserEntity.from(post.getAuthor()))
                 .build();
     }
 
-    public static PostEntity of(String title, String content, Long userId) {
+    public static PostEntity of(String title, String content, UserEntity userEntity) {
         return PostEntity.builder()
                 .title(title)
                 .content(content)
-                .userId(userId)
+                .user(userEntity)
                 .build();
     }
 
@@ -62,7 +66,7 @@ public class PostEntity extends BaseEntity {
                 .id(id)
                 .title(title)
                 .content(content)
-                .userId(userId)
+                .author(user.toDomain())
                 .createdAt(getCreatedAt())
                 .build();
     }

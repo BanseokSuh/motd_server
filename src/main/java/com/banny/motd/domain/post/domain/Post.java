@@ -1,5 +1,6 @@
 package com.banny.motd.domain.post.domain;
 
+import com.banny.motd.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +17,17 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    private Long userId;
+    private User author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+
+    public boolean isAuthor(Long userId) {
+        return author.getId().equals(userId);
+    }
+
+    public void setTitleAndContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

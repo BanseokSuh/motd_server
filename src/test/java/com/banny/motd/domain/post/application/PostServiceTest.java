@@ -1,8 +1,10 @@
 package com.banny.motd.domain.post.application;
 
 import com.banny.motd.domain.post.application.repository.PostRepository;
+import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
 import com.banny.motd.domain.user.application.repository.UserRepository;
+import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
@@ -40,7 +42,11 @@ class PostServiceTest {
         Long userId = 1L;
 
         // mock
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
+        UserEntity userEntity = mock(UserEntity.class);
+        User author = mock(User.class);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+        when(userEntity.toDomain()).thenReturn(author);
         when(postRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         // when, then
@@ -68,9 +74,18 @@ class PostServiceTest {
     void post_get() {
         // given
         Long postId = 6L;
+        Long userId = 1L;
 
         // mock
-        when(postRepository.findById(postId)).thenReturn(Optional.of(mock(PostEntity.class)));
+        PostEntity postEntity = mock(PostEntity.class);
+        Post post = mock(Post.class);
+        User author = mock(User.class);
+
+        when(postRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+        when(postEntity.toDomain()).thenReturn(post);
+        when(post.getAuthor()).thenReturn(author);
+        when(author.getId()).thenReturn(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
 
         // when, then
         assertDoesNotThrow(() -> postService.getPost(postId));
@@ -99,11 +114,15 @@ class PostServiceTest {
         Long userId = 1L;
 
         // mock
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
-
         PostEntity postEntity = mock(PostEntity.class);
-        when(postEntity.getUserId()).thenReturn(userId);
+        Post post = mock(Post.class);
+        User author = mock(User.class);
+
         when(postRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+        when(postEntity.toDomain()).thenReturn(post);
+        when(post.getAuthor()).thenReturn(author);
+        when(author.getId()).thenReturn(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
         when(postRepository.saveAndFlush(postEntity)).thenReturn(postEntity);
     }
 }
