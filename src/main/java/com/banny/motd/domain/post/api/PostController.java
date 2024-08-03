@@ -2,9 +2,10 @@ package com.banny.motd.domain.post.api;
 
 import com.banny.motd.domain.post.api.dto.request.PostCreateRequest;
 import com.banny.motd.domain.post.api.dto.request.PostModifyRequest;
+import com.banny.motd.domain.post.api.dto.response.PostAuthorCommentResponse;
 import com.banny.motd.domain.post.api.dto.response.PostAuthorResponse;
 import com.banny.motd.domain.post.domain.PostAuthor;
-import com.banny.motd.domain.user.application.UserService;
+import com.banny.motd.domain.post.domain.PostAuthorComment;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.banny.motd.domain.post.application.PostService;
@@ -24,7 +25,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final UserService userService;
 
     @PostMapping
     public Response<PostCreateResponse> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
@@ -46,10 +46,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public Response<PostAuthorResponse> getPost(@PathVariable Long id) {
-        PostAuthor post = postService.getPost(id);
+    public Response<PostAuthorCommentResponse> getPost(@PathVariable Long id) {
+        PostAuthorComment post = postService.getPost(id);
 
-        return Response.success(PostAuthorResponse.from(post));
+        return Response.success(PostAuthorCommentResponse.from(post));
     }
 
     @PutMapping("/{id}")

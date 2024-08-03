@@ -1,6 +1,7 @@
 package com.banny.motd.domain.post.application;
 
 import com.banny.motd.domain.post.domain.PostAuthor;
+import com.banny.motd.domain.post.domain.PostAuthorComment;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
 
@@ -12,7 +13,7 @@ public interface PostService {
 
     List<PostAuthor> getPostList(SearchRequest request);
 
-    PostAuthor getPost(Long postId);
+    PostAuthorComment getPost(Long postId);
 
     void modifyPost(Long postId, String title, String content, Long userId);
 

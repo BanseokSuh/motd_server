@@ -1,6 +1,9 @@
 package com.banny.motd.domain.post.application;
 
+import com.banny.motd.domain.comment.application.CommentService;
+import com.banny.motd.domain.comment.domain.Comment;
 import com.banny.motd.domain.post.domain.PostAuthor;
+import com.banny.motd.domain.post.domain.PostAuthorComment;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.domain.Post;
@@ -24,6 +27,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
     @Override
     @Transactional
@@ -44,13 +48,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostAuthor getPost(Long postId) {
+    public PostAuthorComment getPost(Long postId) {
         Post post = getPostOrException(postId);
         User user = getUserOrException(post.getAuthor().getId());
 
-        return PostAuthor.builder()
+        List<Comment> commentList = commentService.getCommentListByPostId(postId);
+
+        return PostAuthorComment.builder()
                 .post(post)
                 .user(user)
+                .commentList(commentList)
                 .build();
     }
 

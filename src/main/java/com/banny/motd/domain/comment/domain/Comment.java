@@ -1,5 +1,6 @@
 package com.banny.motd.domain.comment.domain;
 
+import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     private Long id;
-    private Long userId;
+    private User author;
     private TargetType targetType;
     private Long targetId;
     private String comment;
