@@ -30,17 +30,18 @@ public class AlarmEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
     private Long userId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "alarm_type", nullable = false)
+    @Column(name = "alarm_type", nullable = false, columnDefinition = "VARCHAR(20)")
     private AlarmType alarmType;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "alarm_args", columnDefinition = "jsonb", nullable = false)
+    @Column(name = "alarm_args", nullable = false, columnDefinition = "jsonb")
     private AlarmArgs alarmArgs;
 
     public static AlarmEntity of(Long userId, AlarmType alarmType, AlarmArgs alarmArgs) {

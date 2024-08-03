@@ -27,25 +27,26 @@ public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "login_id", nullable = false, unique = true)
+    @Column(name = "login_id", nullable = false, unique = true, columnDefinition = "VARCHAR(50)")
     private String loginId;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, columnDefinition = "VARCHAR(50)")
     private String userName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(50)")
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(20)")
     private String password;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "userRole", nullable = false)
+    @Column(name = "userRole", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

@@ -26,19 +26,20 @@ public class ReactionEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
     private Long userId;
 
-    @Column(name = "target_type", nullable = false)
+    @Column(name = "target_type", nullable = false, columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
     private TargetType targetType;
 
-    @Column(name = "target_id", nullable = false)
+    @Column(name = "target_id", nullable = false, columnDefinition = "BIGINT")
     private Long targetId;
 
-    @Column(name = "reaction_type", nullable = false)
+    @Column(name = "reaction_type", nullable = false,   columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
 

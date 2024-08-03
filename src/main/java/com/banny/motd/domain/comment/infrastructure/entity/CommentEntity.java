@@ -25,19 +25,20 @@ public class CommentEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
     private Long userId;
 
-    @Column(name = "target_type", nullable = false)
+    @Column(name = "target_type", nullable = false, columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
     private TargetType targetType;
 
-    @Column(name = "target_id", nullable = false)
+    @Column(name = "target_id", nullable = false, columnDefinition = "BIGINT")
     private Long targetId;
 
-    @Column(name = "comment", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "comment", nullable = false, columnDefinition = "TEXT")
     private String comment;
 
     public static CommentEntity of(Long userId, TargetType targetType, Long targetId, String comment) {
