@@ -27,8 +27,7 @@ public class User implements UserDetails {
     private String loginId;
     private String userName;
     private String email;
-    @JsonIgnore
-    private String password;
+    @JsonIgnore private String password;
     private Gender gender;
     private UserRole userRole;
     private Timestamp createdAt;

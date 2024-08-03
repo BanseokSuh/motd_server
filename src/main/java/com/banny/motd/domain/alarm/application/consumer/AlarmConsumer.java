@@ -25,14 +25,5 @@ public class AlarmConsumer {
         } catch (Exception e) {
             log.error("Error deserializing message: {}", e.getMessage());
         }
-//        try {
-//            AlarmEvent event = SerializeHelper.deserialize(message, AlarmEvent.class);
-//
-//            alarmService.send(event.getAlarmType(), event.getAlarmArgs(), event.getReceiverUserId());
-//
-//            ack.acknowledge();
-//        } catch (Exception e) {
-//            log.error("Error deserializing message: {}", e.getMessage());
-//        }
     }
 }

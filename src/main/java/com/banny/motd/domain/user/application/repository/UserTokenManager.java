@@ -68,6 +68,12 @@ public class UserTokenManager {
         redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
+    /**
+     * access token을 저장하기 위한 key 조회
+     *
+     * @param userId
+     * @return
+     */
     private String getAccessTokenKey(Long userId) {
         return "A_TOKEN:" + userId;
     }
@@ -80,13 +86,5 @@ public class UserTokenManager {
      */
     private String getRefreshTokenKey(Long userId) {
         return "R_TOKEN:" + userId;
-    }
-
-    public boolean validateAccessToken(String token) {
-        return false;
-    }
-
-    public boolean validateRefreshToken(String token) {
-        return false;
     }
 }

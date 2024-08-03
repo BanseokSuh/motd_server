@@ -1,11 +1,9 @@
 package com.banny.motd.domain.post.infrastructure;
 
-import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.domain.user.infrastructure.entity.QUserEntity;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
-import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
 import com.banny.motd.domain.post.infrastructure.entity.QPostEntity;
+import com.banny.motd.domain.user.infrastructure.entity.QUserEntity;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 

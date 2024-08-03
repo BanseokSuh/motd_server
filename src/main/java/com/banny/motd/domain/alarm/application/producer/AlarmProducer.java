@@ -22,17 +22,4 @@ public class AlarmProducer {
 
         log.info("Send to kafka finished: {}", event);
     }
-
-//    private final KafkaTemplate<Long, String> kafkaTemplate;
-//
-//    @Value("${spring.kafka.topic.alarm}")
-//    private String topic;
-//
-//    public void send(AlarmEvent event) {
-//        String message = SerializeHelper.serialize(event);
-//
-//        kafkaTemplate.send(topic, event.getReceiverUserId(), message);
-//
-//        log.info("Send to kafka finished: {}", message);
-//    }
 }

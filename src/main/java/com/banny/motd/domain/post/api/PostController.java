@@ -7,7 +7,6 @@ import com.banny.motd.domain.post.domain.PostAuthor;
 import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
-import com.banny.motd.domain.post.api.dto.response.PostResponse;
 import com.banny.motd.domain.post.application.PostService;
 import com.banny.motd.domain.post.domain.Post;
 import com.banny.motd.domain.user.domain.User;
