@@ -60,7 +60,7 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 목요일마다 작�
 
 ![Login](https://github.com/user-attachments/assets/db0ef14c-b70c-4f01-9a9f-a7c8328ec8f9)
 
-- [MOTD Architecture](https://github.com/BanseokSuh/motd/wiki)
+- [Architecture 더보기](https://github.com/BanseokSuh/motd/wiki)
 
 <br>
 
