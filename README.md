@@ -54,7 +54,7 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 ### Alarm using Kafka
 
-![Alarm_Kafka](https://github.com/user-attachments/assets/1956a64f-c192-48d2-99bb-74f92c46bb53)
+![Alarm_Kafka](https://github.com/user-attachments/assets/fa17734c-f3d7-45b0-a07a-d5c5f25b5c89)
 
 ### Login
 
