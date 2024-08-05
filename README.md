@@ -56,6 +56,10 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 매주 목요일에 �
 
 ![Alarm_Kafka](https://github.com/user-attachments/assets/1956a64f-c192-48d2-99bb-74f92c46bb53)
 
+### Login
+
+![Login](https://github.com/user-attachments/assets/db0ef14c-b70c-4f01-9a9f-a7c8328ec8f9)
+
 - [MOTD Architecture](https://github.com/BanseokSuh/motd/wiki)
 
 <br>
