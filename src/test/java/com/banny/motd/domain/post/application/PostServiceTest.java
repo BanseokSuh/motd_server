@@ -66,7 +66,7 @@ class PostServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(title, content, userId));
-        assertEquals(ResultType.USER_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
     @Test
@@ -104,7 +104,7 @@ class PostServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.getPost(postId));
-        assertEquals(ResultType.POST_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
     // TODO: Is it right?

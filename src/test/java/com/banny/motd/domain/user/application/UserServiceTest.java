@@ -69,7 +69,7 @@ class UserServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, email, password, gender));
-        assertEquals(ResultType.USER_DUPLICATED.getCode(), e.getResult().getCode());
+        assertEquals(ResultType.FAIL_USER_DUPLICATED.getCode(), e.getResult().getCode());
     }
 
     @Test
@@ -101,7 +101,7 @@ class UserServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
-        assertEquals(ResultType.USER_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
     @Test
@@ -119,7 +119,7 @@ class UserServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
-        assertEquals(ResultType.USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
+        assertEquals(ResultType.FAIL_USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
     }
 
 }

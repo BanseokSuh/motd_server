@@ -8,25 +8,25 @@ import lombok.RequiredArgsConstructor;
 public enum ResultType {
     SUCCESS("0000", "success"),
 
-    INVALID_TOKEN("1001", "invalid token"),
+    FAIL_INVALID_TOKEN("1001", "invalid token"),
 
-    USER_NOT_FOUND("2001", "user not found"),
-    USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
-    USER_DUPLICATED("2003", "user duplicated"),
+    FAIL_USER_NOT_FOUND("2001", "user not found"),
+    FAIL_USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
+    FAIL_USER_DUPLICATED("2003", "user duplicated"),
 
-    INVALID_LOGIN_ID("2004", "invalid login id"),
-    INVALID_PASSWORD("2005", "invalid password"),
+    FAIL_INVALID_LOGIN_ID("2004", "invalid login id"),
+    FAIL_INVALID_PASSWORD("2005", "invalid password"),
 
-    POST_NOT_FOUND("3001", "post not found"),
-    INVALID_PERMISSION("3002", "invalid permission"),
+    FAIL_POST_NOT_FOUND("3001", "post not found"),
+    FAIL_INVALID_PERMISSION("3002", "invalid permission"),
 
-    ALREADY_LIKED("4001", "already liked"),
+    FAIL_ALREADY_LIKED("4001", "already liked"),
 
-    ALARM_CONNECT_ERROR("5001", "alarm connect error"),
+    FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
-    INVALID_PARAMETER("9997", "invalid parameter"),
-    VALIDATE_ERROR("9998", "validate error"),
-    SERVER_ERROR("9999", "server error");
+    FAIL_INVALID_PARAMETER("9997", "invalid parameter"),
+    FAIL_VALIDATE_ERROR("9998", "validate error"),
+    FAIL_SERVER_ERROR("9999", "server error");
 
 
     private final String code;

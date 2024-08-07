@@ -23,10 +23,10 @@ public class ResultObject {
     }
 
     public static ResultObject error() {
-        return new ResultObject(ResultType.SERVER_ERROR);
+        return new ResultObject(ResultType.FAIL_SERVER_ERROR);
     }
 
     public static ResultObject validateError() {
-        return new ResultObject(ResultType.VALIDATE_ERROR);
+        return new ResultObject(ResultType.FAIL_VALIDATE_ERROR);
     }
 }

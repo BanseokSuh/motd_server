@@ -18,7 +18,7 @@ public class SerializeHelper {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             log.error("Error serializing object to JSON: {}", e.getMessage());
-            throw new ApplicationException(ResultType.SERVER_ERROR, "Serializing Error");
+            throw new ApplicationException(ResultType.FAIL_SERVER_ERROR, "Serializing Error");
         }
     }
 
@@ -27,7 +27,7 @@ public class SerializeHelper {
             return objectMapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
             log.error("Error deserializing object from JSON: {}", e.getMessage());
-            throw new ApplicationException(ResultType.SERVER_ERROR, "Deserializing Error");
+            throw new ApplicationException(ResultType.FAIL_SERVER_ERROR, "Deserializing Error");
         }
     }
 }

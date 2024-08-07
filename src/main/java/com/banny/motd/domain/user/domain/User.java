@@ -38,7 +38,7 @@ public class User implements UserDetails {
         try {
             this.gender = Gender.valueOf(genderStr);
         } catch (Exception e) {
-            throw new ApplicationException(ResultType.INVALID_PARAMETER, "Invalid gender");
+            throw new ApplicationException(ResultType.FAIL_INVALID_PARAMETER, "Invalid gender");
         }
     }
 

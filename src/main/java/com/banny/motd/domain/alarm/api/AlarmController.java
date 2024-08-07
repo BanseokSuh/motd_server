@@ -26,7 +26,7 @@ public class AlarmController {
     @GetMapping
     public Response<Page<Alarm>> getAlarmList(Authentication authentication, Pageable pageable) {
         User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class).orElseThrow(
-                () -> new ApplicationException(ResultType.SERVER_ERROR, "Casting to User class failed."));
+                () -> new ApplicationException(ResultType.FAIL_SERVER_ERROR, "Casting to User class failed."));
 
         return Response.success(alarmService.getAlarmList(user.getId(), pageable));
     }
@@ -34,7 +34,7 @@ public class AlarmController {
     @GetMapping("/subscribe")
     public SseEmitter subscribeAlarm(Authentication authentication) {
         User user = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), User.class).orElseThrow(
-                () -> new ApplicationException(ResultType.SERVER_ERROR, "Casting to User class failed."));
+                () -> new ApplicationException(ResultType.FAIL_SERVER_ERROR, "Casting to User class failed."));
 
         return alarmService.subscribeAlarm(user.getId());
     }

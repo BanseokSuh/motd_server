@@ -73,7 +73,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ResultType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
         post.setTitleAndContent(title, content);
@@ -88,7 +88,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ResultType.INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ResultType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
         postRepository.delete(PostEntity.from(post));
@@ -97,12 +97,12 @@ public class PostServiceImpl implements PostService {
     public User getUserOrException(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
     public Post getPostOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 }

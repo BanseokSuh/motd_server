@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
         // 이미 가입된 사용자인지 확인
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
-            throw new ApplicationException(ResultType.USER_DUPLICATED, String.format("User %s is duplicated", loginId));
+            throw new ApplicationException(ResultType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", loginId));
         });
 
         // 신규 유저 객체 생성
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
         // 비밀번호 일치 여부 확인
         if (!encoder.matches(password, user.getPassword())) {
-            throw new ApplicationException(ResultType.USER_PASSWORD_MISMATCH, "Password mismatch");
+            throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
         // 토큰 생성
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
         return userCacheRepository.getUser(id).orElseGet(() ->
                 userRepository.findById(id)
                         .map(UserEntity::toDomain)
-                        .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)))
+                        .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", id)))
                 );
     }
 
@@ -91,13 +91,13 @@ public class UserServiceImpl implements UserService {
     public User loadUserByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", loginId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
     }
 
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("User %s is not found", id)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", id)));
     }
 }

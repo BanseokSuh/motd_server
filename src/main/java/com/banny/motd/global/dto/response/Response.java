@@ -36,8 +36,8 @@ public class Response<T> {
     public String toStream() {
         return "{" +
                 "\"result\":" + "{" +
-                "\"code\":" + "\"" + ResultType.INVALID_TOKEN.getCode() + "\"," +
-                "\"desc\":" + "\"" + ResultType.INVALID_TOKEN.getDesc() + "\"" + "}," +
+                "\"code\":" + "\"" + ResultType.FAIL_INVALID_TOKEN.getCode() + "\"," +
+                "\"desc\":" + "\"" + ResultType.FAIL_INVALID_TOKEN.getDesc() + "\"" + "}," +
                 "\"data\":" + "{" +
                 "\"message\":" + null + "}" +
                 "}";

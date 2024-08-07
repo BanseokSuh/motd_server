@@ -66,13 +66,13 @@ public class ReactionServiceImpl implements ReactionService {
     public User getUserByIdOrException(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
     public Post getPostByIdOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ResultType.POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 
     private Reaction getUserPostLike(Long userId, Long targetId) {
