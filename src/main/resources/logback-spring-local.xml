@@ -3,14 +3,14 @@
 
     <!--  TRACE < DEBUG < ... < INFO < WARN < ERROR  -->
 
+    <property resource="logback-variables.yml" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
         <layout>
-            <pattern>
-                [CONSOLE2] [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%logger{40}:%line] - %msg%n
-            </pattern>
+            <pattern>[CONSOLE] ${LOG_PATTERN}</pattern>
         </layout>
     </appender>
 
