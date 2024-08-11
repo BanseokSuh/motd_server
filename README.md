@@ -19,6 +19,8 @@ MOTD는 <strong>Miracle On ThursDay</strong>의 약자로, 목요일마다 작�
 - 댓글 작성
 - 좋아요
 - 실시간 알림 (댓글 작성, 좋아요 시 작성자에게 실시간 메시지 발송)
+- Logback을 이용한 로그 관리
+  - Profile에 따른 로그 레벨 설정
 
 <br>
 
