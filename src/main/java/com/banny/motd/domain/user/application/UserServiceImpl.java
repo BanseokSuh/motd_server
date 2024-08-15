@@ -7,6 +7,7 @@ import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
 import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder encoder;
     private final UserCacheRepository userCacheRepository;
     private final UserTokenManager userTokenManager;
+    private final EmailHandler emailHandler;
 
     @Override
     @Transactional
@@ -45,7 +47,14 @@ public class UserServiceImpl implements UserService {
         user.setGenderString(gender);
 
         // 유저 저장
-        return userRepository.save(UserEntity.from(user)).toDomain();
+        User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
+
+        log.info("User {} joined on the thread {}", joinedUser.getId(), Thread.currentThread().getName());
+
+        // Welcome 이멜일 발송
+        emailHandler.sendMail(email);
+
+        return joinedUser;
     }
 
 
