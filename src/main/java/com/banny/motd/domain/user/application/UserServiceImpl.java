@@ -49,10 +49,8 @@ public class UserServiceImpl implements UserService {
         // 유저 저장
         User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
 
-        log.info("User {} joined on the thread {}", joinedUser.getId(), Thread.currentThread().getName());
-
         // Welcome 이멜일 발송
-        emailHandler.sendMail(email);
+        emailHandler.sendWelcomeEmail(email, loginId);
 
         return joinedUser;
     }

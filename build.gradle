@@ -31,6 +31,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis
     implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
     implementation 'org.springframework.kafka:spring-kafka' // kafka
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // thymeleaf
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // thymeleaf-layout
 
     implementation 'com.fasterxml.jackson.core:jackson-databind' // jackson
 
