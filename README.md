@@ -59,6 +59,10 @@ MOTD는 <b>Miracle On ThursDay</b>의 약자로, 목요일마다 작은 기적�
 
 ![Alarm_Kafka](https://github.com/user-attachments/assets/fa17734c-f3d7-45b0-a07a-d5c5f25b5c89)
 
+### Join
+
+![Join](https://github.com/user-attachments/assets/90d41f08-5d4c-464f-94ab-964782a2b35b)
+
 ### Login
 
 ![Login](https://github.com/user-attachments/assets/db0ef14c-b70c-4f01-9a9f-a7c8328ec8f9)
