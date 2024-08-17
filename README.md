@@ -89,6 +89,7 @@ MOTD는 <b>Miracle On ThursDay</b>의 약자로, 목요일마다 작은 기적�
 - 댓글 작성
 - 좋아요 기능
 - 이메일 비동기 발송
+  - Thymeleaf를 이용한 이메일 템플릿 작성
 - SSE/Kafka를 이용한 실시간 알림
 
 <br>
