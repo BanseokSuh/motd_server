@@ -49,6 +49,12 @@ MOTD는 <b>Miracle On ThursDay</b>의 약자로, 목요일마다 작은 기적�
 
 <br>
 
+## ERD
+
+<img src="https://github.com/user-attachments/assets/20e94730-d6e7-48e3-9c6f-374529f02445" alt="">
+
+<br>
+
 ## Architecture
 
 ### Project Architecture
