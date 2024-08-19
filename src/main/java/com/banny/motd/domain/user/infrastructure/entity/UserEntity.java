@@ -19,7 +19,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL AND user_status != 'DELETED'")
-@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW(), user_status != DELETED where id = ?")
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW(), user_status = 'DELETED' where id = ?")
 @Table(name = "\"user\"",
         uniqueConstraints = {
             @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")

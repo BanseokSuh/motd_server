@@ -88,6 +88,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void delete(Long id) {
+        // 유저 삭제
+        userRepository.deleteById(id);
+
+        // 유저 캐시 삭제
+        userCacheRepository.deleteUser(id);
+    }
+
+    @Override
     public User getMyInfo(Long id) {
         return userCacheRepository.getUser(id).orElseGet(() ->
                 userRepository.findById(id)

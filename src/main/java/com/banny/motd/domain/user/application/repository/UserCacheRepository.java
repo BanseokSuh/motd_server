@@ -33,6 +33,13 @@ public class UserCacheRepository {
         return Optional.ofNullable(user);
     }
 
+    public void deleteUser(Long userId) {
+        String key = getKey(userId);
+        redisTemplate.delete(key);
+
+        log.info("Delete data from Redis {}", key);
+    }
+
     private String getKey(Long userId) {
         return "USER:" + userId;
     }

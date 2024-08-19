@@ -33,6 +33,13 @@ public class UserController {
         return Response.success(UserLoginResponse.from(token));
     }
 
+    @DeleteMapping()
+    public Response<Void> delete(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        userService.delete(user.getId());
+        return Response.success();
+    }
+
     @GetMapping("/my")
     public Response<UserMyResponse> getMyInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
