@@ -29,7 +29,7 @@ public class UserTokenManager {
     /**
      * access token 발급
      *
-     * @param user
+     * @param user 사용자 정보
      * @return access token
      */
     public String generateAccessToken(User user) {
@@ -39,7 +39,7 @@ public class UserTokenManager {
     /**
      * refresh token 발급
      *
-     * @param user
+     * @param user 사용자 정보
      * @return refresh token
      */
     public String generateRefreshToken(User user) {

@@ -14,4 +14,5 @@ public class UserLoginResponse {
     public static UserLoginResponse from(Tokens token) {
         return new UserLoginResponse(token.getAccessToken(), token.getRefreshToken());
     }
+
 }

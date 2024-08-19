@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserResponse {
+
     private Long id;
     private String loginId;
     private String userName;
@@ -14,4 +15,5 @@ public class UserResponse {
     public static UserResponse from(User user) {
         return new UserResponse(user.getId(), user.getLoginId(), user.getUsername());
     }
+
 }

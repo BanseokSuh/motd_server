@@ -6,9 +6,18 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class WebConfiguration implements WebMvcConfigurer {
 
+    /**
+     * CORS 설정 <p>
+     * WebMvcConfigurer를 상속받아 addCorsMappings 메소드를 오버라이딩하여 CORS 설정을 추가 <p>
+     *
+     * @param registry CorsRegistry<p>
+     *  - allowedOrigins: 허용할 Origin<p>
+     *  - allowedMethods: 허용할 HTTP Method<p>
+     *  - allowedHeaders: 허용할 HTTP Header<p>
+     *  - allowCredentials: 쿠키 사용 여부<p>
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -17,4 +26,5 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
+
 }

@@ -26,4 +26,5 @@ public class UserJoinRequest {
 
     @NotBlank(message = "성별을 선택해주세요")
     private String gender;
+
 }

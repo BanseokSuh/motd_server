@@ -15,5 +15,4 @@ public interface UserService {
 
     User loadUserByLoginId(String loginId);
 
-    User getUserById(Long id);
 }
