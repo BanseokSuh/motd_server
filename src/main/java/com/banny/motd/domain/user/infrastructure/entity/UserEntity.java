@@ -3,6 +3,7 @@ package com.banny.motd.domain.user.infrastructure.entity;
 import com.banny.motd.domain.user.domain.Gender;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
+import com.banny.motd.domain.user.domain.UserStatus;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,15 @@ import org.hibernate.annotations.SQLRestriction;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLRestriction("deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW() where id = ?")
-@Table(name = "\"user\"", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")
-})
+@SQLRestriction("deleted_at IS NULL AND user_status != 'DELETED'")
+@SQLDelete(sql = "UPDATE \"user\" SET deleted_at = NOW(), user_status != DELETED where id = ?")
+@Table(name = "\"user\"",
+        uniqueConstraints = {
+            @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")
+        },
+        indexes = {
+            @Index(name = "index_user_deleted_at_user_status", columnList = "deleted_at, user_status")
+        })
 @Entity
 public class UserEntity extends BaseEntity {
 
@@ -50,6 +55,10 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    @Column(name = "userStatus", nullable = false, columnDefinition = "VARCHAR(10)")
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
+
     public static UserEntity from(User user) {
         return UserEntity.builder()
                 .id(user.getId())
@@ -58,6 +67,7 @@ public class UserEntity extends BaseEntity {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .userRole(user.getUserRole())
+                .userStatus(user.getUserStatus())
                 .gender(user.getGender())
                 .build();
     }
@@ -70,6 +80,7 @@ public class UserEntity extends BaseEntity {
                 .email(email)
                 .password(password)
                 .userRole(userRole)
+                .userStatus(userStatus)
                 .gender(gender)
                 .build();
     }

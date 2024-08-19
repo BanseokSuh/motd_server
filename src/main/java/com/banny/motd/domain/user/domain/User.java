@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @JsonIgnore private String password;
     private Gender gender;
     private UserRole userRole;
+    private UserStatus userStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
