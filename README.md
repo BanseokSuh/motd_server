@@ -69,10 +69,6 @@ MOTD는 <b>Miracle On ThursDay</b>의 약자로, 목요일마다 작은 기적�
 
 ![Join](https://github.com/user-attachments/assets/90d41f08-5d4c-464f-94ab-964782a2b35b)
 
-### Login
-
-![Login](https://github.com/user-attachments/assets/db0ef14c-b70c-4f01-9a9f-a7c8328ec8f9)
-
 - [Architecture 더보기](https://github.com/BanseokSuh/motd/wiki)
 
 <br>
@@ -97,12 +93,6 @@ MOTD는 <b>Miracle On ThursDay</b>의 약자로, 목요일마다 작은 기적�
 - 이메일 비동기 발송
   - Thymeleaf를 이용한 이메일 템플릿 작성
 - SSE/Kafka를 이용한 실시간 알림
-
-<br>
-
-## 프로젝트 구조
-
-- [프로젝트 구조](https://github.com/BanseokSuh/motd/wiki/Project-structure)
 
 <br>
 

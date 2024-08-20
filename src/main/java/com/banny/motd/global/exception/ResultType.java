@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ResultType {
+
     SUCCESS("0000", "success"),
 
     FAIL_INVALID_TOKEN("1001", "invalid token"),
@@ -14,13 +15,8 @@ public enum ResultType {
     FAIL_USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
     FAIL_USER_DUPLICATED("2003", "user duplicated"),
 
-    FAIL_INVALID_LOGIN_ID("2004", "invalid login id"),
-    FAIL_INVALID_PASSWORD("2005", "invalid password"),
-
     FAIL_POST_NOT_FOUND("3001", "post not found"),
     FAIL_INVALID_PERMISSION("3002", "invalid permission"),
-
-    FAIL_ALREADY_LIKED("4001", "already liked"),
 
     FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
@@ -31,4 +27,5 @@ public enum ResultType {
 
     private final String code;
     private final String desc;
+
 }
