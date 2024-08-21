@@ -9,6 +9,7 @@ import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.domain.UserStatus;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.email.EmailHandler;
+import com.banny.motd.global.enums.DeviceType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Tokens login(String loginId, String password) {
+    public Tokens login(String loginId, String password, String deviceTypeStr) {
 
         // 로그인 아이디로 유저 조회
         User user = loadUserByLoginId(loginId);
@@ -70,16 +71,19 @@ public class UserServiceImpl implements UserService {
             throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
+        // 로그인 디바이스 타입 객체
+        DeviceType deviceType = DeviceType.from(deviceTypeStr);
+
         // 이미 로그인된 사용자인지 확인
-        userTokenManager.checkAlreadyLoggedIn(user.getId());
+        userTokenManager.checkAlreadyLoggedIn(user.getId(), deviceType);
 
         // 토큰 생성
         String accessToken = userTokenManager.generateAccessToken(user);
         String refreshToken = userTokenManager.generateRefreshToken(user);
 
         // refresh token 저장
-        userTokenManager.saveAccessToken(user.getId(), accessToken);
-        userTokenManager.saveRefreshToken(user.getId(), refreshToken);
+        userTokenManager.saveAccessToken(user.getId(), deviceType, accessToken);
+        userTokenManager.saveRefreshToken(user.getId(), deviceType, refreshToken);
 
         // 유저 정보 캐시 저장
         userCacheRepository.setUser(user);

@@ -78,6 +78,7 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
+        String deviceType = "web";
 
         UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "test@gmail.com", "M");
 
@@ -86,7 +87,7 @@ class UserServiceTest {
         when(encoder.matches(password, fixture.getPassword())).thenReturn(true);
 
         // when, then
-        assertDoesNotThrow(() -> userService.login(loginId, password));
+        assertDoesNotThrow(() -> userService.login(loginId, password, deviceType));
     }
 
     @Test
@@ -95,12 +96,13 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
+        String deviceType = "web";
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
 
         // when, then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceType));
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
@@ -110,6 +112,7 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
+        String deviceType = "web";
 
         UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "test@gmail.com", "M");
 
@@ -118,7 +121,7 @@ class UserServiceTest {
         when(encoder.matches(password, fixture.getPassword())).thenReturn(false);
 
         // when, then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceType));
         assertEquals(ResultType.FAIL_USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
     }
 

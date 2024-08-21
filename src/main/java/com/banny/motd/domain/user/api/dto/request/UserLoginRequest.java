@@ -12,4 +12,6 @@ public class UserLoginRequest {
     @NotBlank(message = "비밀번호를 입력해주세요")
     private String password;
 
+    @NotBlank(message = "디바이스 타입을 입력해주세요")
+    private String deviceType;
 }

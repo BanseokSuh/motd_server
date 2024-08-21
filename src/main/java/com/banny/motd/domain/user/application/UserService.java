@@ -7,7 +7,7 @@ public interface UserService {
 
     User join(String loginId, String userName, String password, String email, String gender);
 
-    Tokens login(String loginId, String password);
+    Tokens login(String loginId, String password, String deviceTypeStr);
 
     void delete(Long id);
 

@@ -39,7 +39,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
-        Tokens token = userService.login(request.getLoginId(), request.getPassword());
+        Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDeviceType());
         return Response.success(UserLoginResponse.from(token));
     }
 
