@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum DeviceType {
+
     WEB(1, "web"),
     MOBILE_ANDROID(2, "mobile_android"),
     MOBILE_IOS(3, "mobile_ios");
@@ -30,4 +31,5 @@ public enum DeviceType {
 
         throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE_TYPE, "존재하지 않는 디바이스 타입입니다.");
     }
+
 }

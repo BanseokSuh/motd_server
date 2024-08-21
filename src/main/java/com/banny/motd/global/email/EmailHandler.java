@@ -22,6 +22,13 @@ public class EmailHandler {
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
 
+    /**
+     * Welcome 이메일 비동기 발송
+     * 해당 메서드는 messagePoolTaskExecutor 빈을 사용하여 비동기로 동작
+     *
+     * @param to 수신자 이메일 주소
+     * @param loginId 수신자 로그인 아이디
+     */
     @Async("messagePoolTaskExecutor")
     public void sendWelcomeEmail(String to, String loginId) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -42,6 +49,14 @@ public class EmailHandler {
         javaMailSender.send(message);
     }
 
+    /**
+     * Thymeleaf 템플릿 엔진을 사용하여 HTML 템플릿을 렌더링
+     * resources/templates/welcomeEmail.html 템플릿을 렌더링
+     *
+     * @param type 템플릿 파일명
+     * @param loginId 로그인 아이디
+     * @return 렌더링된 HTML 문자열
+     */
     public String setContext(String type, String loginId) {
         Context context = new Context();
         context.setVariable("loginId", loginId);

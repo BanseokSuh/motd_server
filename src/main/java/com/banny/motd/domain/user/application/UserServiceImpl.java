@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Tokens login(String loginId, String password, String deviceTypeStr) {
-
         // 로그인 아이디로 유저 조회
         User user = loadUserByLoginId(loginId);
 
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
             throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password mismatch");
         }
 
-        // 로그인 디바이스 타입 객체
+        // 디바이스 타입 객체 생성
         DeviceType deviceType = DeviceType.from(deviceTypeStr);
 
         // 이미 로그인된 사용자인지 확인
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService {
         String accessToken = userTokenManager.generateAccessToken(user);
         String refreshToken = userTokenManager.generateRefreshToken(user);
 
-        // refresh token 저장
+        // 토큰 저장
         userTokenManager.saveAccessToken(user.getId(), deviceType, accessToken);
         userTokenManager.saveRefreshToken(user.getId(), deviceType, refreshToken);
 

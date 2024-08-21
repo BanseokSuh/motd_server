@@ -113,4 +113,5 @@ public class UserTokenManager {
     private String getRefreshTokenKey(Long userId, Integer deviceType) {
         return "R_TOKEN:" + userId + "-" + deviceType;
     }
+
 }

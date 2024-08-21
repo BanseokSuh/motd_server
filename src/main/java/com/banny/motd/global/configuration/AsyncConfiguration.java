@@ -9,6 +9,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class AsyncConfiguration {
 
+    /**
+     * 이메일 발송을 위한 비동기 처리를 위한 ThreadPoolTaskExecutor 빈 등록
+     *
+     * @return ThreadPoolTaskExecutor taskExecutor
+     */
     @Bean(name = "messagePoolTaskExecutor", destroyMethod = "shutdown")
     public ThreadPoolTaskExecutor messageTaskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
