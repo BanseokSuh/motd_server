@@ -46,12 +46,12 @@ public class UserServiceImpl implements UserService {
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.PENDING)
                 .build();
-        user.setGenderString(gender);
+        user.setGenderStr(gender);
 
         // 유저 저장
         User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
 
-        // Welcome 이멜일 발송
+        // Welcome 이메일 발송
         emailHandler.sendWelcomeEmail(email, loginId);
 
         return joinedUser;
@@ -69,6 +69,9 @@ public class UserServiceImpl implements UserService {
         if (!encoder.matches(password, user.getPassword())) {
             throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password mismatch");
         }
+
+        // 이미 로그인된 사용자인지 확인
+        userTokenManager.checkAlreadyLoggedIn(user.getId());
 
         // 토큰 생성
         String accessToken = userTokenManager.generateAccessToken(user);

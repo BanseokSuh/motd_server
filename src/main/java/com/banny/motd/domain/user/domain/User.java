@@ -35,7 +35,13 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    public void setGenderString(String genderStr) {
+    /**
+     * 성별 문자열로 성별 설정
+     *
+     * @param genderStr 성별 문자열
+     * @throws ApplicationException 성별 문자열이 잘못된 경우 예외 반환
+     */
+    public void setGenderStr(String genderStr) {
         try {
             this.gender = Gender.valueOf(genderStr);
         } catch (Exception e) {

@@ -20,6 +20,8 @@ public enum ResultType {
 
     FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
+    FAIL_ALREADY_LOGGED_IN("6001", "already logged in"),
+
     FAIL_INVALID_PARAMETER("9997", "invalid parameter"),
     FAIL_VALIDATE_ERROR("9998", "validate error"),
     FAIL_SERVER_ERROR("9999", "server error");

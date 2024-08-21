@@ -1,6 +1,8 @@
 package com.banny.motd.domain.user.application.repository;
 
 import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.exception.ApplicationException;
+import com.banny.motd.global.exception.ResultType;
 import com.banny.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,10 +49,10 @@ public class UserTokenManager {
     }
 
     /**
-     * access token redis에 저장 (세션관리용)
+     * access token redis에 저장 (중복로그인 방지용)
      *
-     * @param userId
-     * @param accessToken
+     * @param userId 사용자 id
+     * @param accessToken access token
      */
     public void saveAccessToken(Long userId, String accessToken) {
         String key = getAccessTokenKey(userId);
@@ -60,8 +62,8 @@ public class UserTokenManager {
     /**
      * refresh token redis에 저장
      *
-     * @param userId
-     * @param refreshToken
+     * @param userId 사용자 id
+     * @param refreshToken refresh token
      */
     public void saveRefreshToken(Long userId, String refreshToken) {
         String key = getRefreshTokenKey(userId);
@@ -69,10 +71,33 @@ public class UserTokenManager {
     }
 
     /**
+     * 이미 로그인 중인지 확인
+     *
+     * @param userId 사용자 id
+     */
+    public void checkAlreadyLoggedIn(Long userId) {
+        String key = getAccessTokenKey(userId);
+
+        if (hasKey(key)) {
+            throw new ApplicationException(ResultType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
+        }
+    }
+
+    /**
+     * key 존재 여부 확인
+     *
+     * @param key key
+     * @return key 존재 여부
+     */
+    private boolean hasKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
+    /**
      * access token을 저장하기 위한 key 조회
      *
-     * @param userId
-     * @return
+     * @param userId 사용자 id
+     * @return access token key
      */
     private String getAccessTokenKey(Long userId) {
         return "A_TOKEN:" + userId;
@@ -81,7 +106,7 @@ public class UserTokenManager {
     /**
      * refresh token을 저장하기 위한 key 조회
      *
-     * @param userId
+     * @param userId 사용자 id
      * @return refresh token key
      */
     private String getRefreshTokenKey(Long userId) {
