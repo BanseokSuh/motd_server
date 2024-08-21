@@ -1,6 +1,7 @@
 package com.banny.motd.domain.user.application.repository;
 
 import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.enums.DeviceType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import com.banny.motd.global.util.JwtTokenUtils;
@@ -54,8 +55,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @param accessToken access token
      */
-    public void saveAccessToken(Long userId, String accessToken) {
-        String key = getAccessTokenKey(userId);
+    public void saveAccessToken(Long userId, DeviceType deviceType, String accessToken) {
+        String key = getAccessTokenKey(userId, deviceType.getValue());
         redisTemplate.opsForValue().set(key, accessToken, ACCESS_TOKEN_CACHE_TTL);
     }
 
@@ -65,8 +66,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @param refreshToken refresh token
      */
-    public void saveRefreshToken(Long userId, String refreshToken) {
-        String key = getRefreshTokenKey(userId);
+    public void saveRefreshToken(Long userId, DeviceType deviceType, String refreshToken) {
+        String key = getRefreshTokenKey(userId, deviceType.getValue());
         redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
@@ -75,8 +76,8 @@ public class UserTokenManager {
      *
      * @param userId 사용자 id
      */
-    public void checkAlreadyLoggedIn(Long userId) {
-        String key = getAccessTokenKey(userId);
+    public void checkAlreadyLoggedIn(Long userId, DeviceType deviceType) {
+        String key = getAccessTokenKey(userId, deviceType.getValue());
 
         if (hasKey(key)) {
             throw new ApplicationException(ResultType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
@@ -99,8 +100,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return access token key
      */
-    private String getAccessTokenKey(Long userId) {
-        return "A_TOKEN:" + userId;
+    private String getAccessTokenKey(Long userId, Integer deviceType) {
+        return "A_TOKEN:" + userId + "-" + deviceType;
     }
 
     /**
@@ -109,7 +110,7 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return refresh token key
      */
-    private String getRefreshTokenKey(Long userId) {
-        return "R_TOKEN:" + userId;
+    private String getRefreshTokenKey(Long userId, Integer deviceType) {
+        return "R_TOKEN:" + userId + "-" + deviceType;
     }
 }
