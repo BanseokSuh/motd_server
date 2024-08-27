@@ -13,6 +13,8 @@ env:
   AWS_S3_BUCKET: motd-bucket-v1
   AWS_CODE_DEPLOY_APPLICATION: motd-cicd-CD
   AWS_CODE_DEPLOY_GROUP: motd-cicd-CD-group
+  RDS_URL: ${{ secrets.RDS_URL }}
+  RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
 
 jobs:
   build-with-gradle:
