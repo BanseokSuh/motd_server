@@ -9,22 +9,22 @@ import lombok.Getter;
 @Getter
 public class UserJoinRequest {
 
-    @NotBlank(message = "아이디를 입력해주세요")
-    @Size(min = 4, max = 20, message = "아이디는 4자 이상 20자 이하로 입력해주세요")
+    @NotBlank(message = "Please enter your ID")
+    @Size(min = 4, max = 20, message = "ID must be between 4 and 20 characters")
     private String loginId;
 
-    @NotBlank(message = "이름을 입력해주세요")
+    @NotBlank(message = "Please enter your name")
     private String userName;
 
-    @NotBlank(message = "비밀번호를 입력해주세요")
+    @NotBlank(message = "Please enter your password")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문 대소문자, 숫자, 특수문자를 사용하세요")
     private String password;
 
-    @NotBlank(message = "이메일을 입력해주세요")
+    @NotBlank(message = "Please enter your email")
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식을 지켜주세요")
     private String email;
 
-    @NotBlank(message = "성별을 선택해주세요")
+    @NotBlank(message = "Please select your gender")
     private String gender;
 
 }

@@ -36,6 +36,7 @@ public class RedisConfiguration {
 
     /**
      * RedisTemplate Bean 등록
+     * 토큰 저장용 redisTemplate
      *
      * @param redisConnectionFactory
      * @return RedisTemplate<String, Object>
@@ -52,6 +53,7 @@ public class RedisConfiguration {
 
     /**
      * RedisTemplate Bean 등록
+     * 유저 캐시용 redisTemplate
      *
      * @param redisConnectionFactory
      * @return RedisTemplate<String, User>
@@ -65,4 +67,5 @@ public class RedisConfiguration {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<User>(User.class)); // Value를 User로 사용했기 때문에 해당 serializer 설정
         return redisTemplate;
     }
+
 }

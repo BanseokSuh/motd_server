@@ -29,7 +29,7 @@ public enum DeviceType {
             }
         }
 
-        throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE_TYPE, "존재하지 않는 디바이스 타입입니다.");
+        throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE_TYPE, "DeviceType not found. name: " + name);
     }
 
 }

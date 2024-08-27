@@ -7,11 +7,12 @@ import lombok.Getter;
 @Getter
 public class PostCreateRequest {
 
-    @NotBlank(message = "제목을 입력해주세요")
-    @Size(min = 1, max = 100, message = "제목은 100자 이하로 입력해주세요")
+    @NotBlank(message = "Please enter the title")
+    @Size(min = 1, max = 100, message = "The title must be between 1 and 100 characters")
     private String title;
 
-    @NotBlank(message = "내용을 입력해주세요")
-    @Size(min = 1, max = 2_000, message = "내용은 2000자 이하로 입력해주세요")
+    @NotBlank(message = "Please enter the content")
+    @Size(min = 1, max = 2_000, message = "The content must be between 1 and 2,000 characters")
     private String content;
+
 }

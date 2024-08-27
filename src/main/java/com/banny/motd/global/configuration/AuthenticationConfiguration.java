@@ -27,17 +27,22 @@ public class AuthenticationConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login");
+        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login", "/h2-console/**"); // Ignore requests for user join, login, and h2-console
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests.requestMatchers("/api/**").authenticated()) // All requests under /api/** are authenticated
+//                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests.requestMatchers("/api/**").authenticated()) // All requests under /api/** are authenticated
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/**").authenticated() // All requests under /api/** are authenticated
+                )
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Session management is set to STATELESS. No session is created.
                 .addFilterBefore(new JwtTokenFilter(key, userService), UsernamePasswordAuthenticationFilter.class) // JwtTokenFilter is added before UsernamePasswordAuthenticationFilter
                 .exceptionHandling(authenticationManager -> authenticationManager.authenticationEntryPoint(new CustomAuthenticationEntryPoint())) // Error handling when authentication fails
                 .build();
     }
+
 }

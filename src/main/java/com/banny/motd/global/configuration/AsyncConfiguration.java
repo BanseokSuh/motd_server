@@ -26,4 +26,5 @@ public class AsyncConfiguration {
 
         return taskExecutor;
     }
+
 }

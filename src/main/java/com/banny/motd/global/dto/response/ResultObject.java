@@ -29,4 +29,5 @@ public class ResultObject {
     public static ResultObject validateError() {
         return new ResultObject(ResultType.FAIL_VALIDATE_ERROR);
     }
+
 }

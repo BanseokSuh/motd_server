@@ -13,6 +13,13 @@ public class ErrorResponseEntity<T> {
     private ResultObject result;
     private T data;
 
+    /**
+     * 모든 예외 정보를 ResponseEntity에 담아 반환
+     * @param result
+     * @param errorResult
+     * @return
+     * @param <T>
+     */
     public static <T> ResponseEntity<ErrorResponseEntity<T>> toResponseEntity(ResultObject result, T errorResult) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -21,4 +28,5 @@ public class ErrorResponseEntity<T> {
                         .data(errorResult)
                         .build());
     }
+
 }
