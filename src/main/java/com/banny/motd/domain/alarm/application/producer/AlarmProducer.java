@@ -14,12 +14,21 @@ public class AlarmProducer {
 
     private final KafkaTemplate<Long, AlarmEvent> kafkaTemplate;
 
+    @Value("${spring.kafka.enabled}")
+    private boolean kafkaEnabled;
+
     @Value("${spring.kafka.topic.alarm}")
     private String topic;
 
     public void send(AlarmEvent event) {
+        if (!kafkaEnabled) {
+            log.info("Kafka is disabled. Skip sending to kafka: {}", event);
+            return;
+        }
+
         kafkaTemplate.send(topic, event.getReceiverUserId(), event);
 
         log.info("Send to kafka finished: {}", event);
     }
+
 }
