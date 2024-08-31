@@ -346,3 +346,4 @@ gradle-app.setting
 **/logback-variables.yml
 
 **/AppRunner.java
+**/application-encrypted.yml
