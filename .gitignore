@@ -343,7 +343,7 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,java,gradle,intellij,intellij+all,intellij+iml
 **/logback-spring-study.xml
-**/logback-variables.yml
+#**/logback-variables.yml
 
 **/AppRunner.java
 **/application-encrypted.yml
