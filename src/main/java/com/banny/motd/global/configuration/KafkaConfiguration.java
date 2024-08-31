@@ -15,7 +15,7 @@ public class KafkaConfiguration {
     private boolean kafkaEnabled;
 
     @Bean
-    @Profile("local")
+    @Profile("!local")
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(ConsumerFactory<String, String> consumerFactory) {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
