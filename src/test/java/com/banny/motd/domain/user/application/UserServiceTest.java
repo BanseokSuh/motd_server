@@ -4,6 +4,7 @@ package com.banny.motd.domain.user.application;
 import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.fixture.UserEntityFixture;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -33,6 +34,9 @@ class UserServiceTest {
     @MockBean
     private BCryptPasswordEncoder encoder;
 
+    @MockBean
+    private EmailHandler emailHandler;
+
     @Test
     @DisplayName("회원가입")
     void join() {
@@ -40,16 +44,18 @@ class UserServiceTest {
         String loginId = "loginId";
         String userName = "userName";
         String password = "password";
-        String email = "test@gmail.com";
+        String email = "still3028@naver.com";
         String gender = "M";
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
         when(encoder.encode(password)).thenReturn("encrypt_password");
         when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, email, gender));
+        doNothing().when(emailHandler).sendWelcomeEmail(email, loginId);
 
         // when, then
         assertDoesNotThrow(() -> userService.join(loginId, userName, password, email, gender));
+        verify(emailHandler, times(1)).sendWelcomeEmail(email, loginId);
     }
 
     @Test
@@ -59,7 +65,7 @@ class UserServiceTest {
         String loginId = "loginId123";
         String userName = "userName123";
         String password = "password123";
-        String email = "test@gmail.com";
+        String email = "still3028@naver.com";
         String gender = "M";
 
         UserEntity fixture = UserEntityFixture.get(loginId, userName, password, email, gender);
@@ -82,7 +88,7 @@ class UserServiceTest {
         String password = "password";
         String deviceType = "web";
 
-        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "test@gmail.com", "M");
+        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "still3028@naver.com", "M");
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
@@ -116,7 +122,7 @@ class UserServiceTest {
         String password = "password";
         String deviceType = "web";
 
-        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "test@gmail.com", "M");
+        UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "still3028@naver.com", "M");
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
