@@ -8,11 +8,11 @@ on:
     branches:
       - main
 
-env:
-  AWS_REGION: ap-northeast-2
-  AWS_S3_BUCKET: motd-bucket-v1
-  AWS_CODE_DEPLOY_APPLICATION: motd-cicd-CD
-  AWS_CODE_DEPLOY_GROUP: motd-cicd-CD-group
+#env:
+#  AWS_REGION: ap-northeast-2
+#  AWS_S3_BUCKET: motd-bucket-v1
+#  AWS_CODE_DEPLOY_APPLICATION: motd-cicd-CD
+#  AWS_CODE_DEPLOY_GROUP: motd-cicd-CD-group
 
 jobs:
   build-with-gradle:
@@ -41,12 +41,12 @@ jobs:
     - name: 프로젝트 빌드
       run: ./gradlew clean build -x test
 
-    - name: AWS credential 설정
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-region: ${{ env.AWS_REGION }}
-        aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
+#    - name: AWS credential 설정
+#      uses: aws-actions/configure-aws-credentials@v1
+#      with:
+#        aws-region: ${{ env.AWS_REGION }}
+#        aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
+#        aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
 
 #    - name: S3에 업로드
 #      run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/motd-cicd/$GITHUB_SHA.zip --source .
