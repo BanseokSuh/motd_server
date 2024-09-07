@@ -14,13 +14,14 @@ public enum ResultType {
     FAIL_USER_NOT_FOUND("2001", "user not found"),
     FAIL_USER_PASSWORD_MISMATCH("2002", "user password mismatch"),
     FAIL_USER_DUPLICATED("2003", "user duplicated"),
+    FAIL_USER_NOT_ACTIVE("2004", "user not active"),
 
     FAIL_POST_NOT_FOUND("3001", "post not found"),
     FAIL_INVALID_PERMISSION("3002", "invalid permission"),
 
     FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
-    FAIL_NOT_EXIST_DEVICE_TYPE("6000", "not exist device type"),
+    FAIL_NOT_EXIST_DEVICE("6000", "not exist device type"),
 
     FAIL_ALREADY_LOGGED_IN("6001", "already logged in"),
 

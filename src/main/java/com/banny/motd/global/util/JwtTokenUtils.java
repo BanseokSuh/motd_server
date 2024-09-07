@@ -1,6 +1,7 @@
 package com.banny.motd.global.util;
 
 import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.enums.Device;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,12 +25,14 @@ public class JwtTokenUtils {
      * @param expiredTimeMs 만료 시간
      * @return JWT token
      */
-    public static String generateJwtToken(User user, String key, Long expiredTimeMs) {
+    public static String generateJwtToken(User user, Device device, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.getId());
         claims.put("loginId", user.getLoginId());
         claims.put("userName", user.getUsername());
         claims.put("email", user.getEmail());
+        claims.put("userRole", user.getUserRole().name());
+        claims.put("device", device.getName());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -45,6 +48,11 @@ public class JwtTokenUtils {
 
     public static String getLoginId(String token, String key) {
         return extractAllClaims(token, key).get("loginId", String.class);
+    }
+
+    public static Device getDeviceStr(String token, String key) {
+        String deviceStr = extractAllClaims(token, key).get("device", String.class);
+        return Device.from(deviceStr);
     }
 
     public static Claims extractAllClaims(String token, String key) {

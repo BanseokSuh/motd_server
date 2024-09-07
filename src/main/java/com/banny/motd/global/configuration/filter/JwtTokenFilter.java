@@ -2,6 +2,7 @@ package com.banny.motd.global.configuration.filter;
 
 import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.util.JwtTokenUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -40,8 +41,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
 
             String loginId = JwtTokenUtils.getLoginId(token, secretKey); // Extract loginId from token
+            Device device = JwtTokenUtils.getDeviceStr(token, secretKey); // Extract device from token
 
             User userDetails = userService.loadUserByLoginId(loginId); // Get user details by loginId
+
+            userDetails.setDevice(device); // Set device to user details
 
             if (!JwtTokenUtils.isTokenValid(token, loginId, secretKey)) {
                 filterChain.doFilter(request, response);

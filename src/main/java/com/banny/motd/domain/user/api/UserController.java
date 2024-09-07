@@ -2,7 +2,6 @@ package com.banny.motd.domain.user.api;
 
 import com.banny.motd.domain.user.api.dto.request.UserJoinRequest;
 import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
-import com.banny.motd.domain.user.api.dto.request.UserLogoutRequest;
 import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
 import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
 import com.banny.motd.domain.user.api.dto.response.UserMyResponse;
@@ -10,11 +9,14 @@ import com.banny.motd.domain.user.application.UserService;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.dto.response.Response;
+import groovy.util.logging.Slf4j;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@lombok.extern.slf4j.Slf4j
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
@@ -40,20 +42,20 @@ public class UserController {
      */
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
-        Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDeviceType());
+        Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDevice());
         return Response.success(UserLoginResponse.from(token));
     }
 
     /**
      * 로그아웃
-     * @param request UserLogoutRequest
      * @param authentication Authentication
      * @return Response<Void>
      */
     @PostMapping("/logout")
-    public Response<Void> logout(@Valid @RequestBody UserLogoutRequest request, Authentication authentication) {
+    public Response<Void> logout(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        userService.logout(user.getId(), request.getDeviceType());
+
+        userService.logout(user.getId(), user.getDevice());
         return Response.success();
     }
 

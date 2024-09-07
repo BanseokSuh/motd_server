@@ -86,7 +86,7 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
-        String deviceType = "web";
+        String device = "WEB";
 
         UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "still3028@naver.com", "M");
 
@@ -95,7 +95,7 @@ class UserServiceTest {
         when(encoder.matches(password, fixture.getPassword())).thenReturn(true);
 
         // when, then
-        assertDoesNotThrow(() -> userService.login(loginId, password, deviceType));
+        assertDoesNotThrow(() -> userService.login(loginId, password, device));
     }
 
     @Test
@@ -104,13 +104,13 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
-        String deviceType = "web";
+        String device = "WEB";
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
 
         // when, then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceType));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, device));
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
@@ -120,7 +120,7 @@ class UserServiceTest {
         // given
         String loginId = "loginId";
         String password = "password";
-        String deviceType = "web";
+        String device = "WEB";
 
         UserEntity fixture = UserEntityFixture.get(loginId, "userName", password, "still3028@naver.com", "M");
 
@@ -129,7 +129,7 @@ class UserServiceTest {
         when(encoder.matches(password, fixture.getPassword())).thenReturn(false);
 
         // when, then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceType));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, device));
         assertEquals(ResultType.FAIL_USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
     }
 

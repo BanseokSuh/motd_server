@@ -1,7 +1,7 @@
 package com.banny.motd.domain.user.application.repository;
 
 import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.global.enums.DeviceType;
+import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import com.banny.motd.global.util.JwtTokenUtils;
@@ -35,8 +35,8 @@ public class UserTokenManager {
      * @param user 사용자 정보
      * @return access token
      */
-    public String generateAccessToken(User user) {
-        return JwtTokenUtils.generateJwtToken(user, secretKey, accessExpiredTimeMs);
+    public String generateAccessToken(User user, Device device) {
+        return JwtTokenUtils.generateJwtToken(user, device, secretKey, accessExpiredTimeMs);
     }
 
     /**
@@ -45,8 +45,8 @@ public class UserTokenManager {
      * @param user 사용자 정보
      * @return refresh token
      */
-    public String generateRefreshToken(User user) {
-        return JwtTokenUtils.generateJwtToken(user, secretKey, refreshExpiredTimeMs);
+    public String generateRefreshToken(User user, Device device) {
+        return JwtTokenUtils.generateJwtToken(user, device, secretKey, refreshExpiredTimeMs);
     }
 
     /**
@@ -55,8 +55,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @param accessToken access token
      */
-    public void saveAccessToken(Long userId, DeviceType deviceType, String accessToken) {
-        String key = getAccessTokenKey(userId, deviceType.getValue());
+    public void saveAccessToken(Long userId, Device device, String accessToken) {
+        String key = getAccessTokenKey(userId, device.getValue());
         redisTemplate.opsForValue().set(key, accessToken, ACCESS_TOKEN_CACHE_TTL);
     }
 
@@ -66,8 +66,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @param refreshToken refresh token
      */
-    public void saveRefreshToken(Long userId, DeviceType deviceType, String refreshToken) {
-        String key = getRefreshTokenKey(userId, deviceType.getValue());
+    public void saveRefreshToken(Long userId, Device device, String refreshToken) {
+        String key = getRefreshTokenKey(userId, device.getValue());
         redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
@@ -76,8 +76,8 @@ public class UserTokenManager {
      *
      * @param userId 사용자 id
      */
-    public void checkAlreadyLoggedIn(Long userId, DeviceType deviceType) {
-        String key = getAccessTokenKey(userId, deviceType.getValue());
+    public void checkAlreadyLoggedIn(Long userId, Device device) {
+        String key = getAccessTokenKey(userId, device.getValue());
 
         if (hasKey(key)) {
             throw new ApplicationException(ResultType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
@@ -88,11 +88,11 @@ public class UserTokenManager {
      * token 삭제
      *
      * @param userId 사용자 id
-     * @param deviceType 디바이스 타입
+     * @param device 디바이스 타입
      */
-    public void deleteToken(Long userId, DeviceType deviceType) {
-        String accessTokenKey = getAccessTokenKey(userId, deviceType.getValue());
-        String refreshTokenKey = getRefreshTokenKey(userId, deviceType.getValue());
+    public void deleteToken(Long userId, Device device) {
+        String accessTokenKey = getAccessTokenKey(userId, device.getValue());
+        String refreshTokenKey = getRefreshTokenKey(userId, device.getValue());
 
         redisTemplate.delete(accessTokenKey);
         redisTemplate.delete(refreshTokenKey);
@@ -114,8 +114,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return access token key
      */
-    private String getAccessTokenKey(Long userId, Integer deviceType) {
-        return "A_TOKEN:" + userId + "-" + deviceType;
+    private String getAccessTokenKey(Long userId, Integer device) {
+        return "A_TOKEN:" + userId + "-" + device;
     }
 
     /**
@@ -124,8 +124,8 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return refresh token key
      */
-    private String getRefreshTokenKey(Long userId, Integer deviceType) {
-        return "R_TOKEN:" + userId + "-" + deviceType;
+    private String getRefreshTokenKey(Long userId, Integer device) {
+        return "R_TOKEN:" + userId + "-" + device;
     }
 
 }

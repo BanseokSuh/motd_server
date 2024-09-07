@@ -1,16 +1,15 @@
 package com.banny.motd.domain.user.domain;
 
+import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -31,6 +30,7 @@ public class User implements UserDetails {
     private Gender gender;
     private UserRole userRole;
     private UserStatus userStatus;
+    @Setter private Device device;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -46,6 +46,27 @@ public class User implements UserDetails {
             this.gender = Gender.valueOf(genderStr);
         } catch (Exception e) {
             throw new ApplicationException(ResultType.FAIL_INVALID_PARAMETER, "Invalid gender");
+        }
+    }
+
+    /**
+     * 비밀번호 일치 여부 확인
+     *
+     * @param password 비밀번호
+     * @param encoder BCryptPasswordEncoder
+     */
+    public void checkPasswordMatch(String password, BCryptPasswordEncoder encoder) {
+        if (!encoder.matches(password, this.password)) {
+            throw new ApplicationException(ResultType.FAIL_INVALID_PARAMETER, "Password does not match");
+        }
+    }
+
+    /**
+     * 사용자 status 검증
+     */
+    public void checkUserStatus() {
+        if (this.userStatus != UserStatus.ACTIVE) {
+            throw new ApplicationException(ResultType.FAIL_USER_NOT_ACTIVE, "User status is not active");
         }
     }
 

@@ -9,7 +9,7 @@ import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.domain.UserStatus;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.email.EmailHandler;
-import com.banny.motd.global.enums.DeviceType;
+import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import lombok.RequiredArgsConstructor;
@@ -61,28 +61,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Tokens login(String loginId, String password, String deviceTypeStr) {
+    public Tokens login(String loginId, String password, String deviceStr) {
         // 로그인 아이디로 유저 조회
         User user = loadUserByLoginId(loginId);
 
-        // 비밀번호 일치 여부 확인
-        if (!encoder.matches(password, user.getPassword())) {
-            throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password mismatch");
-        }
+        Device device = Device.from(deviceStr);
 
-        // 디바이스 타입 객체 생성
-        DeviceType deviceType = DeviceType.from(deviceTypeStr);
+        user.setDevice(device);
+
+        // 비밀번호 일치 여부 확인
+        user.checkPasswordMatch(password, encoder);
 
         // 이미 로그인된 사용자인지 확인
-        userTokenManager.checkAlreadyLoggedIn(user.getId(), deviceType);
+        userTokenManager.checkAlreadyLoggedIn(user.getId(), device);
 
         // 토큰 생성
-        String accessToken = userTokenManager.generateAccessToken(user);
-        String refreshToken = userTokenManager.generateRefreshToken(user);
+        String accessToken = userTokenManager.generateAccessToken(user, device);
+        String refreshToken = userTokenManager.generateRefreshToken(user, device);
 
         // 토큰 저장
-        userTokenManager.saveAccessToken(user.getId(), deviceType, accessToken);
-        userTokenManager.saveRefreshToken(user.getId(), deviceType, refreshToken);
+        userTokenManager.saveAccessToken(user.getId(), device, accessToken);
+        userTokenManager.saveRefreshToken(user.getId(), device, refreshToken);
 
         // 유저 정보 캐시 저장
         userCacheRepository.setUser(user);
@@ -94,12 +93,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(Long id, String deviceTypeStr) {
-        // 디바이스 타입 객체 생성
-        DeviceType deviceType = DeviceType.from(deviceTypeStr);
-
+    public void logout(Long id, Device device) {
         // 유저 로그아웃
-        userTokenManager.deleteToken(id, deviceType);
+        userTokenManager.deleteToken(id, device);
 
         // 유저 캐시 삭제
         userCacheRepository.deleteUser(id);

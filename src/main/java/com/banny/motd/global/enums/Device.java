@@ -7,11 +7,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum DeviceType {
+public enum Device {
 
-    WEB(1, "web"),
-    MOBILE_ANDROID(2, "mobile_android"),
-    MOBILE_IOS(3, "mobile_ios");
+    WEB(1, "WEB"),
+    MOBILE_ANDROID(2, "MOBILE_ANDROID"),
+    MOBILE_IOS(3, "MOBILE_IOS");
 
     private final Integer value;
     private final String name;
@@ -22,14 +22,14 @@ public enum DeviceType {
      * @param name 디바이스 타입 이름
      * @return 디바이스 타입
      */
-    public static DeviceType from(String name) {
-        for (DeviceType deviceType : DeviceType.values()) {
-            if (deviceType.getName().equals(name)) {
-                return deviceType;
+    public static Device from(String name) {
+        for (Device device : Device.values()) {
+            if (device.getName().equals(name)) {
+                return device;
             }
         }
 
-        throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE_TYPE, "DeviceType not found. name: " + name);
+        throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE, "Device not found. name: " + name);
     }
 
 }

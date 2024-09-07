@@ -15,7 +15,7 @@ public class UserLoginRequest {
     @Size(min = 8, max = 16, message = "Password must be between 8 and 16 characters")
     private String password;
 
-    @NotBlank(message = "Please enter the device type")
-    private String deviceType;
+    @NotBlank(message = "Please enter the device")
+    private String device;
 
 }
