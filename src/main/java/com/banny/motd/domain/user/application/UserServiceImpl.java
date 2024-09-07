@@ -94,7 +94,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void logout(Long id, String deviceTypeStr) {
+        // 디바이스 타입 객체 생성
+        DeviceType deviceType = DeviceType.from(deviceTypeStr);
+
+        // 유저 로그아웃
+        userTokenManager.deleteToken(id, deviceType);
+
+        // 유저 캐시 삭제
+        userCacheRepository.deleteUser(id);
+    }
+
+    @Override
     public void delete(Long id) {
+
         // 유저 삭제
         userRepository.deleteById(id);
 

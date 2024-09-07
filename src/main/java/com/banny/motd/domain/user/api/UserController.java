@@ -2,6 +2,7 @@ package com.banny.motd.domain.user.api;
 
 import com.banny.motd.domain.user.api.dto.request.UserJoinRequest;
 import com.banny.motd.domain.user.api.dto.request.UserLoginRequest;
+import com.banny.motd.domain.user.api.dto.request.UserLogoutRequest;
 import com.banny.motd.domain.user.api.dto.response.UserJoinResponse;
 import com.banny.motd.domain.user.api.dto.response.UserLoginResponse;
 import com.banny.motd.domain.user.api.dto.response.UserMyResponse;
@@ -41,6 +42,19 @@ public class UserController {
     public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDeviceType());
         return Response.success(UserLoginResponse.from(token));
+    }
+
+    /**
+     * 로그아웃
+     * @param request UserLogoutRequest
+     * @param authentication Authentication
+     * @return Response<Void>
+     */
+    @PostMapping("/logout")
+    public Response<Void> logout(@Valid @RequestBody UserLogoutRequest request, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        userService.logout(user.getId(), request.getDeviceType());
+        return Response.success();
     }
 
     /**

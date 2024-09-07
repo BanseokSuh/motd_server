@@ -85,6 +85,20 @@ public class UserTokenManager {
     }
 
     /**
+     * token 삭제
+     *
+     * @param userId 사용자 id
+     * @param deviceType 디바이스 타입
+     */
+    public void deleteToken(Long userId, DeviceType deviceType) {
+        String accessTokenKey = getAccessTokenKey(userId, deviceType.getValue());
+        String refreshTokenKey = getRefreshTokenKey(userId, deviceType.getValue());
+
+        redisTemplate.delete(accessTokenKey);
+        redisTemplate.delete(refreshTokenKey);
+    }
+
+    /**
      * key 존재 여부 확인
      *
      * @param key key

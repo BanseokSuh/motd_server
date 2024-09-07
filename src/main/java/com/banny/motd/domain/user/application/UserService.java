@@ -9,6 +9,8 @@ public interface UserService {
 
     Tokens login(String loginId, String password, String deviceTypeStr);
 
+    void logout(Long id, String deviceTypeStr);
+
     void delete(Long id);
 
     User getMyInfo(Long id);
