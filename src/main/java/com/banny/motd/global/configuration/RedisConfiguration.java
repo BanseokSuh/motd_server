@@ -1,8 +1,8 @@
 package com.banny.motd.global.configuration;
 
 import com.banny.motd.domain.user.domain.User;
-import io.lettuce.core.RedisURI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +20,12 @@ public class RedisConfiguration {
 
     private final RedisProperties redisProperties;
 
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private int redisPort;
+
     /**
      * RedisConnectionFactory Bean 등록
      *
@@ -27,11 +33,7 @@ public class RedisConfiguration {
      */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisURI redisURI = RedisURI.create(redisProperties.getHost(), redisProperties.getPort());
-        org.springframework.data.redis.connection.RedisConfiguration redisConfiguration = LettuceConnectionFactory.createRedisConfiguration(redisURI);
-        LettuceConnectionFactory factory = new LettuceConnectionFactory(redisConfiguration);
-        factory.afterPropertiesSet();
-        return factory;
+        return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
     /**
