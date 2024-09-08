@@ -1,6 +1,7 @@
 package com.banny.motd.domain.user.application;
 
 
+import com.banny.motd.configuration.TestContainerConfiguration;
 import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.domain.Gender;
 import com.banny.motd.domain.user.domain.UserRole;
@@ -12,6 +13,7 @@ import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ResultType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(TestContainerConfiguration.class)
 @ActiveProfiles("test")
 @SpringBootTest
 class UserServiceTest {
