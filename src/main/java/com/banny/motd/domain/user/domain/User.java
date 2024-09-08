@@ -57,7 +57,7 @@ public class User implements UserDetails {
      */
     public void checkPasswordMatch(String password, BCryptPasswordEncoder encoder) {
         if (!encoder.matches(password, this.password)) {
-            throw new ApplicationException(ResultType.FAIL_INVALID_PARAMETER, "Password does not match");
+            throw new ApplicationException(ResultType.FAIL_USER_PASSWORD_MISMATCH, "Password does not match");
         }
     }
 
