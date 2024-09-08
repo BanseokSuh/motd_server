@@ -1,16 +1,10 @@
 package com.banny.motd.configuration;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.ListImagesCmd;
-import com.github.dockerjava.api.model.Image;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.shaded.com.github.dockerjava.core.DockerClientImpl;
 import org.testcontainers.utility.DockerImageName;
-
-import java.util.List;
 
 public class TestContainerConfiguration implements BeforeAllCallback, AfterAllCallback {
 

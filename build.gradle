@@ -61,7 +61,6 @@ dependencies {
     testRuntimeOnly 'com.h2database:h2' // h2
 
     // test container
-    testImplementation "org.junit.jupiter:junit-jupiter"
     testImplementation "org.testcontainers:testcontainers"
     testImplementation "org.testcontainers:junit-jupiter"
 
