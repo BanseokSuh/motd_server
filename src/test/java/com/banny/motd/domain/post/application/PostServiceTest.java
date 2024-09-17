@@ -109,24 +109,47 @@ class PostServiceTest {
         assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
-    // TODO: Is it right?
     @Test
     @DisplayName("게시글_수정")
     void post_modify() {
         // given
-        Long postId = 1L;
-        Long userId = 1L;
+        Post post = Post.builder()
+                .author(User.builder().id(1L).build())
+                .title("title")
+                .content("content")
+                .build();
+
+        Post createdPost = postRepository.save(PostEntity.from(post)).toDomain();
+
+        Post modifiedPost = Post.builder()
+                .author(User.builder().id(1L).build())
+                .title("title-modify")
+                .content("content-modify")
+                .build();
+
+        postService.modifyPost(createdPost.getId(), modifiedPost.getTitle(), modifiedPost.getContent(), modifiedPost.getAuthor().getId());
+
+        assertEquals(modifiedPost.getTitle(), postRepository.findById(post.getId()).get().getTitle());
+    }
+
+    @Test
+    @DisplayName("게시글_수정시_작성유저가_존재하지_않을_경우")
+    void post_modify_user_not_found() {
+        // given
+        Post post = Post.builder()
+                .author(User.builder().id(1L).build())
+                .title("title")
+                .content("content")
+                .build();
+        String title = "title-modify";
+        String content = "content-modify";
 
         // mock
-        PostEntity postEntity = mock(PostEntity.class);
-        Post post = mock(Post.class);
-        User author = mock(User.class);
+        when(userRepository.findById(2L)).thenReturn(Optional.empty());
 
-        when(postRepository.findById(postId)).thenReturn(Optional.of(postEntity));
-        when(postEntity.toDomain()).thenReturn(post);
-        when(post.getAuthor()).thenReturn(author);
-        when(author.getId()).thenReturn(userId);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mock(UserEntity.class)));
-        when(postRepository.saveAndFlush(postEntity)).thenReturn(postEntity);
+        // when
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, 2L));
+        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
+
 }

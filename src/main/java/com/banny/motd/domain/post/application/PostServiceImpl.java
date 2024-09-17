@@ -94,13 +94,13 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(PostEntity.from(post));
     }
 
-    public User getUserOrException(Long userId) {
+    private User getUserOrException(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
-    public Post getPostOrException(Long postId) {
+    private Post getPostOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
