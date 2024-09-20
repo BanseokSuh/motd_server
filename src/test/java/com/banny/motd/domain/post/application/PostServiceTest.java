@@ -56,7 +56,7 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글_생성시_작성유저가_존재하지_않을_경우")
+    @DisplayName("게시글_생성시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_create_user_not_found() {
         // given
         String title = "title";
@@ -96,7 +96,7 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글_단건_조회시_게시글이_존재하지_않을_경우")
+    @DisplayName("게시글_단건_조회시_게시글이_존재하지_않을_경우_에러를_반환한다")
     void post_get_not_found() {
         // given
         Long postId = 1L;
@@ -133,7 +133,7 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("게시글_수정시_작성유저가_존재하지_않을_경우")
+    @DisplayName("게시글_수정시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_modify_user_not_found() {
         // given
         Post post = Post.builder()
@@ -143,13 +143,39 @@ class PostServiceTest {
                 .build();
         String title = "title-modify";
         String content = "content-modify";
+        Long userId = 2L;
 
         // mock
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, 2L));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, userId));
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
+    @Test
+    @DisplayName("게시글_수정시_게시글이_존재하지_않을_경우_애러를_반환한다")
+    void post_modify_post_not_found() {
+        // given
+        Post post = Post.builder()
+                .author(User.builder().id(1L).build())
+                .title("title")
+                .content("content")
+                .build();
+        Long userId = 1L;
+
+        // mock
+        UserEntity mockUserEntity = mock(UserEntity.class);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUserEntity));
+        when(mockUserEntity.toDomain()).thenReturn(mock(User.class));
+        when(postRepository.findById(post.getId())).thenReturn(Optional.empty());
+
+        // when
+        String title = "title-modify";
+        String content = "content-modify";
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, userId));
+
+        // then
+        assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
+    }
 }
