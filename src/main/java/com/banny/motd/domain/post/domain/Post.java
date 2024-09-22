@@ -23,7 +23,7 @@ public class Post {
     private LocalDateTime deletedAt;
 
     public boolean isAuthor(Long userId) {
-        return author.getId().equals(userId);
+        return this.author.getId().equals(userId);
     }
 
     public void setTitleAndContent(String title, String content) {

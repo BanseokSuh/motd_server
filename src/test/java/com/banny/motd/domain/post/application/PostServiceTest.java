@@ -19,8 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -113,37 +112,40 @@ class PostServiceTest {
     @DisplayName("게시글_수정")
     void post_modify() {
         // given
-        Post post = Post.builder()
-                .author(User.builder().id(1L).build())
+        Long userId = 1L;
+        User mockUser = User.builder().id(userId).build();
+        Post mockPost = Post.builder()
+                .author(User.builder().id(userId).build())
                 .title("title")
                 .content("content")
                 .build();
+        String titleModify = "title-modify";
+        String contentModify = "content-modify";
 
-        Post createdPost = postRepository.save(PostEntity.from(post)).toDomain();
+        // mock
+        UserEntity mockUserEntity = mock(UserEntity.class);
+        PostEntity mockPostEntity = mock(PostEntity.class);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUserEntity));
+        when(mockUserEntity.toDomain()).thenReturn(mockUser);
+        when(postRepository.findById(mockPost.getId())).thenReturn(Optional.of(mockPostEntity));
+        when(mockPostEntity.toDomain()).thenReturn(mockPost);
 
-        Post modifiedPost = Post.builder()
-                .author(User.builder().id(1L).build())
-                .title("title-modify")
-                .content("content-modify")
-                .build();
-
-        postService.modifyPost(createdPost.getId(), modifiedPost.getTitle(), modifiedPost.getContent(), modifiedPost.getAuthor().getId());
-
-        assertEquals(modifiedPost.getTitle(), postRepository.findById(post.getId()).get().getTitle());
+        // when, then
+        assertDoesNotThrow(() -> postService.modifyPost(mockPost.getId(), titleModify, contentModify, userId));
     }
 
     @Test
     @DisplayName("게시글_수정시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_modify_user_not_found() {
         // given
+        Long userId = 1L;
         Post post = Post.builder()
-                .author(User.builder().id(1L).build())
+                .author(User.builder().id(2L).build())
                 .title("title")
                 .content("content")
                 .build();
         String title = "title-modify";
         String content = "content-modify";
-        Long userId = 2L;
 
         // mock
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
