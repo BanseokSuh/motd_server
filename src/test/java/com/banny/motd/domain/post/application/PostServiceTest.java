@@ -74,24 +74,25 @@ class PostServiceTest {
     @DisplayName("게시글_단건_조회")
     void post_get() {
         // given
-        Long postId = 6L;
-        Long userId = 1L;
+        User user = User.builder().id(1L).build();
+        Post post = Post.builder()
+                .id(1L)
+                .title("title")
+                .content("content")
+                .author(User.builder().id(user.getId()).build())
+                .build();
 
         // mock
-        PostEntity postEntity = mock(PostEntity.class);
-        UserEntity userEntity = mock(UserEntity.class);
-        Post post = mock(Post.class);
-        User author = mock(User.class);
+        PostEntity mockPostEntity = mock(PostEntity.class);
+        when(postRepository.findById(post.getId())).thenReturn(Optional.of(mockPostEntity));
+        when(mockPostEntity.toDomain()).thenReturn(post);
 
-        when(postRepository.findById(postId)).thenReturn(Optional.of(postEntity));
-        when(postEntity.toDomain()).thenReturn(post);
-        when(post.getAuthor()).thenReturn(author);
-        when(author.getId()).thenReturn(userId);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        when(userEntity.toDomain()).thenReturn(author);
+        UserEntity mockUserEntity = mock(UserEntity.class);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(mockUserEntity));
+        when(mockUserEntity.toDomain()).thenReturn(user);
 
         // when, then
-        assertDoesNotThrow(() -> postService.getPost(postId));
+        assertDoesNotThrow(() -> postService.getPost(post.getId()));
     }
 
     @Test
@@ -103,8 +104,10 @@ class PostServiceTest {
         // mock
         when(postRepository.findById(postId)).thenReturn(Optional.empty());
 
-        // when, then
+        // when
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.getPost(postId));
+
+        // then
         assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 
@@ -112,10 +115,9 @@ class PostServiceTest {
     @DisplayName("게시글_수정")
     void post_modify() {
         // given
-        Long userId = 1L;
-        User mockUser = User.builder().id(userId).build();
-        Post mockPost = Post.builder()
-                .author(User.builder().id(userId).build())
+        User user = User.builder().id(1L).build();
+        Post post = Post.builder()
+                .author(User.builder().id(user.getId()).build())
                 .title("title")
                 .content("content")
                 .build();
@@ -124,14 +126,15 @@ class PostServiceTest {
 
         // mock
         UserEntity mockUserEntity = mock(UserEntity.class);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(mockUserEntity));
+        when(mockUserEntity.toDomain()).thenReturn(user);
+
         PostEntity mockPostEntity = mock(PostEntity.class);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUserEntity));
-        when(mockUserEntity.toDomain()).thenReturn(mockUser);
-        when(postRepository.findById(mockPost.getId())).thenReturn(Optional.of(mockPostEntity));
-        when(mockPostEntity.toDomain()).thenReturn(mockPost);
+        when(postRepository.findById(post.getId())).thenReturn(Optional.of(mockPostEntity));
+        when(mockPostEntity.toDomain()).thenReturn(post);
 
         // when, then
-        assertDoesNotThrow(() -> postService.modifyPost(mockPost.getId(), titleModify, contentModify, userId));
+        assertDoesNotThrow(() -> postService.modifyPost(post.getId(), titleModify, contentModify, user.getId()));
     }
 
     @Test
@@ -152,30 +155,58 @@ class PostServiceTest {
 
         // when
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, userId));
+
+        // then
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
+    }
+
+    @Test
+    @DisplayName("게시글_수정시_작성유저가_작성자가_아닐_경우_에러를_반환한다")
+    void post_modify_not_author() {
+        // given
+        User user = User.builder().id(1L).build();
+        Post post = Post.builder()
+                .author(User.builder().id(2L).build())
+                .title("title")
+                .content("content")
+                .build();
+        String title = "title-modify";
+        String content = "content-modify";
+
+        // mock
+        UserEntity mockUserEntity = mock(UserEntity.class);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(mockUserEntity));
+        when(mockUserEntity.toDomain()).thenReturn(user);
+
+        PostEntity mockPostEntity = mock(PostEntity.class);
+        when(postRepository.findById(post.getId())).thenReturn(Optional.of(mockPostEntity));
+        when(mockPostEntity.toDomain()).thenReturn(post);
+
+        // when
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, user.getId()));
+
+        // then
+        assertEquals(ResultType.FAIL_INVALID_PERMISSION.getCode(), e.getResult().getCode());
     }
 
     @Test
     @DisplayName("게시글_수정시_게시글이_존재하지_않을_경우_애러를_반환한다")
     void post_modify_post_not_found() {
         // given
-        Post post = Post.builder()
-                .author(User.builder().id(1L).build())
-                .title("title")
-                .content("content")
-                .build();
         Long userId = 1L;
+        Long postId = 1L;
 
         // mock
         UserEntity mockUserEntity = mock(UserEntity.class);
         when(userRepository.findById(userId)).thenReturn(Optional.of(mockUserEntity));
         when(mockUserEntity.toDomain()).thenReturn(mock(User.class));
-        when(postRepository.findById(post.getId())).thenReturn(Optional.empty());
+
+        when(postRepository.findById(postId)).thenReturn(Optional.empty());
 
         // when
         String title = "title-modify";
         String content = "content-modify";
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(postId, title, content, userId));
 
         // then
         assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
