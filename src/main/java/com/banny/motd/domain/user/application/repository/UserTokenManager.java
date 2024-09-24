@@ -114,7 +114,7 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return access token key
      */
-    private String getAccessTokenKey(Long userId, Integer device) {
+    private String getAccessTokenKey(Long userId, int device) {
         return "A_TOKEN:" + userId + "-" + device;
     }
 
@@ -124,7 +124,7 @@ public class UserTokenManager {
      * @param userId 사용자 id
      * @return refresh token key
      */
-    private String getRefreshTokenKey(Long userId, Integer device) {
+    private String getRefreshTokenKey(Long userId, int device) {
         return "R_TOKEN:" + userId + "-" + device;
     }
 

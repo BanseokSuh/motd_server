@@ -30,7 +30,7 @@ public class PostDetailResponse {
     @Getter
     @Builder
     private static class LikeResponse {
-        private Integer count;
+        private int count;
         private List<LikeListResponse> list;
     }
 
@@ -45,7 +45,7 @@ public class PostDetailResponse {
     @Getter
     @Builder
     private static class CommentResponse {
-        private Integer count;
+        private int count;
         private List<CommentListResponse> list;
     }
 

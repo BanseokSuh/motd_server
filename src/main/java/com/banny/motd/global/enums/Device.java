@@ -13,7 +13,7 @@ public enum Device {
     MOBILE_ANDROID(2, "MOBILE_ANDROID"),
     MOBILE_IOS(3, "MOBILE_IOS");
 
-    private final Integer value;
+    private final int value;
     private final String name;
 
     /**
