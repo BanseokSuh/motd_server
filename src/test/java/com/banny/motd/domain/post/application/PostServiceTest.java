@@ -65,8 +65,10 @@ class PostServiceTest {
         // mock
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // when, then
+        // when
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(title, content, userId));
+
+        // then
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
     }
 

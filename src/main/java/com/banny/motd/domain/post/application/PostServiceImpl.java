@@ -55,14 +55,14 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
         User user = getUserOrException(post.getAuthor().getId());
 
-        List<Reaction> listList = reactionService.getLikeListByPostId(postId);
+        List<Reaction> likeList = reactionService.getLikeListByPostId(postId);
         List<Comment> commentList = commentService.getCommentListByPostId(postId);
 
         return PostDetail.builder()
                 .post(post)
                 .user(user)
                 .commentList(commentList)
-                .likeList(listList)
+                .likeList(likeList)
                 .build();
     }
 
