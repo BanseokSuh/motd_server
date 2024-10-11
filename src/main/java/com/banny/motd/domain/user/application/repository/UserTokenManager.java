@@ -17,8 +17,8 @@ import java.time.Duration;
 public class UserTokenManager {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private final static Duration ACCESS_TOKEN_CACHE_TTL = Duration.ofMinutes(30); // 30분
-    private final static Duration REFRESH_TOKEN_CACHE_TTL = Duration.ofDays(1); // 1 day
+    private static final Duration ACCESS_TOKEN_CACHE_TTL = Duration.ofMinutes(30); // 30분
+    private static final Duration REFRESH_TOKEN_CACHE_TTL = Duration.ofDays(1); // 1 day
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -52,7 +52,7 @@ public class UserTokenManager {
     /**
      * access token redis에 저장 (중복로그인 방지용)
      *
-     * @param userId 사용자 id
+     * @param userId      사용자 id
      * @param accessToken access token
      */
     public void saveAccessToken(Long userId, Device device, String accessToken) {
@@ -63,7 +63,7 @@ public class UserTokenManager {
     /**
      * refresh token redis에 저장
      *
-     * @param userId 사용자 id
+     * @param userId       사용자 id
      * @param refreshToken refresh token
      */
     public void saveRefreshToken(Long userId, Device device, String refreshToken) {

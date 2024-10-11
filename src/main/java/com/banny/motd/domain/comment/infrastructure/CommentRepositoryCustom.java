@@ -8,4 +8,5 @@ import java.util.List;
 public interface CommentRepositoryCustom {
 
     List<CommentEntity> findByTargetIdAndTargetType(Long targetId, TargetType targetType);
+
 }

@@ -2,7 +2,10 @@ package com.banny.motd.domain.reaction.domain;
 
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.global.enums.TargetType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -20,4 +23,5 @@ public class Reaction {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+
 }

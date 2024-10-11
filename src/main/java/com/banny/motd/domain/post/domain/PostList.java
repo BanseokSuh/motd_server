@@ -27,4 +27,5 @@ public class PostList {
         this.deletedAt = post.getDeletedAt();
         this.author = user;
     }
+
 }

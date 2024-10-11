@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public class CommentCreateRequest {
 
-    @NotBlank(message = "Please enter the content")
-    @Size(min = 1, max = 1_000, message = "The content must be between 1 and 1,000 characters")
+    @NotBlank(message = "댓글 내용을 입력해주세요.")
+    @Size(min = 1, max = 1_000, message = "댓글은 1자 이상 1,000자 이하로 입력해주세요.")
     private String comment;
+
 }

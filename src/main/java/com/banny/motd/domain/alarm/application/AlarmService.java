@@ -14,4 +14,5 @@ public interface AlarmService {
     SseEmitter subscribeAlarm(Long userId);
 
     void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId);
+    
 }

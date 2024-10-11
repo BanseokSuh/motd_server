@@ -26,12 +26,13 @@ public class ReactionRepositoryCustomImpl implements ReactionRepositoryCustom {
 
     @Override
     public ReactionEntity findByUserIdAndTargetTypeAndTargetIdAndReactionType(Long userId, TargetType targetType, Long targetId, ReactionType reactionType) {
-            return jpaQueryFactory
-                    .selectFrom(QReactionEntity.reactionEntity)
-                    .where(QReactionEntity.reactionEntity.user.id.eq(userId)
-                            .and(QReactionEntity.reactionEntity.targetType.eq(targetType))
-                            .and(QReactionEntity.reactionEntity.targetId.eq(targetId))
-                            .and(QReactionEntity.reactionEntity.reactionType.eq(reactionType)))
-                    .fetchOne();
+        return jpaQueryFactory
+                .selectFrom(QReactionEntity.reactionEntity)
+                .where(QReactionEntity.reactionEntity.user.id.eq(userId)
+                        .and(QReactionEntity.reactionEntity.targetType.eq(targetType))
+                        .and(QReactionEntity.reactionEntity.targetId.eq(targetId))
+                        .and(QReactionEntity.reactionEntity.reactionType.eq(reactionType)))
+                .fetchOne();
     }
+    
 }

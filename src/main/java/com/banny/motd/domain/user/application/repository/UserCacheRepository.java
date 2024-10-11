@@ -15,12 +15,12 @@ import java.util.Optional;
 public class UserCacheRepository {
 
     private final RedisTemplate<String, User> redisTemplate;
-    private final static Duration USER_CACHE_TTL = Duration.ofDays(3); // 3 days
+    private static final Duration USER_CACHE_TTL = Duration.ofDays(3); // 3 days
 
     /**
      * 사용자 정보를 캐시에 저장 <p>
      * 캐시 만료 시간은 3일 <p>
-     *
+     * <p>
      * redisTemplate.opsForValue()는 Redis의 String 데이터 구조를 다루는 메서드를 제공 <p>
      * set, get, delete, increment, decrement 등의 메서드를 제공
      *
@@ -35,6 +35,7 @@ public class UserCacheRepository {
 
     /**
      * 사용자 정보를 캐시에서 조회
+     *
      * @param userId 사용자 ID
      * @return Optional<User>
      */
@@ -49,6 +50,7 @@ public class UserCacheRepository {
 
     /**
      * 사용자 정보를 캐시에서 삭제
+     *
      * @param userId 사용자 ID
      */
     public void deleteUser(Long userId) {
@@ -62,6 +64,7 @@ public class UserCacheRepository {
      * 캐시에 사용되는 Key는 "USER:" + userId 형태로 생성 <p>
      * ex) USER:1, USER:2, USER:3 <p>
      * Redis Key 생성
+     *
      * @param userId 사용자 ID
      * @return Redis Key
      */

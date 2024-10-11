@@ -14,4 +14,5 @@ public class AlarmEvent {
     private Long receiverUserId;
     private AlarmType alarmType;
     private AlarmArgs alarmArgs;
+
 }

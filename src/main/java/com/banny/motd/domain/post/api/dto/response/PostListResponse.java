@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class PostListResponse {
+
     private Long id;
     private String title;
     private String content;
@@ -37,4 +38,5 @@ public class PostListResponse {
                         .build()
         );
     }
+
 }

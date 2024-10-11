@@ -11,4 +11,5 @@ public class AlarmArgs {
 
     private Long fromUserId;
     private Long targetId;
+
 }

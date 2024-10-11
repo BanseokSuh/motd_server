@@ -2,15 +2,15 @@ package com.banny.motd.domain.post.api;
 
 import com.banny.motd.domain.post.api.dto.request.PostCreateRequest;
 import com.banny.motd.domain.post.api.dto.request.PostModifyRequest;
+import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.banny.motd.domain.post.api.dto.response.PostDetailResponse;
 import com.banny.motd.domain.post.api.dto.response.PostListResponse;
-import com.banny.motd.domain.post.domain.PostList;
-import com.banny.motd.domain.post.domain.PostDetail;
-import com.banny.motd.global.dto.request.SearchRequest;
-import com.banny.motd.domain.post.api.dto.response.PostCreateResponse;
 import com.banny.motd.domain.post.application.PostService;
 import com.banny.motd.domain.post.domain.Post;
+import com.banny.motd.domain.post.domain.PostDetail;
+import com.banny.motd.domain.post.domain.PostList;
 import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.dto.response.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,4 +67,5 @@ public class PostController {
 
         return Response.success();
     }
+
 }

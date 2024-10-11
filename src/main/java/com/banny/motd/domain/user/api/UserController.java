@@ -26,6 +26,7 @@ public class UserController {
 
     /**
      * 회원가입
+     *
      * @param request UserJoinRequest
      * @return UserJoinResponse
      */
@@ -37,6 +38,7 @@ public class UserController {
 
     /**
      * 로그인
+     *
      * @param request UserLoginRequest
      * @return UserLoginResponse
      */
@@ -48,6 +50,7 @@ public class UserController {
 
     /**
      * 로그아웃
+     *
      * @param authentication Authentication
      * @return Response<Void>
      */
@@ -61,6 +64,7 @@ public class UserController {
 
     /**
      * 회원 탈퇴
+     *
      * @param authentication Authentication
      * @return Response<Void>
      */
@@ -73,6 +77,7 @@ public class UserController {
 
     /**
      * 내 정보 조회
+     *
      * @param authentication Authentication
      * @return UserMyResponse
      */

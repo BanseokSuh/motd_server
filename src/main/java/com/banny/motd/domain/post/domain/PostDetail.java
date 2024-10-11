@@ -34,4 +34,5 @@ public class PostDetail {
         this.updatedAt = post.getUpdatedAt();
         this.deletedAt = post.getDeletedAt();
     }
+
 }

@@ -22,10 +22,10 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLDelete(sql = "UPDATE \"user\" SET login_id = login_id || '_deleted_' || id, deleted_at = NOW(), user_status = 'DELETED' where id = ?")
 @Table(name = "\"user\"",
         uniqueConstraints = {
-            @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")
+                @UniqueConstraint(name = "uk_user_login_id", columnNames = "login_id")
         },
         indexes = {
-            @Index(name = "index_user_deleted_at_user_status", columnList = "deleted_at, user_status")
+                @Index(name = "index_user_deleted_at_user_status", columnList = "deleted_at, user_status")
         })
 @Entity
 public class UserEntity extends BaseEntity {
@@ -84,5 +84,6 @@ public class UserEntity extends BaseEntity {
                 .gender(gender)
                 .build();
     }
+
 }
 

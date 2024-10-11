@@ -41,7 +41,7 @@ public class ReactionEntity extends BaseEntity {
     @Column(name = "target_id", nullable = false, columnDefinition = "BIGINT")
     private Long targetId;
 
-    @Column(name = "reaction_type", nullable = false,   columnDefinition = "VARCHAR(20)")
+    @Column(name = "reaction_type", nullable = false, columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
 

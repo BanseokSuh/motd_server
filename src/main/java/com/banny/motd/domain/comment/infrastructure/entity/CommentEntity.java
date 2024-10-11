@@ -62,4 +62,5 @@ public class CommentEntity extends BaseEntity {
                 .createdAt(getCreatedAt())
                 .build();
     }
+
 }

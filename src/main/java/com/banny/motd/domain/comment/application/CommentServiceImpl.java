@@ -61,4 +61,5 @@ public class CommentServiceImpl implements CommentService {
                 .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
+
 }

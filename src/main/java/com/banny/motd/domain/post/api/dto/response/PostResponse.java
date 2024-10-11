@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostResponse {
+
     private Long id;
     private String title;
     private String content;
@@ -29,4 +30,5 @@ public class PostResponse {
                 .writerUserId(post.getAuthor().getId())
                 .build();
     }
+
 }

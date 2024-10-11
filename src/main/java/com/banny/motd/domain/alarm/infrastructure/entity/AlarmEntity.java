@@ -61,4 +61,5 @@ public class AlarmEntity extends BaseEntity {
                 .createdAt(getCreatedAt())
                 .build();
     }
+
 }

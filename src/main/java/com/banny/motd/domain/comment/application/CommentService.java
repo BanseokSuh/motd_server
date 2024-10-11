@@ -9,4 +9,5 @@ public interface CommentService {
     void commentPost(Long postId, Long userId, String comment);
 
     List<Comment> getCommentListByPostId(Long postId);
+
 }

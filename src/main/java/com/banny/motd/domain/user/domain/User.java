@@ -26,11 +26,13 @@ public class User implements UserDetails {
     private String loginId;
     private String userName;
     private String email;
-    @JsonIgnore private String password;
+    @JsonIgnore
+    private String password;
     private Gender gender;
     private UserRole userRole;
     private UserStatus userStatus;
-    @Setter private Device device;
+    @Setter
+    private Device device;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -53,7 +55,7 @@ public class User implements UserDetails {
      * 비밀번호 일치 여부 확인
      *
      * @param password 비밀번호
-     * @param encoder BCryptPasswordEncoder
+     * @param encoder  BCryptPasswordEncoder
      */
     public void checkPasswordMatch(String password, BCryptPasswordEncoder encoder) {
         if (!encoder.matches(password, this.password)) {
@@ -105,4 +107,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
 }

@@ -18,7 +18,8 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
         return jpaQueryFactory
                 .selectFrom(QCommentEntity.commentEntity)
                 .where(QCommentEntity.commentEntity.targetId.eq(targetId)
-                .and(QCommentEntity.commentEntity.targetType.eq(targetType)))
+                        .and(QCommentEntity.commentEntity.targetType.eq(targetType)))
                 .fetch();
     }
+
 }

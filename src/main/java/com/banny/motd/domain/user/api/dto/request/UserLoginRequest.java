@@ -7,15 +7,15 @@ import lombok.Getter;
 @Getter
 public class UserLoginRequest {
 
-    @NotBlank(message = "Please enter your ID")
-    @Size(min = 4, max = 20, message = "ID must be between 4 and 20 characters")
+    @NotBlank(message = "아이디를 입력해주세요.")
+    @Size(min = 4, max = 20, message = "아이디는 4~20자 사이로 입력해주세요.")
     private String loginId;
 
-    @NotBlank(message = "Please enter your password")
-    @Size(min = 8, max = 16, message = "Password must be between 8 and 16 characters")
+    @NotBlank(message = "비밀번호를 입력해주세요.")
+    @Size(min = 8, max = 16, message = "비밀번호는 8~16자 사이로 입력해주세요.")
     private String password;
 
-    @NotBlank(message = "Please enter the device")
+    @NotBlank(message = "디바이스를 입력해주세요.")
     private String device;
 
 }

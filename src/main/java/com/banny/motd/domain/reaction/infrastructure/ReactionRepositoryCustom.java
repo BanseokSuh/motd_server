@@ -11,4 +11,5 @@ public interface ReactionRepositoryCustom {
     List<ReactionEntity> findListByTargetIdAndTargetTypeAndReactionType(Long targetId, TargetType targetType, ReactionType reactionType);
 
     ReactionEntity findByUserIdAndTargetTypeAndTargetIdAndReactionType(Long userId, TargetType targetType, Long targetId, ReactionType reactionType);
+
 }

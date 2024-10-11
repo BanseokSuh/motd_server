@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class PostDetailResponse {
+
     private Long id;
     private String title;
     private String content;
@@ -100,4 +101,5 @@ public class PostDetailResponse {
                         .build()
         );
     }
+
 }
