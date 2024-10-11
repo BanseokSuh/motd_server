@@ -75,7 +75,6 @@
     <root level="INFO">
         <appender-ref ref="REQUEST" />
         <appender-ref ref="ERROR" />
-<!--        <appender-ref ref="WARN" />-->
     </root>
 
     <!--  커스텀 로그  -->

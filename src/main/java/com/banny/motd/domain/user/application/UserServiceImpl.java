@@ -1,11 +1,11 @@
 package com.banny.motd.domain.user.application;
 
 import com.banny.motd.domain.user.application.repository.UserCacheRepository;
+import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.application.repository.UserTokenManager;
 import com.banny.motd.domain.user.domain.Tokens;
 import com.banny.motd.domain.user.domain.User;
 import com.banny.motd.domain.user.domain.UserRole;
-import com.banny.motd.domain.user.application.repository.UserRepository;
 import com.banny.motd.domain.user.domain.UserStatus;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.email.EmailHandler;
@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
 
         return joinedUser;
     }
-
 
     @Override
     @Transactional
@@ -117,7 +116,7 @@ public class UserServiceImpl implements UserService {
                 userRepository.findById(id)
                         .map(UserEntity::toDomain)
                         .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)))
-                );
+        );
     }
 
     @Override
@@ -125,6 +124,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByLoginId(loginId)
                 .map(UserEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
+    }
+
+    @Override
+    public User getUserOrException(Long userId) {
+        return userRepository.findById(userId)
+                .map(UserEntity::toDomain)
+                .orElseThrow(() -> new ApplicationException(ResultType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
 }

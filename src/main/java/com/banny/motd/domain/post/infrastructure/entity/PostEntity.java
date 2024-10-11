@@ -64,6 +64,7 @@ public class PostEntity extends BaseEntity {
                 .createdAt(getCreatedAt())
                 .build();
     }
+
 }
 
 

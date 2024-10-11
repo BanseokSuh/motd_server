@@ -12,10 +12,12 @@ public interface UserService {
 
     void logout(Long id, Device device);
 
-    void delete(Long id);
+    void delete(Long userId);
 
-    User getMyInfo(Long id);
+    User getMyInfo(Long userId);
 
     User loadUserByLoginId(String loginId);
+
+    User getUserOrException(Long userId);
 
 }
