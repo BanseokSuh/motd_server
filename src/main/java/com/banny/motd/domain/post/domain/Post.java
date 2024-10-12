@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     private Long id;
+    private String imagePath;
     private String content;
     private User author;
     private LocalDateTime createdAt;
@@ -25,7 +26,7 @@ public class Post {
         return this.author.getId().equals(userId);
     }
 
-    public void setTitleAndContent(String content) {
+    public void setPost(String content) {
         this.content = content;
     }
 

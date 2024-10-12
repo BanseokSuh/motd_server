@@ -28,6 +28,9 @@ public class PostEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
+    @Column(name = "image_path", nullable = false, columnDefinition = "TEXT")
+    private String imagePath;
+
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -38,13 +41,15 @@ public class PostEntity extends BaseEntity {
     public static PostEntity from(Post post) {
         return PostEntity.builder()
                 .id(post.getId())
+                .imagePath(post.getImagePath())
                 .content(post.getContent())
                 .user(UserEntity.from(post.getAuthor()))
                 .build();
     }
 
-    public static PostEntity of(String content, UserEntity userEntity) {
+    public static PostEntity of(String imagePath, String content, UserEntity userEntity) {
         return PostEntity.builder()
+                .imagePath(imagePath)
                 .content(content)
                 .user(userEntity)
                 .build();
@@ -53,6 +58,7 @@ public class PostEntity extends BaseEntity {
     public Post toDomain() {
         return Post.builder()
                 .id(id)
+                .imagePath(imagePath)
                 .content(content)
                 .author(user.toDomain())
                 .createdAt(getCreatedAt())

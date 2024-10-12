@@ -11,6 +11,7 @@ public class PostList {
 
     private Long id;
     private String content;
+    private String imagePath;
     private User author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -38,6 +38,7 @@ class PostServiceTest {
     @DisplayName("게시글_생성")
     void post_create() {
         // given
+        String imagePath = "imagePath";
         String content = "content";
         Long userId = 1L;
 
@@ -50,13 +51,14 @@ class PostServiceTest {
         when(postRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         // when, then
-        assertDoesNotThrow(() -> postService.createPost(content, userId));
+        assertDoesNotThrow(() -> postService.createPost(imagePath, content, userId));
     }
 
     @Test
     @DisplayName("게시글_생성시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_create_user_not_found() {
         // given
+        String imagePath = "imagePath";
         String content = "content";
         Long userId = 1L;
 
@@ -64,7 +66,7 @@ class PostServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(imagePath, content, userId));
 
         // then
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());

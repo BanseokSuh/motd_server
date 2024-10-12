@@ -13,6 +13,7 @@ import java.util.List;
 public class PostDetail {
 
     private Long id;
+    private String imagePath;
     private String content;
     private User author;
     private List<Reaction> likeList;
