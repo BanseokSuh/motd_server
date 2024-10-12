@@ -8,12 +8,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AlarmType {
 
-    COMMENT("댓글이 달렸습니다."),
-    LIKE("좋아요가 눌렸습니다."),
-    DISLIKE("싫어요가 눌렸습니다."),
-    FOLLOW("팔로우가 눌렸습니다."),
-    ;
+    COMMENT("댓글"),
+    LIKE("좋아요"),
+    DISLIKE("싫어요"),
+    FOLLOW("팔로우");
 
-    private final String alarmText;
+    private final String text;
 
 }
