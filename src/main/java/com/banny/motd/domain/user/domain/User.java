@@ -31,6 +31,7 @@ public class User implements UserDetails {
     private Gender gender;
     private UserRole userRole;
     private UserStatus userStatus;
+    private String profileImageUrl;
     @Setter
     private Device device;
     private LocalDateTime createdAt;

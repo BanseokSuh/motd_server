@@ -59,6 +59,9 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
+    @Column(name = "profile_image_url", nullable = true, columnDefinition = "VARCHAR(255)")
+    private String profileImageUrl;
+
     public static UserEntity from(User user) {
         return UserEntity.builder()
                 .id(user.getId())
@@ -68,6 +71,7 @@ public class UserEntity extends BaseEntity {
                 .password(user.getPassword())
                 .userRole(user.getUserRole())
                 .userStatus(user.getUserStatus())
+                .profileImageUrl(user.getProfileImageUrl())
                 .gender(user.getGender())
                 .build();
     }
@@ -81,6 +85,7 @@ public class UserEntity extends BaseEntity {
                 .password(password)
                 .userRole(userRole)
                 .userStatus(userStatus)
+                .profileImageUrl(profileImageUrl)
                 .gender(gender)
                 .build();
     }
