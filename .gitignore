@@ -347,3 +347,5 @@ gradle-app.setting
 
 **/AppRunner.java
 **/application-encrypted.yml
+
+**/scripts_docker/
