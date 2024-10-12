@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     private Long id;
-    private String imagePath;
+    private String imageUrl;
     private String content;
     private User author;
     private LocalDateTime createdAt;

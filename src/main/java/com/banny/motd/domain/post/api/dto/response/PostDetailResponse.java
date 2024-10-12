@@ -62,7 +62,7 @@ public class PostDetailResponse {
     public static PostDetailResponse from(PostDetail postDetail) {
         return new PostDetailResponse(
                 postDetail.getId(),
-                postDetail.getImagePath(),
+                postDetail.getImageUrl(),
                 postDetail.getContent(),
                 postDetail.getCreatedAt(),
                 AuthorResponse.builder() // 게시글 작성자

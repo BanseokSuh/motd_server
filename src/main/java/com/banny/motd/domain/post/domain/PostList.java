@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class PostList {
 
     private Long id;
-    private String imagePath;
+    private String imageUrl;
     private String content;
     private User author;
     private LocalDateTime createdAt;
@@ -20,7 +20,7 @@ public class PostList {
     @Builder
     public PostList(Post post, User user) {
         this.id = post.getId();
-        this.imagePath = post.getImagePath();
+        this.imageUrl = post.getImageUrl();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();

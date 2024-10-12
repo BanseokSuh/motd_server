@@ -28,7 +28,7 @@ public class PostListResponse {
     public static PostListResponse from(PostList postList) {
         return new PostListResponse(
                 postList.getId(),
-                postList.getImagePath(),
+                postList.getImageUrl(),
                 postList.getContent(),
                 postList.getCreatedAt(),
                 AuthorResponse.builder()
