@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class PostListResponse {
 
     private Long id;
+    private String imagePath;
     private String content;
     private LocalDateTime createdAt;
     private AuthorResponse author;
@@ -27,6 +28,7 @@ public class PostListResponse {
     public static PostListResponse from(PostList postList) {
         return new PostListResponse(
                 postList.getId(),
+                postList.getImagePath(),
                 postList.getContent(),
                 postList.getCreatedAt(),
                 AuthorResponse.builder()

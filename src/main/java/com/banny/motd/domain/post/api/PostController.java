@@ -39,8 +39,7 @@ public class PostController {
         List<PostList> posts = postService.getPostList(request);
 
         List<PostListResponse> postResponses = posts.stream()
-                .map(PostListResponse::from)
-                .toList();
+                .map(PostListResponse::from).toList();
 
         return Response.success(postResponses);
     }

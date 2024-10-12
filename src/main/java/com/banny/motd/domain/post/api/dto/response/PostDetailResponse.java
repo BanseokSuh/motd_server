@@ -13,6 +13,7 @@ import java.util.List;
 public class PostDetailResponse {
 
     private Long id;
+    private String imagePath;
     private String content;
     private LocalDateTime createdAt;
     private AuthorResponse author;
@@ -61,6 +62,7 @@ public class PostDetailResponse {
     public static PostDetailResponse from(PostDetail postDetail) {
         return new PostDetailResponse(
                 postDetail.getId(),
+                postDetail.getImagePath(),
                 postDetail.getContent(),
                 postDetail.getCreatedAt(),
                 AuthorResponse.builder() // 게시글 작성자
@@ -71,13 +73,13 @@ public class PostDetailResponse {
                 LikeResponse.builder() // 좋아요
                         .count(postDetail.getLikeList().size()) // 좋아요 개수
                         .list(postDetail.getLikeList().stream() // 좋아요 목록
-                                .map(reaction -> LikeListResponse.builder()
-                                        .id(reaction.getId()) // 좋아요 식별값
-                                        .createdAt(reaction.getCreatedAt()) // 좋아요 생성일
+                                .map(postReaction -> LikeListResponse.builder()
+                                        .id(postReaction.getId()) // 좋아요 식별값
+                                        .createdAt(postReaction.getCreatedAt()) // 좋아요 생성일
                                         .author(AuthorResponse.builder() // 좋아요 작성자
-                                                .id(reaction.getAuthor().getId()) // 좋아요 작성자 식별값
-                                                .loginId(reaction.getAuthor().getLoginId()) // 좋아요 작성자 아이디
-                                                .userName(reaction.getAuthor().getUsername()) // 좋아요 작성자 이름
+                                                .id(postReaction.getAuthor().getId()) // 좋아요 작성자 식별값
+                                                .loginId(postReaction.getAuthor().getLoginId()) // 좋아요 작성자 아이디
+                                                .userName(postReaction.getAuthor().getUsername()) // 좋아요 작성자 이름
                                                 .build())
                                         .build())
                                 .toList())
@@ -85,14 +87,14 @@ public class PostDetailResponse {
                 CommentResponse.builder() // 댓글
                         .count(postDetail.getCommentList().size()) // 댓글 개수
                         .list(postDetail.getCommentList().stream() // 댓글 목록
-                                .map(comment -> CommentListResponse.builder()
-                                        .id(comment.getId()) // 댓글 식별값
-                                        .content(comment.getComment()) // 댓글 내용
-                                        .createdAt(comment.getCreatedAt()) // 댓글 생성일
+                                .map(postComment -> CommentListResponse.builder()
+                                        .id(postComment.getId()) // 댓글 식별값
+                                        .content(postComment.getComment()) // 댓글 내용
+                                        .createdAt(postComment.getCreatedAt()) // 댓글 생성일
                                         .author(AuthorResponse.builder() // 댓글 작성자
-                                                .id(comment.getAuthor().getId()) // 댓글 작성자 식별값
-                                                .loginId(comment.getAuthor().getLoginId()) // 댓글 작성자 아이디
-                                                .userName(comment.getAuthor().getUsername()) // 댓글 작성자 이름
+                                                .id(postComment.getAuthor().getId()) // 댓글 작성자 식별값
+                                                .loginId(postComment.getAuthor().getLoginId()) // 댓글 작성자 아이디
+                                                .userName(postComment.getAuthor().getUsername()) // 댓글 작성자 이름
                                                 .build())
                                         .build())
                                 .toList())
