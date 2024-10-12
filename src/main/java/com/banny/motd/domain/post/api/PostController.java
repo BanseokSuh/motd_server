@@ -29,7 +29,7 @@ public class PostController {
     @PostMapping
     public Response<PostCreateResponse> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Post post = postService.createPost(request.getTitle(), request.getContent(), user.getId());
+        Post post = postService.createPost(request.getContent(), user.getId());
 
         return Response.success(PostCreateResponse.from(post));
     }
@@ -55,7 +55,7 @@ public class PostController {
     @PutMapping("/{id}")
     public Response<Void> modifyPost(@PathVariable Long id, @RequestBody PostModifyRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        postService.modifyPost(id, request.getTitle(), request.getContent(), user.getId());
+        postService.modifyPost(id, request.getContent(), user.getId());
 
         return Response.success();
     }

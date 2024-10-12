@@ -34,10 +34,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post createPost(String title, String content, Long userId) {
+    public Post createPost(String content, Long userId) {
         User user = userService.getUserOrException(userId);
 
-        return postRepository.save(PostEntity.of(title, content, UserEntity.from(user))).toDomain();
+        return postRepository.save(PostEntity.of(content, UserEntity.from(user))).toDomain();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void modifyPost(Long postId, String title, String content, Long userId) {
+    public void modifyPost(Long postId, String content, Long userId) {
         User user = userService.getUserOrException(userId);
         Post post = getPostOrException(postId);
 
@@ -76,7 +76,7 @@ public class PostServiceImpl implements PostService {
             throw new ApplicationException(ResultType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
-        post.setTitleAndContent(title, content);
+        post.setTitleAndContent(content);
 
         postRepository.saveAndFlush(PostEntity.from(post));
     }

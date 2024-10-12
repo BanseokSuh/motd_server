@@ -38,7 +38,6 @@ class PostServiceTest {
     @DisplayName("게시글_생성")
     void post_create() {
         // given
-        String title = "title";
         String content = "content";
         Long userId = 1L;
 
@@ -51,14 +50,13 @@ class PostServiceTest {
         when(postRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         // when, then
-        assertDoesNotThrow(() -> postService.createPost(title, content, userId));
+        assertDoesNotThrow(() -> postService.createPost(content, userId));
     }
 
     @Test
     @DisplayName("게시글_생성시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_create_user_not_found() {
         // given
-        String title = "title";
         String content = "content";
         Long userId = 1L;
 
@@ -66,7 +64,7 @@ class PostServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(title, content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(content, userId));
 
         // then
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
@@ -79,7 +77,6 @@ class PostServiceTest {
         User user = User.builder().id(1L).build();
         Post post = Post.builder()
                 .id(1L)
-                .title("title")
                 .content("content")
                 .author(User.builder().id(user.getId()).build())
                 .build();
@@ -120,10 +117,8 @@ class PostServiceTest {
         User user = User.builder().id(1L).build();
         Post post = Post.builder()
                 .author(User.builder().id(user.getId()).build())
-                .title("title")
                 .content("content")
                 .build();
-        String titleModify = "title-modify";
         String contentModify = "content-modify";
 
         // mock
@@ -136,7 +131,7 @@ class PostServiceTest {
         when(mockPostEntity.toDomain()).thenReturn(post);
 
         // when, then
-        assertDoesNotThrow(() -> postService.modifyPost(post.getId(), titleModify, contentModify, user.getId()));
+        assertDoesNotThrow(() -> postService.modifyPost(post.getId(), contentModify, user.getId()));
     }
 
     @Test
@@ -146,17 +141,15 @@ class PostServiceTest {
         Long userId = 1L;
         Post post = Post.builder()
                 .author(User.builder().id(2L).build())
-                .title("title")
                 .content("content")
                 .build();
-        String title = "title-modify";
         String content = "content-modify";
 
         // mock
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), content, userId));
 
         // then
         assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
@@ -169,10 +162,8 @@ class PostServiceTest {
         User user = User.builder().id(1L).build();
         Post post = Post.builder()
                 .author(User.builder().id(2L).build())
-                .title("title")
                 .content("content")
                 .build();
-        String title = "title-modify";
         String content = "content-modify";
 
         // mock
@@ -185,7 +176,7 @@ class PostServiceTest {
         when(mockPostEntity.toDomain()).thenReturn(post);
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), title, content, user.getId()));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), content, user.getId()));
 
         // then
         assertEquals(ResultType.FAIL_INVALID_PERMISSION.getCode(), e.getResult().getCode());
@@ -206,9 +197,8 @@ class PostServiceTest {
         when(postRepository.findById(postId)).thenReturn(Optional.empty());
 
         // when
-        String title = "title-modify";
         String content = "content-modify";
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(postId, title, content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(postId, content, userId));
 
         // then
         assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());

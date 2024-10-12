@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class PostResponse {
 
     private Long id;
-    private String title;
     private String content;
     private LocalDateTime createdAt;
     private Long writerUserId;
@@ -24,7 +23,6 @@ public class PostResponse {
     public static PostResponse from(Post post) {
         return PostResponse.builder()
                 .id(post.getId())
-                .title(post.getTitle())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
                 .writerUserId(post.getAuthor().getId())

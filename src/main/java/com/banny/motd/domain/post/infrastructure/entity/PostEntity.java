@@ -28,9 +28,6 @@ public class PostEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(50)")
-    private String title;
-
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -41,15 +38,13 @@ public class PostEntity extends BaseEntity {
     public static PostEntity from(Post post) {
         return PostEntity.builder()
                 .id(post.getId())
-                .title(post.getTitle())
                 .content(post.getContent())
                 .user(UserEntity.from(post.getAuthor()))
                 .build();
     }
 
-    public static PostEntity of(String title, String content, UserEntity userEntity) {
+    public static PostEntity of(String content, UserEntity userEntity) {
         return PostEntity.builder()
-                .title(title)
                 .content(content)
                 .user(userEntity)
                 .build();
@@ -58,7 +53,6 @@ public class PostEntity extends BaseEntity {
     public Post toDomain() {
         return Post.builder()
                 .id(id)
-                .title(title)
                 .content(content)
                 .author(user.toDomain())
                 .createdAt(getCreatedAt())

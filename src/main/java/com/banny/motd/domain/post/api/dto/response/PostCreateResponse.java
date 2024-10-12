@@ -9,12 +9,10 @@ import lombok.Getter;
 public class PostCreateResponse {
 
     private Long id;
-    private String title;
 
     public static PostCreateResponse from(Post post) {
         return new PostCreateResponse(
-                post.getId(),
-                post.getTitle()
+                post.getId()
         );
     }
 
