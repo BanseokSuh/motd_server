@@ -84,9 +84,9 @@ public class AlarmServiceImpl implements AlarmService {
         StringBuilder message = new StringBuilder();
 
         if (alarmType == AlarmType.COMMENT) {
-            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUser.getUsername()));
+            message.append(String.format("%s from %s", alarmType.getText(), senderUser.getUsername()));
         } else if (alarmType == AlarmType.LIKE) {
-            message.append(String.format("%s from %s", alarmType.getAlarmText(), senderUser.getUsername()));
+            message.append(String.format("%s from %s", alarmType.getText(), senderUser.getUsername()));
         } else {
             message.append(String.format("New alarm %s", senderUser.getUsername()));
         }
