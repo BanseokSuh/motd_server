@@ -35,7 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/application.yml
+/src/main/resources/application*.yml
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,java,gradle,intellij,intellij+all,intellij+iml
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,java,gradle,intellij,intellij+all,intellij+iml
