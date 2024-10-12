@@ -11,13 +11,15 @@ public class UserJoinResponse {
     private Long id;
     private String loginId;
     private String userName;
+    private String nickName;
 
     // 도메인 객체와 dto 객체 간의 변환을 위한 정적 메서드
     public static UserJoinResponse from(User user) {
         return new UserJoinResponse(
                 user.getId(),
                 user.getLoginId(),
-                user.getUsername()
+                user.getUsername(),
+                user.getNickName()
         );
     }
 

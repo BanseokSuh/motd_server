@@ -6,7 +6,7 @@ import com.banny.motd.global.enums.Device;
 
 public interface UserService {
 
-    User join(String loginId, String userName, String password, String email, String gender);
+    User join(String loginId, String userName, String nickName, String password, String email, String gender);
 
     Tokens login(String loginId, String password, String deviceStr);
 

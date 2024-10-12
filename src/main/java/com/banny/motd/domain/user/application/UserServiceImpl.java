@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User join(String loginId, String userName, String password, String email, String gender) {
+    public User join(String loginId, String userName, String nickName, String password, String email, String gender) {
 
         // 이미 가입된 사용자인지 확인
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .loginId(loginId)
                 .userName(userName)
+                .nickName(nickName)
                 .password(encoder.encode(password))
                 .email(email)
                 .userRole(UserRole.USER)

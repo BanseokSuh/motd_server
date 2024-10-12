@@ -25,6 +25,7 @@ public class User implements UserDetails {
     private Long id;
     private String loginId;
     private String userName;
+    private String nickName;
     private String email;
     @JsonIgnore
     private String password;

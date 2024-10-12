@@ -41,6 +41,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "user_name", nullable = false, columnDefinition = "VARCHAR(100)")
     private String userName;
 
+    @Column(name = "nick_name", nullable = false, columnDefinition = "VARCHAR(100)")
+    private String nickName;
+
     @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(50)")
     private String email;
 
@@ -67,6 +70,7 @@ public class UserEntity extends BaseEntity {
                 .id(user.getId())
                 .loginId(user.getLoginId())
                 .userName(user.getUsername())
+                .nickName(user.getNickName())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .userRole(user.getUserRole())
@@ -81,6 +85,7 @@ public class UserEntity extends BaseEntity {
                 .id(id)
                 .loginId(loginId)
                 .userName(userName)
+                .nickName(nickName)
                 .email(email)
                 .password(password)
                 .userRole(userRole)
