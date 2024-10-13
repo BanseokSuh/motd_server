@@ -30,7 +30,7 @@ public class PostEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "image_urls", nullable = false, columnDefinition = "TEXT[]")
+    @Column(name = "image_urls", nullable = false, columnDefinition = "VARCHAR(255) ARRAY")
     private List<String> imageUrls;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
