@@ -29,7 +29,7 @@ public class PostController {
     @PostMapping
     public Response<PostCreateResponse> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Post post = postService.createPost(request.getImagePath(), request.getContent(), user.getId());
+        Post post = postService.createPost(request.getImageUrls(), request.getContent(), user.getId());
 
         return Response.success(PostCreateResponse.from(post));
     }

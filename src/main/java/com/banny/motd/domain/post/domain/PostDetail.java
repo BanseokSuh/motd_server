@@ -13,7 +13,7 @@ import java.util.List;
 public class PostDetail {
 
     private Long id;
-    private String imageUrl;
+    private List<String> imageUrls;
     private String content;
     private User author;
     private List<Reaction> likeList;
@@ -25,7 +25,7 @@ public class PostDetail {
     @Builder
     public PostDetail(Post post, User user, List<Comment> commentList, List<Reaction> likeList) {
         this.id = post.getId();
-        this.imageUrl = post.getImageUrl();
+        this.imageUrls = post.getImageUrls();
         this.content = post.getContent();
         this.author = user;
         this.likeList = likeList;

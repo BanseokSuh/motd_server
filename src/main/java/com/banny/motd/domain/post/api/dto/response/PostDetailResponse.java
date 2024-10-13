@@ -13,7 +13,7 @@ import java.util.List;
 public class PostDetailResponse {
 
     private Long id;
-    private String imagePath;
+    private List<String> imageUrls;
     private String content;
     private LocalDateTime createdAt;
     private AuthorResponse author;
@@ -62,7 +62,7 @@ public class PostDetailResponse {
     public static PostDetailResponse from(PostDetail postDetail) {
         return new PostDetailResponse(
                 postDetail.getId(),
-                postDetail.getImageUrl(),
+                postDetail.getImageUrls(),
                 postDetail.getContent(),
                 postDetail.getCreatedAt(),
                 AuthorResponse.builder() // 게시글 작성자

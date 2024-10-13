@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostService {
 
-    Post createPost(String imagePath, String content, Long userId);
+    Post createPost(List<String> imageUrls, String content, Long userId);
 
     List<PostList> getPostList(SearchRequest request);
 

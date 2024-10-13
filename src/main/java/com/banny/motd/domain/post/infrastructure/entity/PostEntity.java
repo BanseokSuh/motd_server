@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -28,8 +30,8 @@ public class PostEntity extends BaseEntity {
     @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "image_url", nullable = false, columnDefinition = "TEXT")
-    private String imageUrl;
+    @Column(name = "image_urls", nullable = false, columnDefinition = "TEXT[]")
+    private List<String> imageUrls;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -41,15 +43,15 @@ public class PostEntity extends BaseEntity {
     public static PostEntity from(Post post) {
         return PostEntity.builder()
                 .id(post.getId())
-                .imageUrl(post.getImageUrl())
+                .imageUrls(post.getImageUrls())
                 .content(post.getContent())
                 .user(UserEntity.from(post.getAuthor()))
                 .build();
     }
 
-    public static PostEntity of(String imagePath, String content, UserEntity userEntity) {
+    public static PostEntity of(List<String> imageUrls, String content, UserEntity userEntity) {
         return PostEntity.builder()
-                .imageUrl(imagePath)
+                .imageUrls(imageUrls)
                 .content(content)
                 .user(userEntity)
                 .build();
@@ -58,7 +60,7 @@ public class PostEntity extends BaseEntity {
     public Post toDomain() {
         return Post.builder()
                 .id(id)
-                .imageUrl(imageUrl)
+                .imageUrls(imageUrls)
                 .content(content)
                 .author(user.toDomain())
                 .createdAt(getCreatedAt())

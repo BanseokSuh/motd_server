@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class PostList {
 
     private Long id;
-    private String imageUrl;
+    private List<String> imageUrls;
     private String content;
     private User author;
     private LocalDateTime createdAt;
@@ -20,7 +21,7 @@ public class PostList {
     @Builder
     public PostList(Post post, User user) {
         this.id = post.getId();
-        this.imageUrl = post.getImageUrl();
+        this.imageUrls = post.getImageUrls();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
