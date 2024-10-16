@@ -1,16 +1,17 @@
 package com.banny.motd.domain.user.application;
 
 
+import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.configuration.TestContainerConfiguration;
-import com.banny.motd.domain.user.application.repository.UserRepository;
-import com.banny.motd.domain.user.domain.Gender;
-import com.banny.motd.domain.user.domain.UserRole;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.domain.user.Gender;
+import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.fixture.UserEntityFixture;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.ResultType;
+import com.banny.motd.global.exception.StatusType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,19 +50,20 @@ class UserServiceTest {
         // given
         String loginId = "loginId_test";
         String userName = "userName_test";
+        String nickName = "nickName_test";
         String password = "password_test";
         String email = "still3028@naver.com";
-        String gender = Gender.M.name();
+        String gender = Gender.MALE.name();
         String userRole = UserRole.USER.name();
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.empty());
         when(encoder.encode(password)).thenReturn("encrypt_password");
-        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, email, gender, userRole));
+        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, nickName, password, email, gender, userRole));
         doNothing().when(emailHandler).sendWelcomeEmail(email, loginId);
 
         // when, then
-        assertDoesNotThrow(() -> userService.join(loginId, userName, password, email, gender));
+        assertDoesNotThrow(() -> userService.join(loginId, userName, nickName, password, email, gender));
         verify(emailHandler, times(1)).sendWelcomeEmail(email, loginId);
     }
 
@@ -71,21 +73,22 @@ class UserServiceTest {
         // given
         String loginId = "loginId_test";
         String userName = "userName_test";
+        String nickName = "nickName_test";
         String password = "password_test";
         String email = "still3028@naver.com";
-        String gender = Gender.M.name();
+        String gender = Gender.MALE.name();
         String userRole = UserRole.USER.name();
 
-        UserEntity fixture = UserEntityFixture.get(loginId, userName, password, email, gender, userRole);
+        UserEntity fixture = UserEntityFixture.get(loginId, userName, nickName, password, email, gender, userRole);
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
         when(encoder.encode(password)).thenReturn("encrypt_password");
-        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, password, email, gender, userRole));
+        when(userRepository.save(any())).thenReturn(UserEntityFixture.get(loginId, userName, nickName, password, email, gender, userRole));
 
         // when, then
-        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, email, password, gender));
-        assertEquals(ResultType.FAIL_USER_DUPLICATED.getCode(), e.getResult().getCode());
+        ApplicationException e = assertThrows(ApplicationException.class, () -> userService.join(loginId, userName, nickName, email, password, gender));
+        assertEquals(StatusType.FAIL_USER_DUPLICATED.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -94,13 +97,14 @@ class UserServiceTest {
         // given
         String loginId = "loginId_test";
         String userName = "userName_test";
+        String nickName = "nickName_test";
         String password = "password_test";
         String email = "still3028@gmail.com";
-        String gender = Gender.M.name();
+        String gender = Gender.MALE.name();
         String userRole = UserRole.USER.name();
         String deviceStr = Device.WEB.name();
 
-        UserEntity fixture = UserEntityFixture.get(loginId, userName, password, email, gender, userRole);
+        UserEntity fixture = UserEntityFixture.get(loginId, userName, nickName, password, email, gender, userRole);
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
@@ -123,7 +127,7 @@ class UserServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceStr));
-        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_USER_NOT_FOUND.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -132,13 +136,14 @@ class UserServiceTest {
         // given
         String loginId = "loginId_test";
         String userName = "userName_test";
+        String nickName = "nickName_test";
         String password = "password";
         String email = "still3028@gmail.com";
-        String gender = Gender.M.name();
+        String gender = Gender.MALE.name();
         String userRole = UserRole.USER.name();
         String deviceStr = Device.WEB.name();
 
-        UserEntity fixture = UserEntityFixture.get(loginId, userName, password, email, gender, userRole);
+        UserEntity fixture = UserEntityFixture.get(loginId, userName, nickName, password, email, gender, userRole);
 
         // mock
         when(userRepository.findByLoginId(loginId)).thenReturn(Optional.of(fixture));
@@ -146,7 +151,7 @@ class UserServiceTest {
 
         // when, then
         ApplicationException e = assertThrows(ApplicationException.class, () -> userService.login(loginId, password, deviceStr));
-        assertEquals(ResultType.FAIL_USER_PASSWORD_MISMATCH.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_USER_PASSWORD_MISMATCH.getCode(), e.getStatus().getCode());
     }
 
 }

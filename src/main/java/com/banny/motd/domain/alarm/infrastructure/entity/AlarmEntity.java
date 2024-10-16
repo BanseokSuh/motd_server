@@ -1,8 +1,8 @@
 package com.banny.motd.domain.alarm.infrastructure.entity;
 
-import com.banny.motd.domain.alarm.domain.Alarm;
-import com.banny.motd.domain.alarm.domain.AlarmArgs;
-import com.banny.motd.domain.alarm.domain.AlarmType;
+import com.banny.motd.domain.alarm.Alarm;
+import com.banny.motd.domain.alarm.AlarmArgs;
+import com.banny.motd.domain.alarm.AlarmType;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

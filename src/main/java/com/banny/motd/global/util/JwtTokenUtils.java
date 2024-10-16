@@ -1,6 +1,6 @@
 package com.banny.motd.global.util;
 
-import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.domain.user.User;
 import com.banny.motd.global.enums.Device;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

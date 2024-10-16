@@ -1,6 +1,6 @@
 package com.banny.motd.global.configuration;
 
-import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;

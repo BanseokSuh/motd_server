@@ -1,7 +1,7 @@
 package com.banny.motd.global.enums;
 
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.ResultType;
+import com.banny.motd.global.exception.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -29,7 +29,7 @@ public enum Device {
             }
         }
 
-        throw new ApplicationException(ResultType.FAIL_NOT_EXIST_DEVICE, "Device not found. name: " + name);
+        throw new ApplicationException(StatusType.FAIL_NOT_EXIST_DEVICE, "Device not found. name: " + name);
     }
 
 }

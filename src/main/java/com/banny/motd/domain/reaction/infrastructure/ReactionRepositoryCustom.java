@@ -1,6 +1,6 @@
 package com.banny.motd.domain.reaction.infrastructure;
 
-import com.banny.motd.domain.reaction.domain.ReactionType;
+import com.banny.motd.domain.reaction.ReactionType;
 import com.banny.motd.domain.reaction.infrastructure.entity.ReactionEntity;
 import com.banny.motd.global.enums.TargetType;
 

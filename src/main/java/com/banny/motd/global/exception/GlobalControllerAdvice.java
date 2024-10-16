@@ -1,6 +1,6 @@
 package com.banny.motd.global.exception;
 
-import com.banny.motd.global.dto.response.ResultObject;
+import com.banny.motd.global.dto.response.StstusObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,11 +25,11 @@ public class GlobalControllerAdvice {
                         ####### code: {}
                         ####### desc: {}
                         ####### message: {}""",
-                e.getResult().getCode(),
-                e.getResult().getDesc(),
+                e.getStatus().getCode(),
+                e.getStatus().getDesc(),
                 e.getData().getMessage());
 
-        return ErrorResponseEntity.toResponseEntity(e.getResult(), e.getData());
+        return ErrorResponseEntity.toResponseEntity(e.getStatus(), e.getData());
     }
 
     /**
@@ -42,7 +42,7 @@ public class GlobalControllerAdvice {
                         ####### error: {}""",
                 e.toString());
 
-        return ErrorResponseEntity.toResponseEntity(ResultObject.error(), ErrorResult.error());
+        return ErrorResponseEntity.toResponseEntity(StstusObject.error(), ErrorResult.error());
     }
 
     /**
@@ -67,6 +67,6 @@ public class GlobalControllerAdvice {
             errors.put(fieldName, errorMessage);
         });
 
-        return ErrorResponseEntity.toResponseEntity(ResultObject.validateError(), errors);
+        return ErrorResponseEntity.toResponseEntity(StstusObject.validateError(), errors);
     }
 }

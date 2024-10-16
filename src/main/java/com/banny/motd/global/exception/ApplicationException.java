@@ -1,6 +1,6 @@
 package com.banny.motd.global.exception;
 
-import com.banny.motd.global.dto.response.ResultObject;
+import com.banny.motd.global.dto.response.StstusObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,20 +11,20 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ApplicationException extends RuntimeException {
 
-    private ResultObject result;
+    private StstusObject status;
     private ErrorResult data;
 
     // 메시지가 있는 생성자
     // 메시지를 ErrorResult 객체에 담아 반환
-    public ApplicationException(ResultType resultType, String message) {
-        this.result = new ResultObject(resultType);
+    public ApplicationException(StatusType statusType, String message) {
+        this.status = new StstusObject(statusType);
         this.data = new ErrorResult(message);
     }
 
     // 메시지가 없는 생성자
     // 메시지 없는 ErrorResult 객체 생성
-    public ApplicationException(ResultType resultType) {
-        this.result = new ResultObject(resultType);
+    public ApplicationException(StatusType statusType) {
+        this.status = new StstusObject(statusType);
         this.data = new ErrorResult();
     }
 

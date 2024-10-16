@@ -1,7 +1,7 @@
 package com.banny.motd.global.configuration.filter;
 
-import com.banny.motd.domain.user.application.UserService;
-import com.banny.motd.domain.user.domain.User;
+import com.banny.motd.api.service.user.UserService;
+import com.banny.motd.domain.user.User;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.util.JwtTokenUtils;
 import jakarta.servlet.FilterChain;

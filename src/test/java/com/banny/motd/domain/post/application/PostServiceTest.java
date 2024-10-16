@@ -1,13 +1,14 @@
 package com.banny.motd.domain.post.application;
 
-import com.banny.motd.domain.post.application.repository.PostRepository;
-import com.banny.motd.domain.post.domain.Post;
+import com.banny.motd.api.service.post.PostService;
+import com.banny.motd.domain.post.infrastructure.PostRepository;
+import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
-import com.banny.motd.domain.user.application.repository.UserRepository;
-import com.banny.motd.domain.user.domain.User;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.domain.user.User;
+import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.ResultType;
+import com.banny.motd.global.exception.StatusType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +40,7 @@ class PostServiceTest {
     @DisplayName("게시글_생성")
     void post_create() {
         // given
-        String imagePath = "imagePath";
+        List<String> imageUrls = List.of("imageUrl001", "imageUrl002");
         String content = "content";
         Long userId = 1L;
 
@@ -51,14 +53,14 @@ class PostServiceTest {
         when(postRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         // when, then
-        assertDoesNotThrow(() -> postService.createPost(imagePath, content, userId));
+        assertDoesNotThrow(() -> postService.createPost(imageUrls, content, userId));
     }
 
     @Test
     @DisplayName("게시글_생성시_작성유저가_존재하지_않을_경우_에러를_반환한다")
     void post_create_user_not_found() {
         // given
-        String imagePath = "imagePath";
+        List<String> imageUrls = List.of("imageUrl001", "imageUrl002");;
         String content = "content";
         Long userId = 1L;
 
@@ -66,10 +68,10 @@ class PostServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // when
-        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(imagePath, content, userId));
+        ApplicationException e = assertThrows(ApplicationException.class, () -> postService.createPost(imageUrls, content, userId));
 
         // then
-        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_USER_NOT_FOUND.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -109,7 +111,7 @@ class PostServiceTest {
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.getPost(postId));
 
         // then
-        assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_POST_NOT_FOUND.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -154,7 +156,7 @@ class PostServiceTest {
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), content, userId));
 
         // then
-        assertEquals(ResultType.FAIL_USER_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_USER_NOT_FOUND.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -181,7 +183,7 @@ class PostServiceTest {
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(post.getId(), content, user.getId()));
 
         // then
-        assertEquals(ResultType.FAIL_INVALID_PERMISSION.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_INVALID_PERMISSION.getCode(), e.getStatus().getCode());
     }
 
     @Test
@@ -203,6 +205,6 @@ class PostServiceTest {
         ApplicationException e = assertThrows(ApplicationException.class, () -> postService.modifyPost(postId, content, userId));
 
         // then
-        assertEquals(ResultType.FAIL_POST_NOT_FOUND.getCode(), e.getResult().getCode());
+        assertEquals(StatusType.FAIL_POST_NOT_FOUND.getCode(), e.getStatus().getCode());
     }
 }

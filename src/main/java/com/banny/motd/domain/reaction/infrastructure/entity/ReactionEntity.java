@@ -1,8 +1,8 @@
 package com.banny.motd.domain.reaction.infrastructure.entity;
 
-import com.banny.motd.domain.reaction.domain.Reaction;
-import com.banny.motd.domain.reaction.domain.ReactionType;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.domain.reaction.Reaction;
+import com.banny.motd.domain.reaction.ReactionType;
+import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;

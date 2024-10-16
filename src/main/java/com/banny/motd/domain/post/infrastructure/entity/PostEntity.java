@@ -1,7 +1,7 @@
 package com.banny.motd.domain.post.infrastructure.entity;
 
-import com.banny.motd.domain.post.domain.Post;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.domain.post.Post;
+import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

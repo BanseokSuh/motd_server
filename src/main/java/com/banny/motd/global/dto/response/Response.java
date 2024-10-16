@@ -1,6 +1,6 @@
 package com.banny.motd.global.dto.response;
 
-import com.banny.motd.global.exception.ResultType;
+import com.banny.motd.global.exception.StatusType;
 import lombok.*;
 
 @Builder
@@ -9,36 +9,36 @@ import lombok.*;
 @AllArgsConstructor
 public class Response<T> {
 
-    private ResultObject result;
-    private T data;
+    private StstusObject status;
+    private T result;
 
     public static <T> Response<T> success(T result) {
         return Response.<T>builder()
-                .result(ResultObject.success())
-                .data(result)
+                .status(StstusObject.success())
+                .result(result)
                 .build();
     }
 
     public static <T> Response<T> success() {
         return Response.<T>builder()
-                .result(ResultObject.success())
-                .data(null)
+                .status(StstusObject.success())
+                .result(null)
                 .build();
     }
 
     public static <T> Response<T> error() {
         return Response.<T>builder()
-                .result(ResultObject.error())
-                .data(null)
+                .status(StstusObject.error())
+                .result(null)
                 .build();
     }
 
     public String toStream() {
         return "{" +
+                "\"status\":" + "{" +
+                "\"code\":" + "\"" + StatusType.FAIL_INVALID_TOKEN.getCode() + "\"," +
+                "\"desc\":" + "\"" + StatusType.FAIL_INVALID_TOKEN.getDesc() + "\"" + "}," +
                 "\"result\":" + "{" +
-                "\"code\":" + "\"" + ResultType.FAIL_INVALID_TOKEN.getCode() + "\"," +
-                "\"desc\":" + "\"" + ResultType.FAIL_INVALID_TOKEN.getDesc() + "\"" + "}," +
-                "\"data\":" + "{" +
                 "\"message\":" + null + "}" +
                 "}";
     }

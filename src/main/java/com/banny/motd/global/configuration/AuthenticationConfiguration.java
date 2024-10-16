@@ -1,6 +1,6 @@
 package com.banny.motd.global.configuration;
 
-import com.banny.motd.domain.user.application.UserService;
+import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.global.configuration.filter.JwtTokenFilter;
 import com.banny.motd.global.exception.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
