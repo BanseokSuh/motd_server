@@ -1,10 +1,10 @@
 package com.banny.motd.api.controller.post;
 
-import com.banny.motd.api.controller.post.request.PostCreateRequest;
-import com.banny.motd.api.controller.post.request.PostModifyRequest;
-import com.banny.motd.api.controller.post.response.PostCreateResponse;
-import com.banny.motd.api.controller.post.response.PostDetailResponse;
-import com.banny.motd.api.controller.post.response.PostListResponse;
+import com.banny.motd.api.controller.post.dto.request.PostCreateRequest;
+import com.banny.motd.api.controller.post.dto.request.PostModifyRequest;
+import com.banny.motd.api.controller.post.dto.response.PostCreateResponse;
+import com.banny.motd.api.controller.post.dto.response.PostDetailResponse;
+import com.banny.motd.api.controller.post.dto.response.PostListResponse;
 import com.banny.motd.api.service.post.PostService;
 import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.post.PostDetail;

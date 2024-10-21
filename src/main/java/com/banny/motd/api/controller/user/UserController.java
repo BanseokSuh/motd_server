@@ -1,10 +1,10 @@
 package com.banny.motd.api.controller.user;
 
-import com.banny.motd.api.controller.user.request.UserJoinRequest;
-import com.banny.motd.api.controller.user.request.UserLoginRequest;
-import com.banny.motd.api.controller.user.response.UserJoinResponse;
-import com.banny.motd.api.controller.user.response.UserLoginResponse;
-import com.banny.motd.api.controller.user.response.UserMyResponse;
+import com.banny.motd.api.controller.user.dto.request.UserJoinRequest;
+import com.banny.motd.api.controller.user.dto.request.UserLoginRequest;
+import com.banny.motd.api.controller.user.dto.response.UserJoinResponse;
+import com.banny.motd.api.controller.user.dto.response.UserLoginResponse;
+import com.banny.motd.api.controller.user.dto.response.UserMyResponse;
 import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.domain.user.Tokens;
 import com.banny.motd.domain.user.User;

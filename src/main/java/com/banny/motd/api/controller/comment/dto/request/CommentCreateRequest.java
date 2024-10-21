@@ -1,4 +1,4 @@
-package com.banny.motd.api.controller.comment.request;
+package com.banny.motd.api.controller.comment.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

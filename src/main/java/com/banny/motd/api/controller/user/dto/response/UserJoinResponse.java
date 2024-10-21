@@ -1,4 +1,4 @@
-package com.banny.motd.api.controller.user.response;
+package com.banny.motd.api.controller.user.dto.response;
 
 import com.banny.motd.domain.user.User;
 import lombok.AllArgsConstructor;

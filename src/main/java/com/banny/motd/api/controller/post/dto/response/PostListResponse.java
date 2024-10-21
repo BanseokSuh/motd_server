@@ -1,4 +1,4 @@
-package com.banny.motd.api.controller.post.response;
+package com.banny.motd.api.controller.post.dto.response;
 
 import com.banny.motd.domain.post.PostList;
 import lombok.AllArgsConstructor;

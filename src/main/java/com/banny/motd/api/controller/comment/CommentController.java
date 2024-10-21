@@ -1,6 +1,6 @@
 package com.banny.motd.api.controller.comment;
 
-import com.banny.motd.api.controller.comment.request.CommentCreateRequest;
+import com.banny.motd.api.controller.comment.dto.request.CommentCreateRequest;
 import com.banny.motd.api.service.comment.CommentService;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.dto.response.Response;

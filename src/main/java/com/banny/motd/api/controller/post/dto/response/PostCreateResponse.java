@@ -1,4 +1,4 @@
-package com.banny.motd.api.controller.post.response;
+package com.banny.motd.api.controller.post.dto.response;
 
 import com.banny.motd.domain.post.Post;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,7 @@ public class PostCreateResponse {
     private Long id;
 
     public static PostCreateResponse from(Post post) {
-        return new PostCreateResponse(
-                post.getId()
-        );
+        return new PostCreateResponse(post.getId());
     }
 
 }

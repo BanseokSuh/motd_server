@@ -54,10 +54,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDetail getPost(Long postId) {
         Post post = getPostOrException(postId);
-        log.info("[2] post: {}", post);
-
         User user = userService.getUserOrException(post.getAuthor().getId());
-
 
         List<Reaction> likeList = reactionService.getLikeListByPostId(postId);
         List<Comment> commentList = commentService.getCommentListByPostId(postId);
@@ -99,8 +96,6 @@ public class PostServiceImpl implements PostService {
     }
 
     private Post getPostOrException(Long postId) {
-        log.info("[1] postId: {}", postId);
-
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
                 .orElseThrow(() -> new ApplicationException(StatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
