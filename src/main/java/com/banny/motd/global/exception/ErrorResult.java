@@ -1,23 +1,22 @@
 package com.banny.motd.global.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ErrorResult {
 
     private String message;
 
-    public static ErrorResult error() {
+    public static ErrorResult of(String message) {
+        return new ErrorResult(message);
+    }
+
+    public static ErrorResult of() {
         return new ErrorResult(null);
     }
 
-    public static ErrorResult error(String message) {
-        return new ErrorResult(message);
-    }
 }

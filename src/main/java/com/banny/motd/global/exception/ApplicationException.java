@@ -13,13 +13,13 @@ public class ApplicationException extends RuntimeException {
     private ErrorResult result;
 
     public ApplicationException(ApiResponseStatusType statusType, String message) {
-        this.status = new ApiResponseStatus(statusType);
-        this.result = new ErrorResult(message);
+        this.status = ApiResponseStatus.of(statusType);
+        this.result = ErrorResult.of(message);
     }
 
     public ApplicationException(ApiResponseStatusType statusType) {
-        this.status = new ApiResponseStatus(statusType);
-        this.result = new ErrorResult();
+        this.status = ApiResponseStatus.of(statusType);
+        this.result = ErrorResult.of();
     }
 
 }

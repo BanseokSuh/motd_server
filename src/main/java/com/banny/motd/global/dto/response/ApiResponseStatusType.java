@@ -30,7 +30,7 @@ public enum ApiResponseStatusType {
 
     // INVALID PARAMETER WHEN REQUEST
     FAIL_INVALID_PARAMETER("9997", "invalid parameter"),
-    FAIL_VALIDATE_ERROR("9998", "validate error"),
+    FAIL_VALIDATION_ERROR("9998", "validate error"),
     FAIL_SERVER_ERROR("9999", "server error");
 
 
