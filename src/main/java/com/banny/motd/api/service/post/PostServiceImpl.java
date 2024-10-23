@@ -14,7 +14,7 @@ import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,7 +74,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(StatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
         post.setPost(content);
@@ -89,7 +89,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(StatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
         }
 
         postRepository.delete(PostEntity.from(post));
@@ -98,7 +98,7 @@ public class PostServiceImpl implements PostService {
     private Post getPostOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 
 }

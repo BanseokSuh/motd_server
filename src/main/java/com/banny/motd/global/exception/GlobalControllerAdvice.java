@@ -1,9 +1,10 @@
 package com.banny.motd.global.exception;
 
-import com.banny.motd.global.dto.response.StstusObject;
+import com.banny.motd.global.dto.response.ApiResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,57 +17,39 @@ import java.util.Map;
 public class GlobalControllerAdvice {
 
     /**
-     * 정의된 에러 핸들링
+     * 애플리케이션에서 정의된 예외 핸들링
      */
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<?> applicationExceptionHandler(ApplicationException e) {
-        log.error("""
-                        ########### Application exception occurred ###########
-                        ####### code: {}
-                        ####### desc: {}
-                        ####### message: {}""",
-                e.getStatus().getCode(),
-                e.getStatus().getDesc(),
-                e.getData().getMessage());
-
-        return ErrorResponseEntity.toResponseEntity(e.getStatus(), e.getData());
+        return ErrorResponseEntity.toResponseEntity(e.getStatus(), e.getResult());
     }
 
     /**
-     * 미정의된 에러 핸들링
+     * 애플리케이션에서 정의되지 않은 런테입 예외 핸들링
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> globalExceptionHandler(RuntimeException e) {
-        log.error("""
-                        ########### Runtime exception occurred ###########
-                        ####### error: {}""",
-                e.toString());
-
-        return ErrorResponseEntity.toResponseEntity(StstusObject.error(), ErrorResult.error());
+    public ResponseEntity<?> internalServerExceptionHandler(RuntimeException e) {
+        return ErrorResponseEntity.toServerExceptionResponseEntity(
+                ApiResponseStatus.error(), ErrorResult.error()
+        );
     }
 
     /**
-     * Dto Validation 에러 핸들링
+     * Dto에서 검증되지 못한 Validation 예외 핸들링
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
-
+    public ResponseEntity<?> validationExceptionHandler(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
 
-        /*
-         * validation에 걸린 모든 필드와 메시지를 map에 담는다.
-         * {
-         *   "field1": "message1",
-         *   "field2": "message2",
-         *   ...
-         * }
-         */
-        e.getBindingResult().getAllErrors().forEach((error) -> {
+        e.getBindingResult().getAllErrors().forEach((ObjectError error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
 
-        return ErrorResponseEntity.toResponseEntity(StstusObject.validateError(), errors);
+        return ErrorResponseEntity.toResponseEntity(
+                ApiResponseStatus.validateError(), errors
+        );
     }
+
 }

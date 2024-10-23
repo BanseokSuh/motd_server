@@ -3,7 +3,7 @@ package com.banny.motd.api.service.user;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import com.banny.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,7 +80,7 @@ public class UserTokenManager {
         String key = getAccessTokenKey(userId, device.getValue());
 
         if (hasKey(key)) {
-            throw new ApplicationException(StatusType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
         }
     }
 

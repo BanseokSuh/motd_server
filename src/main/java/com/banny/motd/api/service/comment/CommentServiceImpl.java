@@ -15,7 +15,7 @@ import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,13 +53,13 @@ public class CommentServiceImpl implements CommentService {
     public User getUserByIdOrException(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
     public Post getPostByIdOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
     }
 
 }

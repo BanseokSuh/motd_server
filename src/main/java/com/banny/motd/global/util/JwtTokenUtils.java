@@ -17,14 +17,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenUtils {
 
-    /**
-     * JWT 토큰 생성
-     *
-     * @param user 사용자 정보
-     * @param key secret key
-     * @param expiredTimeMs 만료 시간
-     * @return JWT token
-     */
     public static String generateJwtToken(User user, Device device, String key, Long expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("userId", user.getId());
@@ -67,4 +59,5 @@ public class JwtTokenUtils {
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }

@@ -2,7 +2,7 @@ package com.banny.motd.api.controller.reaction;
 
 import com.banny.motd.api.service.reaction.ReactionService;
 import com.banny.motd.domain.user.User;
-import com.banny.motd.global.dto.response.Response;
+import com.banny.motd.global.dto.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +18,11 @@ public class ReactionController {
     private final ReactionService reactionService;
 
     @PostMapping("/like/post/{postId}")
-    public Response<Void> likePost(@PathVariable Long postId, Authentication authentication) {
+    public ApiResponse<Void> likePost(@PathVariable Long postId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         reactionService.likePost(postId, user.getId());
 
-        return Response.success();
+        return ApiResponse.ok();
     }
 
 }

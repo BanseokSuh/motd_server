@@ -2,7 +2,7 @@ package com.banny.motd.domain.user;
 
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -49,7 +49,7 @@ public class User implements UserDetails {
         try {
             this.gender = Gender.valueOf(genderStr);
         } catch (Exception e) {
-            throw new ApplicationException(StatusType.FAIL_INVALID_PARAMETER, "Invalid gender");
+            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PARAMETER, "Invalid gender");
         }
     }
 
@@ -61,7 +61,7 @@ public class User implements UserDetails {
      */
     public void checkPasswordMatch(String password, BCryptPasswordEncoder encoder) {
         if (!encoder.matches(password, this.password)) {
-            throw new ApplicationException(StatusType.FAIL_USER_PASSWORD_MISMATCH, "Password does not match");
+            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH, "Password does not match");
         }
     }
 
@@ -70,7 +70,7 @@ public class User implements UserDetails {
      */
     public void checkUserStatus() {
         if (this.userStatus != UserStatus.ACTIVE) {
-            throw new ApplicationException(StatusType.FAIL_USER_NOT_ACTIVE, "User status is not active");
+            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_ACTIVE, "User status is not active");
         }
     }
 

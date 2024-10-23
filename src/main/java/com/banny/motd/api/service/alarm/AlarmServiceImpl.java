@@ -10,7 +10,7 @@ import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -49,7 +49,7 @@ public class AlarmServiceImpl implements AlarmService {
             // 연결 완료 메시지 전송
             sseEmitter.send(SseEmitter.event().id("id").name(ALARM_NAME).data("connect completed"));
         } catch (IOException e) {
-            throw new ApplicationException(StatusType.FAIL_ALARM_CONNECT_ERROR);
+            throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
         }
 
         return sseEmitter;
@@ -69,7 +69,7 @@ public class AlarmServiceImpl implements AlarmService {
                 sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data(message));
             } catch (IOException e) {
                 emitterRepository.delete(receiverUserId);
-                throw new ApplicationException(StatusType.FAIL_ALARM_CONNECT_ERROR);
+                throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
             }
         }, () -> log.info("No emitter found"));
     }
@@ -77,7 +77,7 @@ public class AlarmServiceImpl implements AlarmService {
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_USER_NOT_FOUND, String.format("User not found: %d", userId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User not found: %d", userId)));
     }
 
     private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, User senderUser) {

@@ -1,14 +1,14 @@
 package com.banny.motd.api.controller.user;
 
-import com.banny.motd.api.controller.user.dto.request.UserJoinRequest;
-import com.banny.motd.api.controller.user.dto.request.UserLoginRequest;
-import com.banny.motd.api.controller.user.dto.response.UserJoinResponse;
-import com.banny.motd.api.controller.user.dto.response.UserLoginResponse;
-import com.banny.motd.api.controller.user.dto.response.UserMyResponse;
+import com.banny.motd.api.controller.user.request.UserJoinRequest;
+import com.banny.motd.api.controller.user.request.UserLoginRequest;
+import com.banny.motd.api.controller.user.response.UserJoinResponse;
+import com.banny.motd.api.controller.user.response.UserLoginResponse;
+import com.banny.motd.api.controller.user.response.UserMyResponse;
 import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.domain.user.Tokens;
 import com.banny.motd.domain.user.User;
-import com.banny.motd.global.dto.response.Response;
+import com.banny.motd.global.dto.response.ApiResponse;
 import groovy.util.logging.Slf4j;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class UserController {
      * @return UserJoinResponse
      */
     @PostMapping("/join")
-    public Response<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
+    public ApiResponse<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
         User user = userService.join(request.getLoginId(), request.getUserName(), request.getNickName(), request.getPassword(), request.getEmail(), request.getGender());
-        return Response.success(UserJoinResponse.from(user));
+        return ApiResponse.ok(UserJoinResponse.from(user));
     }
 
     /**
@@ -43,9 +43,9 @@ public class UserController {
      * @return UserLoginResponse
      */
     @PostMapping("/login")
-    public Response<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
+    public ApiResponse<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDevice());
-        return Response.success(UserLoginResponse.from(token));
+        return ApiResponse.ok(UserLoginResponse.from(token));
     }
 
     /**
@@ -55,11 +55,11 @@ public class UserController {
      * @return Response<Void>
      */
     @PostMapping("/logout")
-    public Response<Void> logout(Authentication authentication) {
+    public ApiResponse<Void> logout(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
         userService.logout(user.getId(), user.getDevice());
-        return Response.success();
+        return ApiResponse.ok();
     }
 
     /**
@@ -69,10 +69,10 @@ public class UserController {
      * @return Response<Void>
      */
     @DeleteMapping()
-    public Response<Void> delete(Authentication authentication) {
+    public ApiResponse<Void> delete(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         userService.delete(user.getId());
-        return Response.success();
+        return ApiResponse.ok();
     }
 
     /**
@@ -82,9 +82,9 @@ public class UserController {
      * @return UserMyResponse
      */
     @GetMapping("/my")
-    public Response<UserMyResponse> getMyInfo(Authentication authentication) {
+    public ApiResponse<UserMyResponse> getMyInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return Response.success(UserMyResponse.from(userService.getMyInfo(user.getId())));
+        return ApiResponse.ok(UserMyResponse.from(userService.getMyInfo(user.getId())));
     }
 
 }

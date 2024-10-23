@@ -10,7 +10,7 @@ import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.StatusType;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
         // 이미 가입된 사용자인지 확인
         userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
-            throw new ApplicationException(StatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", loginId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", loginId));
         });
 
         // 신규 유저 객체 생성
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         return userCacheRepository.getUser(id).orElseGet(() ->
                 userRepository.findById(id)
                         .map(UserEntity::toDomain)
-                        .orElseThrow(() -> new ApplicationException(StatusType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)))
+                        .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)))
         );
     }
 
@@ -123,14 +123,14 @@ public class UserServiceImpl implements UserService {
     public User loadUserByLoginId(String loginId) {
         return userRepository.findByLoginId(loginId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
     }
 
     @Override
     public User getUserOrException(Long userId) {
         return userRepository.findById(userId)
                 .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(StatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
 }

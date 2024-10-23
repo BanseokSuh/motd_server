@@ -3,7 +3,7 @@ package com.banny.motd.api.controller.alarm;
 import com.banny.motd.api.service.alarm.AlarmService;
 import com.banny.motd.domain.alarm.Alarm;
 import com.banny.motd.domain.user.User;
-import com.banny.motd.global.dto.response.Response;
+import com.banny.motd.global.dto.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +21,9 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     @GetMapping
-    public Response<Page<Alarm>> getAlarmList(Authentication authentication, Pageable pageable) {
+    public ApiResponse<Page<Alarm>> getAlarmList(Authentication authentication, Pageable pageable) {
         User user = (User) authentication.getPrincipal();
-        return Response.success(alarmService.getAlarmList(user.getId(), pageable));
+        return ApiResponse.ok(alarmService.getAlarmList(user.getId(), pageable));
     }
 
     @GetMapping("/subscribe")
