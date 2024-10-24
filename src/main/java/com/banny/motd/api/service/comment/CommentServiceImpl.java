@@ -1,6 +1,7 @@
 package com.banny.motd.api.service.comment;
 
 import com.banny.motd.api.service.alarm.producer.AlarmProducer;
+import com.banny.motd.api.service.comment.request.CommentCreateServiceRequest;
 import com.banny.motd.domain.alarm.AlarmArgs;
 import com.banny.motd.domain.alarm.AlarmType;
 import com.banny.motd.domain.alarm.AlarmEvent;
@@ -33,11 +34,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void commentPost(Long postId, Long userId, String comment) {
+    public void commentPost(Long postId, Long userId, CommentCreateServiceRequest request) {
         User user = getUserByIdOrException(userId);
         Post post = getPostByIdOrException(postId);
 
-        commentRepository.save(CommentEntity.of(UserEntity.from(user), TargetType.POST, postId, comment));
+        commentRepository.save(CommentEntity.of(UserEntity.from(user), TargetType.POST, postId, request.getComment()));
 
         alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
     }

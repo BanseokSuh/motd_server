@@ -18,7 +18,7 @@ public class CommentController {
     @PostMapping("/post/{postId}")
     public ApiResponse<Void> commentPost(@PathVariable Long postId, @RequestBody CommentCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        commentService.commentPost(postId, user.getId(), request.getComment());
+        commentService.commentPost(postId, user.getId(), request.toServiceRequest());
 
         return ApiResponse.ok();
     }

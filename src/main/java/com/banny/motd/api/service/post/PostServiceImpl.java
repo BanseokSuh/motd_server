@@ -1,6 +1,8 @@
 package com.banny.motd.api.service.post;
 
 import com.banny.motd.api.service.comment.CommentService;
+import com.banny.motd.api.service.post.request.PostCreateServiceRequest;
+import com.banny.motd.api.service.post.request.PostModifyServiceRequest;
 import com.banny.motd.domain.comment.Comment;
 import com.banny.motd.domain.post.infrastructure.PostRepository;
 import com.banny.motd.domain.post.Post;
@@ -34,10 +36,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post createPost(List<String> imageUrls, String content, Long userId) {
+    public Post createPost(PostCreateServiceRequest request, Long userId) {
         User user = userService.getUserOrException(userId);
 
-        return postRepository.save(PostEntity.of(imageUrls, content, UserEntity.from(user))).toDomain();
+        return postRepository.save(PostEntity.of(
+                request.getImageUrls(), request.getContent(), UserEntity.from(user))).toDomain();
     }
 
     @Override
@@ -69,15 +72,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void modifyPost(Long postId, String content, Long userId) {
+    public void modifyPost(Long postId, PostModifyServiceRequest request, Long userId) {
         User user = userService.getUserOrException(userId);
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
         }
 
-        post.setPost(content);
+        post.setPost(request.getContent());
 
         postRepository.saveAndFlush(PostEntity.from(post));
     }
@@ -89,7 +92,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostOrException(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("UserId %s has no permission with PostId %s", userId, postId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
         }
 
         postRepository.delete(PostEntity.from(post));
@@ -98,7 +101,7 @@ public class PostServiceImpl implements PostService {
     private Post getPostOrException(Long postId) {
         return postRepository.findById(postId)
                 .map(PostEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_POST_NOT_FOUND, String.format("PostId %s is not found", postId)));
+                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_POST_NOT_FOUND, "The post is not found"));
     }
 
 }

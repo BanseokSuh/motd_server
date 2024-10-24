@@ -1,16 +1,18 @@
 package com.banny.motd.api.service.user;
 
-import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
-import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
+import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
 import com.banny.motd.domain.user.Tokens;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.UserStatus;
+import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
+import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,46 +32,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User join(String loginId, String userName, String nickName, String password, String email, String gender) {
-
+    public User join(UserJoinServiceRequest request) {
         // 이미 가입된 사용자인지 확인
-        userRepository.findByLoginId(loginId).ifPresent(userEntity -> {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", loginId));
+        userRepository.findByLoginId(request.getLoginId()).ifPresent(userEntity -> {
+            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", request.getLoginId()));
         });
 
         // 신규 유저 객체 생성
         User user = User.builder()
-                .loginId(loginId)
-                .userName(userName)
-                .nickName(nickName)
-                .password(encoder.encode(password))
-                .email(email)
+                .loginId(request.getLoginId())
+                .userName(request.getUserName())
+                .nickName(request.getNickName())
+                .password(encoder.encode(request.getPassword()))
+                .email(request.getEmail())
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.PENDING)
                 .build();
-        user.setGenderStr(gender);
+        user.setGenderStr(request.getGender());
 
         // 유저 저장
         User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
 
         // Welcome 이메일 발송
-        emailHandler.sendWelcomeEmail(email, loginId);
+        emailHandler.sendWelcomeEmail(request.getEmail(), request.getLoginId());
 
         return joinedUser;
     }
 
     @Override
     @Transactional
-    public Tokens login(String loginId, String password, String deviceStr) {
+    public Tokens login(UserLoginServiceRequest request) {
         // 로그인 아이디로 유저 조회
-        User user = loadUserByLoginId(loginId);
+        User user = loadUserByLoginId(request.getLoginId());
 
-        Device device = Device.from(deviceStr);
+        Device device = Device.from(request.getDevice());
 
         user.setDevice(device);
 
         // 비밀번호 일치 여부 확인
-        user.checkPasswordMatch(password, encoder);
+        user.checkPasswordMatch(request.getPassword(), encoder);
 
         // 이미 로그인된 사용자인지 확인
         userTokenManager.checkAlreadyLoggedIn(user.getId(), device);

@@ -32,7 +32,7 @@ public class UserController {
      */
     @PostMapping("/join")
     public ApiResponse<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
-        User user = userService.join(request.getLoginId(), request.getUserName(), request.getNickName(), request.getPassword(), request.getEmail(), request.getGender());
+        User user = userService.join(request.toServiceRequest());
         return ApiResponse.ok(UserJoinResponse.from(user));
     }
 
@@ -44,7 +44,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public ApiResponse<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
-        Tokens token = userService.login(request.getLoginId(), request.getPassword(), request.getDevice());
+        Tokens token = userService.login(request.toServiceRequest());
         return ApiResponse.ok(UserLoginResponse.from(token));
     }
 

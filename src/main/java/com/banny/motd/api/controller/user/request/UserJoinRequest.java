@@ -1,6 +1,7 @@
 package com.banny.motd.api.controller.user.request;
 
 
+import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -30,4 +31,14 @@ public class UserJoinRequest {
     @NotBlank(message = "성별을 입력해주세요.")
     private String gender;
 
+    public UserJoinServiceRequest toServiceRequest() {
+        return UserJoinServiceRequest.builder()
+                .loginId(loginId)
+                .userName(userName)
+                .nickName(nickName)
+                .password(password)
+                .email(email)
+                .gender(gender)
+                .build();
+    }
 }
