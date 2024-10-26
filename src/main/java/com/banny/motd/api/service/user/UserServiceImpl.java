@@ -2,10 +2,7 @@ package com.banny.motd.api.service.user;
 
 import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
 import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
-import com.banny.motd.domain.user.Tokens;
-import com.banny.motd.domain.user.User;
-import com.banny.motd.domain.user.UserRole;
-import com.banny.motd.domain.user.UserStatus;
+import com.banny.motd.domain.user.*;
 import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
@@ -33,27 +30,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User join(UserJoinServiceRequest request) {
-        // 이미 가입된 사용자인지 확인
         userRepository.findByLoginId(request.getLoginId()).ifPresent(userEntity -> {
             throw new ApplicationException(ApiResponseStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", request.getLoginId()));
         });
 
-        // 신규 유저 객체 생성
         User user = User.builder()
                 .loginId(request.getLoginId())
                 .userName(request.getUserName())
                 .nickName(request.getNickName())
                 .password(encoder.encode(request.getPassword()))
                 .email(request.getEmail())
+                .gender(Gender.from(request.getGender()))
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.PENDING)
                 .build();
-        user.setGenderStr(request.getGender());
 
-        // 유저 저장
         User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
 
-        // Welcome 이메일 발송
         emailHandler.sendWelcomeEmail(request.getEmail(), request.getLoginId());
 
         return joinedUser;
@@ -62,7 +55,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Tokens login(UserLoginServiceRequest request) {
-        // 로그인 아이디로 유저 조회
         User user = loadUserByLoginId(request.getLoginId());
 
         Device device = Device.from(request.getDevice());

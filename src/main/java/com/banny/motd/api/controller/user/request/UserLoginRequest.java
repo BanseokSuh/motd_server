@@ -1,6 +1,5 @@
 package com.banny.motd.api.controller.user.request;
 
-import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
 import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

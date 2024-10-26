@@ -40,20 +40,6 @@ public class User implements UserDetails {
     private LocalDateTime deletedAt;
 
     /**
-     * 성별 문자열로 성별 설정
-     *
-     * @param genderStr 성별 문자열
-     * @throws ApplicationException 성별 문자열이 잘못된 경우 예외 반환
-     */
-    public void setGenderStr(String genderStr) {
-        try {
-            this.gender = Gender.valueOf(genderStr);
-        } catch (Exception e) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PARAMETER, "Invalid gender");
-        }
-    }
-
-    /**
      * 비밀번호 일치 여부 확인
      *
      * @param password 비밀번호

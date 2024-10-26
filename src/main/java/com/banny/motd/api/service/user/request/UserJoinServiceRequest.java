@@ -1,7 +1,6 @@
 package com.banny.motd.api.service.user.request;
 
 
-import com.banny.motd.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,8 @@ public class UserJoinServiceRequest {
     private String loginId;
     private String userName;
     private String nickName;
-    private String password;
     private String email;
+    private String password;
     private String gender;
 
     @Builder
@@ -22,9 +21,9 @@ public class UserJoinServiceRequest {
         this.loginId = loginId;
         this.userName = userName;
         this.nickName = nickName;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.gender = gender;
     }
-    
+
 }
