@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void commentPost(Long postId, Long userId, CommentCreateServiceRequest request) {
-        User user = getUserByIdOrException(userId);
+        User user = userRepository.getById(userId);
         Post post = getPostByIdOrException(postId);
 
         commentRepository.save(CommentEntity.of(UserEntity.from(user), TargetType.POST, postId, request.getComment()));
@@ -49,12 +49,6 @@ public class CommentServiceImpl implements CommentService {
                 .stream()
                 .map(CommentEntity::toDomain)
                 .toList();
-    }
-
-    public User getUserByIdOrException(Long userId) {
-        return userRepository.findById(userId)
-                .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
     public Post getPostByIdOrException(Long postId) {

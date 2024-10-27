@@ -38,7 +38,7 @@ public class ReactionServiceImpl implements ReactionService {
     @Override
     @Transactional
     public void likePost(Long postId, Long userId) {
-        User user = getUserByIdOrException(userId);
+        User user = userRepository.getById(userId);
         Post post = getPostByIdOrException(postId);
 
         Reaction like = getUserPostLike(userId, postId);
@@ -61,12 +61,6 @@ public class ReactionServiceImpl implements ReactionService {
                 .stream()
                 .map(ReactionEntity::toDomain)
                 .toList();
-    }
-
-    public User getUserByIdOrException(Long userId) {
-        return userRepository.findById(userId)
-                .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
     }
 
     public Post getPostByIdOrException(Long postId) {

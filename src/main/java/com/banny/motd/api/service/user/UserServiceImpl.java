@@ -5,7 +5,6 @@ import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
 import com.banny.motd.domain.user.*;
 import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
 import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
                 .userStatus(UserStatus.PENDING)
                 .build();
 
-        User joinedUser = userRepository.save(UserEntity.from(user)).toDomain();
+        User joinedUser = userRepository.save(user);
 
         emailHandler.sendWelcomeEmail(request.getEmail(), request.getLoginId());
 
@@ -55,10 +54,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Tokens login(UserLoginServiceRequest request) {
-        User user = loadUserByLoginId(request.getLoginId());
+        User user = userRepository.getByLoginId(request.getLoginId());
 
         Device device = Device.from(request.getDevice());
-
         user.setDevice(device);
 
         // 비밀번호 일치 여부 확인
@@ -86,44 +84,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(Long id, Device device) {
-        // 유저 로그아웃
         userTokenManager.deleteToken(id, device);
-
-        // 유저 캐시 삭제
         userCacheRepository.deleteUser(id);
     }
 
     @Override
     public void delete(Long id) {
-
-        // 유저 삭제
-        userRepository.deleteById(id);
-
-        // 유저 캐시 삭제
+        User user = userRepository.getById(id);
+        userRepository.delete(user);
         userCacheRepository.deleteUser(id);
     }
 
     @Override
     public User getMyInfo(Long id) {
-        return userCacheRepository.getUser(id).orElseGet(() ->
-                userRepository.findById(id)
-                        .map(UserEntity::toDomain)
-                        .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)))
-        );
+        return userCacheRepository.getUser(id).orElseGet(() -> userRepository.getById(id));
     }
 
     @Override
-    public User loadUserByLoginId(String loginId) {
-        return userRepository.findByLoginId(loginId)
-                .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
+    public User getByLoginId(String loginId) {
+        return userRepository.getByLoginId(loginId);
     }
 
     @Override
     public User getUserOrException(Long userId) {
-        return userRepository.findById(userId)
-                .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("UserId %s is not found", userId)));
+        return userRepository.getById(userId);
     }
 
 }

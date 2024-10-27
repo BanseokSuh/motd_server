@@ -43,7 +43,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String loginId = JwtTokenUtils.getLoginId(token, secretKey); // Extract loginId from token
             Device device = JwtTokenUtils.getDeviceStr(token, secretKey); // Extract device from token
 
-            User userDetails = userService.loadUserByLoginId(loginId); // Get user details by loginId
+            User userDetails = userService.getByLoginId(loginId); // Get user details by loginId
 
             userDetails.setDevice(device); // Set device to user details
 

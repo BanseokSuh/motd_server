@@ -1,16 +1,15 @@
 package com.banny.motd.api.service.alarm;
 
-import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
-import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
 import com.banny.motd.domain.alarm.Alarm;
 import com.banny.motd.domain.alarm.AlarmArgs;
 import com.banny.motd.domain.alarm.AlarmType;
+import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
+import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
 import com.banny.motd.domain.alarm.infrastructure.entity.AlarmEntity;
-import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.domain.user.User;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
-import com.banny.motd.global.exception.ApplicationException;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -57,8 +56,8 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void send(AlarmType alarmType, AlarmArgs alarmArgs, Long receiverUserId) {
-        User receiverUser = getUserById(receiverUserId);
-        User senderUser = getUserById(alarmArgs.getFromUserId());
+        User receiverUser = userRepository.getById(receiverUserId);
+        User senderUser = userRepository.getById(alarmArgs.getFromUserId());
 
         String message = getAlarmMessage(alarmType, alarmArgs, senderUser);
 
@@ -72,12 +71,6 @@ public class AlarmServiceImpl implements AlarmService {
                 throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
             }
         }, () -> log.info("No emitter found"));
-    }
-
-    private User getUserById(Long userId) {
-        return userRepository.findById(userId)
-                .map(UserEntity::toDomain)
-                .orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User not found: %d", userId)));
     }
 
     private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, User senderUser) {
