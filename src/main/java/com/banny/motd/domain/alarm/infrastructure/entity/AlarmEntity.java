@@ -14,7 +14,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
-
 @Getter
 @Builder
 @NoArgsConstructor
@@ -43,6 +42,15 @@ public class AlarmEntity extends BaseEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "alarm_args", nullable = false, columnDefinition = "jsonb")
     private AlarmArgs alarmArgs;
+
+    public static AlarmEntity from(Alarm alarm) {
+        return AlarmEntity.builder()
+                .id(alarm.getId())
+                .userId(alarm.getUserId())
+                .alarmType(alarm.getAlarmType())
+                .alarmArgs(alarm.getAlarmArgs())
+                .build();
+    }
 
     public static AlarmEntity of(Long userId, AlarmType alarmType, AlarmArgs alarmArgs) {
         return AlarmEntity.builder()

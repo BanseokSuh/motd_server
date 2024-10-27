@@ -5,7 +5,6 @@ import com.banny.motd.domain.alarm.AlarmArgs;
 import com.banny.motd.domain.alarm.AlarmType;
 import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
 import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
-import com.banny.motd.domain.alarm.infrastructure.entity.AlarmEntity;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.response.ApiResponseStatusType;
@@ -38,14 +37,12 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public SseEmitter subscribeAlarm(Long userId) {
         SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
-
         emitterRepository.save(userId, sseEmitter);
 
         sseEmitter.onCompletion(() -> emitterRepository.delete(userId)); // 연결 종료 시 삭제
         sseEmitter.onTimeout(() -> emitterRepository.delete(userId)); // 타임아웃 시 삭제
 
         try {
-            // 연결 완료 메시지 전송
             sseEmitter.send(SseEmitter.event().id("id").name(ALARM_NAME).data("connect completed"));
         } catch (IOException e) {
             throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
@@ -61,11 +58,16 @@ public class AlarmServiceImpl implements AlarmService {
 
         String message = getAlarmMessage(alarmType, alarmArgs, senderUser);
 
-        AlarmEntity alarmEntity = alarmRepository.save(AlarmEntity.of(receiverUser.getId(), alarmType, alarmArgs));
+        Alarm alarm = Alarm.builder()
+                .userId(receiverUser.getId())
+                .alarmArgs(alarmArgs)
+                .alarmType(alarmType)
+                .build();
+        Alarm savedAlarm = alarmRepository.save(alarm);
 
         emitterRepository.get(receiverUserId).ifPresentOrElse(sseEmitter -> {
             try {
-                sseEmitter.send(SseEmitter.event().id(alarmEntity.getId().toString()).name(ALARM_NAME).data(message));
+                sseEmitter.send(SseEmitter.event().id(savedAlarm.getId().toString()).name(ALARM_NAME).data(message));
             } catch (IOException e) {
                 emitterRepository.delete(receiverUserId);
                 throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
