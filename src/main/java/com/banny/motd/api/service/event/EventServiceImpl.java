@@ -1,6 +1,6 @@
 package com.banny.motd.api.service.event;
 
-import com.banny.motd.domain.event.infrastructure.EventRepository;
+import com.banny.motd.domain.event.infrastructure.EventJpaRepository;
 import com.banny.motd.domain.event.Event;
 import com.banny.motd.domain.event.EventType;
 import com.banny.motd.domain.event.infrastructure.entity.EventEntity;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class EventServiceImpl implements EventService {
 
     private final UserService userService;
-    private final EventRepository eventRepository;
+    private final EventJpaRepository eventRepository;
 
     @Override
     public Event createEvent(

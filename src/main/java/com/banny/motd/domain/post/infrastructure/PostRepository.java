@@ -1,9 +1,22 @@
 package com.banny.motd.domain.post.infrastructure;
 
-import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.banny.motd.domain.post.Post;
+import com.banny.motd.domain.post.PostList;
+import com.banny.motd.global.dto.request.SearchRequest;
 
-@Repository
-public interface PostRepository extends JpaRepository<PostEntity, Long>, PostRepositoryCustom {
+import java.util.List;
+import java.util.Optional;
+
+public interface PostRepository {
+
+    Post getById(Long id);
+
+    Optional<Post> findById(Long id);
+
+    List<Post> getPostList(SearchRequest request);
+
+    Post save(Post post);
+
+    void delete(Post post);
+
 }

@@ -1,6 +1,6 @@
 package com.banny.motd.api.controller.post.response;
 
-import com.banny.motd.domain.post.PostList;
+import com.banny.motd.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,17 +27,17 @@ public class PostListResponse {
         private String profileImageUrl;
     }
 
-    public static PostListResponse from(PostList postList) {
+    public static PostListResponse from(Post post) {
         return new PostListResponse(
-                postList.getId(),
-                postList.getImageUrls(),
-                postList.getContent(),
-                postList.getCreatedAt(),
+                post.getId(),
+                post.getImageUrls(),
+                post.getContent(),
+                post.getCreatedAt(),
                 AuthorResponse.builder()
-                        .id(postList.getAuthor().getId())
-                        .loginId(postList.getAuthor().getLoginId())
-                        .userName(postList.getAuthor().getUsername())
-                        .profileImageUrl(postList.getAuthor().getProfileImageUrl())
+                        .id(post.getAuthor().getId())
+                        .loginId(post.getAuthor().getLoginId())
+                        .userName(post.getAuthor().getUsername())
+                        .profileImageUrl(post.getAuthor().getProfileImageUrl())
                         .build()
         );
     }

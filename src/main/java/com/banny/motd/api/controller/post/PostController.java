@@ -8,7 +8,6 @@ import com.banny.motd.api.controller.post.response.PostListResponse;
 import com.banny.motd.api.service.post.PostService;
 import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.post.PostDetail;
-import com.banny.motd.domain.post.PostList;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.dto.response.ApiResponse;
@@ -36,10 +35,8 @@ public class PostController {
 
     @GetMapping
     public ApiResponse<List<PostListResponse>> getPostList(SearchRequest request) {
-        List<PostList> posts = postService.getPostList(request);
-
-        List<PostListResponse> postResponses = posts.stream()
-                .map(PostListResponse::from).toList();
+        List<Post> posts = postService.getPostList(request);
+        List<PostListResponse> postResponses = posts.stream().map(PostListResponse::from).toList();
 
         return ApiResponse.ok(postResponses);
     }

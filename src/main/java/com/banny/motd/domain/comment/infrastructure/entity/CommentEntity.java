@@ -43,6 +43,16 @@ public class CommentEntity extends BaseEntity {
     @Column(name = "comment", nullable = false, columnDefinition = "TEXT")
     private String comment;
 
+    public static CommentEntity from(Comment comment) {
+        return CommentEntity.builder()
+                .id(comment.getId())
+                .user(UserEntity.from(comment.getAuthor()))
+                .targetType(comment.getTargetType())
+                .targetId(comment.getTargetId())
+                .comment(comment.getComment())
+                .build();
+    }
+
     public static CommentEntity of(UserEntity userEntity, TargetType targetType, Long targetId, String comment) {
         return CommentEntity.builder()
                 .user(userEntity)
