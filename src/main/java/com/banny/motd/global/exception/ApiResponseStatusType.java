@@ -1,4 +1,4 @@
-package com.banny.motd.global.dto.response;
+package com.banny.motd.global.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public enum ApiResponseStatusType {
 
     FAIL_ALREADY_LOGGED_IN("6001", "already logged in"),
 
-    // INVALID PARAMETER WHEN REQUEST
+    FAIL_EMAIL_MIME_MESSAGE_HELPER("9996", "Failed to set MimeMessageHelper"),
     FAIL_INVALID_PARAMETER("9997", "invalid parameter"),
     FAIL_VALIDATION_ERROR("9998", "validate error"),
     FAIL_SERVER_ERROR("9999", "server error");

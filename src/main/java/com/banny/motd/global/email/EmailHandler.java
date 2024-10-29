@@ -1,5 +1,6 @@
 package com.banny.motd.global.email;
 
+import com.banny.motd.global.exception.ApplicationException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+
+import static com.banny.motd.global.exception.ApiResponseStatusType.FAIL_EMAIL_MIME_MESSAGE_HELPER;
 
 @Slf4j
 @Service
@@ -42,8 +45,7 @@ public class EmailHandler {
             helper.setText(setContext("welcomeEmail", loginId), true);
         } catch (Exception e) {
             log.error("Failed to set MimeMessageHelper", e);
-
-            throw new RuntimeException("Failed to set MimeMessageHelper", e);
+            throw new ApplicationException(FAIL_EMAIL_MIME_MESSAGE_HELPER);
         }
 
         javaMailSender.send(message);

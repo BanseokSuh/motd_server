@@ -1,6 +1,6 @@
 package com.banny.motd.domain.user.infrastructure;
 
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -7,7 +7,7 @@ import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
 import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

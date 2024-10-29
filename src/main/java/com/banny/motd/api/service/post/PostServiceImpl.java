@@ -12,7 +12,7 @@ import com.banny.motd.domain.post.infrastructure.PostRepository;
 import com.banny.motd.domain.reaction.Reaction;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.dto.request.SearchRequest;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

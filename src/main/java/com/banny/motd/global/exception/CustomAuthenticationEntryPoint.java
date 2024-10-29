@@ -2,7 +2,6 @@ package com.banny.motd.global.exception;
 
 import com.banny.motd.global.dto.response.ApiResponse;
 import com.banny.motd.global.dto.response.ApiResponseStatus;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

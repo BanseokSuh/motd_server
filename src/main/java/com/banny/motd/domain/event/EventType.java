@@ -1,6 +1,6 @@
 package com.banny.motd.domain.event;
 
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

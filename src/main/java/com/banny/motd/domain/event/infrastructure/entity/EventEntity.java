@@ -2,7 +2,7 @@ package com.banny.motd.domain.event.infrastructure.entity;
 
 import com.banny.motd.domain.event.Event;
 import com.banny.motd.domain.event.EventType;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;

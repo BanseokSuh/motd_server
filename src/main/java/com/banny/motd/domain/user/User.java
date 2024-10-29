@@ -2,7 +2,7 @@ package com.banny.motd.domain.user;
 
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

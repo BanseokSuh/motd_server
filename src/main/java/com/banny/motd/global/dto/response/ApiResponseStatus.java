@@ -1,5 +1,6 @@
 package com.banny.motd.global.dto.response;
 
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

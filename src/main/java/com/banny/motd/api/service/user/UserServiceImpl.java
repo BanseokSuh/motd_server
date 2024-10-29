@@ -5,7 +5,7 @@ import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
 import com.banny.motd.domain.user.*;
 import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApplicationException;

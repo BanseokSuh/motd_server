@@ -18,4 +18,6 @@ public interface UserRepository {
 
     void delete(User user);
 
+    void deleteAllInBatch();
+
 }

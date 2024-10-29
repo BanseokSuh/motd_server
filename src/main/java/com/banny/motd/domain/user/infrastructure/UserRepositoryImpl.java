@@ -1,8 +1,8 @@
 package com.banny.motd.domain.user.infrastructure;
 
 import com.banny.motd.domain.user.User;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -45,6 +45,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void delete(User user) {
         userJpaRepository.delete(UserEntity.from(user));
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+        userJpaRepository.deleteAllInBatch();
     }
 
 }

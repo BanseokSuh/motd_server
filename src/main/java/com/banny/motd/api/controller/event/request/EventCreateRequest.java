@@ -49,4 +49,5 @@ public class EventCreateRequest {
                 .eventEndAt(eventEndAt)
                 .build();
     }
+
 }

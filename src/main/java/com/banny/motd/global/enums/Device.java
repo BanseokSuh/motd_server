@@ -1,7 +1,7 @@
 package com.banny.motd.global.enums;
 
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.dto.response.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiResponseStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

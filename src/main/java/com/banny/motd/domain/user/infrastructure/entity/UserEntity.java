@@ -1,4 +1,4 @@
-package com.banny.motd.domain.user.infrastructure.eneity;
+package com.banny.motd.domain.user.infrastructure.entity;
 
 import com.banny.motd.domain.user.Gender;
 import com.banny.motd.domain.user.User;

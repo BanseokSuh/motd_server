@@ -1,7 +1,7 @@
 package com.banny.motd.domain.comment.infrastructure.entity;
 
 import com.banny.motd.domain.comment.Comment;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
