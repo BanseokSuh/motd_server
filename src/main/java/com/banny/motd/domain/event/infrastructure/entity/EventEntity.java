@@ -52,6 +52,21 @@ public class EventEntity extends BaseEntity {
     @Column(name = "event_end_at", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime eventEndAt;
 
+    public static EventEntity from(Event event) {
+        return EventEntity.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .description(event.getDescription())
+                .enrollmentLimit(event.getEnrollmentLimit())
+                .eventType(event.getEventType())
+                .user(UserEntity.from(event.getManager()))
+                .registerStartAt(event.getRegisterStartAt())
+                .registerEndAt(event.getRegisterEndAt())
+                .eventStartAt(event.getEventStartAt())
+                .eventEndAt(event.getEventEndAt())
+                .build();
+    }
+
     public static EventEntity of(String title, String description, int enrollmentLimit, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
         return EventEntity.builder()
                 .title(title)

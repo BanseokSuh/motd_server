@@ -1,49 +1,40 @@
 package com.banny.motd.api.service.event;
 
-import com.banny.motd.domain.event.infrastructure.EventJpaRepository;
+import com.banny.motd.api.service.event.request.EventCreateServiceRequest;
+import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.domain.event.Event;
 import com.banny.motd.domain.event.EventType;
-import com.banny.motd.domain.event.infrastructure.entity.EventEntity;
-import com.banny.motd.api.service.user.UserService;
+import com.banny.motd.domain.event.infrastructure.EventRepository;
 import com.banny.motd.domain.user.User;
-import com.banny.motd.domain.user.infrastructure.eneity.UserEntity;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final UserService userService;
-    private final EventJpaRepository eventRepository;
+    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public Event createEvent(
-            String title,
-            String description,
-            int enrollmentLimit,
-            EventType eventType,
-            LocalDateTime registerStartAt,
-            LocalDateTime registerEndAt,
-            LocalDateTime eventStartAt,
-            LocalDateTime eventEndAt,
-            Long userId) {
-
-        User user = userService.getUserOrException(userId);
-
-        return eventRepository.save(EventEntity.of(
-                title,
-                description,
-                enrollmentLimit,
-                eventType,
-                registerStartAt,
-                registerEndAt,
-                eventStartAt,
-                eventEndAt,
-                UserEntity.from(user)
-        )).toDomain();
+    public void createEvent(EventCreateServiceRequest request, Long userId) {
+        User manager = userRepository.getById(userId);
+        Event event = Event.builder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .enrollmentLimit(request.getEnrollmentLimit())
+                .eventType(EventType.from(request.getEventType()))
+                .manager(manager)
+                .registerStartAt(request.getRegisterStartAt())
+                .registerEndAt(request.getRegisterEndAt())
+                .eventStartAt(request.getEventStartAt())
+                .eventEndAt(request.getEventEndAt())
+                .build();
+        eventRepository.save(event);
     }
 
     @Override

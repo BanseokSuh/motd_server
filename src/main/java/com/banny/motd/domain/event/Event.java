@@ -2,10 +2,12 @@ package com.banny.motd.domain.event;
 
 import com.banny.motd.domain.user.User;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 @Builder
 public class Event {
 

@@ -33,6 +33,7 @@ public class UserController {
     @PostMapping("/join")
     public ApiResponse<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest request) {
         User user = userService.join(request.toServiceRequest());
+
         return ApiResponse.ok(UserJoinResponse.from(user));
     }
 
@@ -45,6 +46,7 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         Tokens token = userService.login(request.toServiceRequest());
+
         return ApiResponse.ok(UserLoginResponse.from(token));
     }
 
@@ -57,8 +59,8 @@ public class UserController {
     @PostMapping("/logout")
     public ApiResponse<Void> logout(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-
         userService.logout(user.getId(), user.getDevice());
+
         return ApiResponse.ok();
     }
 
@@ -72,6 +74,7 @@ public class UserController {
     public ApiResponse<Void> delete(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         userService.delete(user.getId());
+
         return ApiResponse.ok();
     }
 
@@ -84,7 +87,9 @@ public class UserController {
     @GetMapping("/my")
     public ApiResponse<UserMyResponse> getMyInfo(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        return ApiResponse.ok(UserMyResponse.from(userService.getMyInfo(user.getId())));
+        User myUser = userService.getMyInfo(user.getId());
+
+        return ApiResponse.ok(UserMyResponse.from(myUser));
     }
 
 }
