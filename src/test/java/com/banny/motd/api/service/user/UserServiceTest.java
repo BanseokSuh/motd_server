@@ -155,6 +155,42 @@ class UserServiceTest {
                 );
     }
 
+    @DisplayName("로그인 시 잘못된 디바이스 타입을 입력하면 예외가 발생한다.")
+    @Test
+    void loginWithWrongDeviceType() {
+        // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String gender = "MALE";
+        String device = "WRONG_DEVICE";
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        userService.join(joinRequest); // 회원가입
+
+        // when // then
+        assertThatThrownBy(() -> userService.login(loginRequest))
+                .isInstanceOf(ApplicationException.class)
+                .extracting("status.code", "status.desc", "result.message")
+                .contains(
+                        ApiResponseStatusType.FAIL_NOT_EXIST_DEVICE.getCode(),
+                        ApiResponseStatusType.FAIL_NOT_EXIST_DEVICE.getDesc(),
+                        String.format("Device not found. name: %s", device)
+                );
+    }
+
+    @DisplayName("로그인 시 비밀번호가 틀린 경우 예외가 발생한다.")
+    @Test
+    void loginWithWrongPassword() {
+        // given
+
+        // when
+
+        // then
+    }
+
     @Test
     void logout() {
         // given
