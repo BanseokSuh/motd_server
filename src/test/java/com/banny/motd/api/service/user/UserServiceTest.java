@@ -255,35 +255,66 @@ class UserServiceTest {
         String email = "still3028@gmail.com";
         String password = "test001!";
         String gender = "MALE";
-        String deviceStr = "WEB";
-        Device device = Device.from(deviceStr);
+        String device = "WEB";
         UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
         User joinedUser = userService.join(joinRequest); // 회원가입
 
-        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, deviceStr);
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
         userService.login(loginRequest); // 로그인
 
         // when
-        userService.logout(joinedUser.getId(), device);
+        userService.logout(joinedUser.getId(), Device.from(device));
 
         // then
-        assertThat(redisTemplate.hasKey("A_TOKEN:" + joinedUser.getId() + "-" + device.getValue())).isFalse();
-        assertThat(redisTemplate.hasKey("R_TOKEN:" + joinedUser.getId() + "-" + device.getValue())).isFalse();
+        assertThat(redisTemplate.hasKey("A_TOKEN:" + joinedUser.getId() + "-" + device)).isFalse();
+        assertThat(redisTemplate.hasKey("R_TOKEN:" + joinedUser.getId() + "-" + device)).isFalse();
         assertThat(redisTemplate.hasKey("USER:" + joinedUser.getId())).isFalse();
     }
 
+    @DisplayName("회원탈퇴가 정상적으로 동작한다.")
     @Test
     void delete() {
         // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String gender = "MALE";
+        String device = "WEB";
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        User joinedUser = userService.join(joinRequest); // 회원가입
+
         // when
+        userService.delete(joinedUser.getId());
+
         // then
+        assertThat(userRepository.findById(joinedUser.getId())).isEmpty();
+        assertThat(redisTemplate.hasKey("A_TOKEN:" + joinedUser.getId() + "-" + device)).isFalse();
+        assertThat(redisTemplate.hasKey("R_TOKEN:" + joinedUser.getId() + "-" + device)).isFalse();
+        assertThat(redisTemplate.hasKey("USER:" + joinedUser.getId())).isFalse();
     }
 
+    @DisplayName("내 정보 조회가 정상적으로 동작한다.")
     @Test
     void getMyInfo() {
         // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String gender = "MALE";
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        User joinedUser = userService.join(joinRequest); // 회원가입
+
         // when
+        User myUser = userService.getMyInfo(joinedUser.getId());
+
         // then
+        assertThat(myUser)
+               .extracting("loginId", "userName", "nickName", "email", "gender")
+                .contains(loginId, userName, nickName, email, Gender.from(gender));
     }
 
     private static UserLoginServiceRequest getUserLoginServiceRequest(String loginId, String password, String device) {
