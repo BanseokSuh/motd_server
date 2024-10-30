@@ -2,8 +2,8 @@ package com.banny.motd.api.service.user;
 
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.enums.Device;
-import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApplicationException;
 import com.banny.motd.global.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,35 +52,35 @@ public class UserTokenManager {
     /**
      * access token redis에 저장 (중복로그인 방지용)
      *
-     * @param userId      사용자 id
+     * @param user        사용자
      * @param accessToken access token
      */
-    public void saveAccessToken(Long userId, Device device, String accessToken) {
-        String key = getAccessTokenKey(userId, device.getValue());
+    public void saveAccessToken(User user, Device device, String accessToken) {
+        String key = getAccessTokenKey(user.getId(), device.getValue());
         redisTemplate.opsForValue().set(key, accessToken, ACCESS_TOKEN_CACHE_TTL);
     }
 
     /**
      * refresh token redis에 저장
      *
-     * @param userId       사용자 id
+     * @param user         사용자
      * @param refreshToken refresh token
      */
-    public void saveRefreshToken(Long userId, Device device, String refreshToken) {
-        String key = getRefreshTokenKey(userId, device.getValue());
+    public void saveRefreshToken(User user, Device device, String refreshToken) {
+        String key = getRefreshTokenKey(user.getId(), device.getValue());
         redisTemplate.opsForValue().set(key, refreshToken, REFRESH_TOKEN_CACHE_TTL);
     }
 
     /**
      * 이미 로그인 중인지 확인
      *
-     * @param userId 사용자 id
+     * @param user 사용자
      */
-    public void checkAlreadyLoggedIn(Long userId, Device device) {
-        String key = getAccessTokenKey(userId, device.getValue());
+    public void checkAlreadyLoggedIn(User user, Device device) {
+        String key = getAccessTokenKey(user.getId(), device.getValue());
 
         if (hasKey(key)) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", userId));
+            throw new ApplicationException(ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN, String.format("User %s is already logged in", user.getLoginId()));
         }
     }
 

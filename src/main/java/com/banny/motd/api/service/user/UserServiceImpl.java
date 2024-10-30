@@ -63,15 +63,15 @@ public class UserServiceImpl implements UserService {
         user.checkPasswordMatch(request.getPassword(), encoder);
 
         // 이미 로그인된 사용자인지 확인
-        userTokenManager.checkAlreadyLoggedIn(user.getId(), device);
+        userTokenManager.checkAlreadyLoggedIn(user, device);
 
         // 토큰 생성
         String accessToken = userTokenManager.generateAccessToken(user, device);
         String refreshToken = userTokenManager.generateRefreshToken(user, device);
 
         // 토큰 저장
-        userTokenManager.saveAccessToken(user.getId(), device, accessToken);
-        userTokenManager.saveRefreshToken(user.getId(), device, refreshToken);
+        userTokenManager.saveAccessToken(user, device, accessToken);
+        userTokenManager.saveRefreshToken(user, device, refreshToken);
 
         // 유저 정보 캐시 저장
         userCacheRepository.setUser(user);

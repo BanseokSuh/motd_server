@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,12 +34,16 @@ class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @MockBean
     private EmailHandler emailHandler;
 
     @AfterEach
     void tearDown() {
         userRepository.deleteAllInBatch();
+        redisTemplate.getConnectionFactory().getConnection().serverCommands().flushDb();
     }
 
     @DisplayName("회원가입이 정상적으로 동작한다.")
@@ -208,6 +213,34 @@ class UserServiceTest {
                         ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getCode(),
                         ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getDesc(),
                         "Password does not match"
+                );
+    }
+
+    @DisplayName("로그인 시 이미 로그인된 사용자가 요청이 들어오면 예외가 발생한다.")
+    @Test
+    void loginWithAlreadyLoggedInUser() {
+        // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String gender = "MALE";
+        String device = "WEB";
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        userService.join(joinRequest); // 회원가입
+
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
+        userService.login(loginRequest); // 1회 로그인
+
+        // when // then
+        assertThatThrownBy(() -> userService.login(loginRequest))
+                .isInstanceOf(ApplicationException.class)
+                .extracting("status.code", "status.desc", "result.message")
+                .contains(
+                        ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN.getCode(),
+                        ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN.getDesc(),
+                        String.format("User %s is already logged in", loginId)
                 );
     }
 
