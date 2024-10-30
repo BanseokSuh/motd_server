@@ -7,6 +7,7 @@ import com.banny.motd.domain.user.Tokens;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.email.EmailHandler;
+import com.banny.motd.global.enums.Device;
 import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import org.junit.jupiter.api.AfterEach;
@@ -244,11 +245,31 @@ class UserServiceTest {
                 );
     }
 
+    @DisplayName("로그아웃이 정상적으로 동작한다.")
     @Test
     void logout() {
         // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String gender = "MALE";
+        String deviceStr = "WEB";
+        Device device = Device.from(deviceStr);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        User joinedUser = userService.join(joinRequest); // 회원가입
+
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, deviceStr);
+        userService.login(loginRequest); // 로그인
+
         // when
+        userService.logout(joinedUser.getId(), device);
+
         // then
+        assertThat(redisTemplate.hasKey("A_TOKEN:" + joinedUser.getId() + "-" + device.getValue())).isFalse();
+        assertThat(redisTemplate.hasKey("R_TOKEN:" + joinedUser.getId() + "-" + device.getValue())).isFalse();
+        assertThat(redisTemplate.hasKey("USER:" + joinedUser.getId())).isFalse();
     }
 
     @Test
