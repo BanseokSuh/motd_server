@@ -4,13 +4,13 @@ import com.banny.motd.api.service.comment.CommentService;
 import com.banny.motd.api.service.post.request.PostCreateServiceRequest;
 import com.banny.motd.api.service.post.request.PostModifyServiceRequest;
 import com.banny.motd.api.service.reaction.ReactionService;
-import com.banny.motd.api.service.user.UserService;
 import com.banny.motd.domain.comment.Comment;
 import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.post.PostDetail;
 import com.banny.motd.domain.post.infrastructure.PostRepository;
 import com.banny.motd.domain.reaction.Reaction;
 import com.banny.motd.domain.user.User;
+import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
@@ -27,14 +27,14 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserService userService;
     private final ReactionService reactionService;
     private final CommentService commentService;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public Post createPost(PostCreateServiceRequest request, Long userId) {
-        User user = userService.getUserOrException(userId);
+        User user = userRepository.getById(userId);
 
         Post post = Post.builder()
                 .author(user)
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDetail getPost(Long postId) {
         Post post = postRepository.getById(postId);
-        User user = userService.getUserOrException(post.getAuthor().getId());
+        User user = userRepository.getById(post.getAuthor().getId());
 
         List<Reaction> likeList = reactionService.getLikeListByPostId(postId);
         List<Comment> commentList = commentService.getCommentListByPostId(postId);
@@ -70,7 +70,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void modifyPost(Long postId, PostModifyServiceRequest request, Long userId) {
         Post post = postRepository.getById(postId);
-        User user = userService.getUserOrException(userId);
+        User user = userRepository.getById(userId);
 
         if (!post.isAuthor(user.getId())) {
             throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void deletePost(Long postId, Long userId) {
-        User user = userService.getUserOrException(userId);
+        User user = userRepository.getById(userId);
         Post post = postRepository.getById(postId);
 
         if (!post.isAuthor(user.getId())) {

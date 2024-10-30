@@ -105,9 +105,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.getByLoginId(loginId);
     }
 
-    @Override
-    public User getUserOrException(Long userId) {
-        return userRepository.getById(userId);
-    }
-
 }

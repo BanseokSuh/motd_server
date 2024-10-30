@@ -20,6 +20,4 @@ public interface UserService {
 
     User getByLoginId(String loginId);
 
-    User getUserOrException(Long userId);
-
 }
