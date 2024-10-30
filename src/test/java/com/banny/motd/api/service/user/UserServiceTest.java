@@ -123,8 +123,9 @@ class UserServiceTest {
         String gender = "MALE";
         String device = "WEB";
         UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
-        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
         userService.join(joinRequest); // 회원가입
+
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
 
         // when
         Tokens token = userService.login(loginRequest);
@@ -166,9 +167,10 @@ class UserServiceTest {
         String password = "test001!";
         String gender = "MALE";
         String device = "WRONG_DEVICE";
-        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
         UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
         userService.join(joinRequest); // 회원가입
+
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
 
         // when // then
         assertThatThrownBy(() -> userService.login(loginRequest))
@@ -185,10 +187,28 @@ class UserServiceTest {
     @Test
     void loginWithWrongPassword() {
         // given
+        String loginId = "test000";
+        String userName = "서반석";
+        String nickName = "반석";
+        String email = "still3028@gmail.com";
+        String password = "test001!";
+        String wrongPassword = "wrong_password";
+        String gender = "MALE";
+        String device = "WEB";
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, wrongPassword, gender);
+        userService.join(joinRequest); // 회원가입
 
-        // when
+        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
 
-        // then
+        // when // then
+        assertThatThrownBy(() -> userService.login(loginRequest))
+                .isInstanceOf(ApplicationException.class)
+                .extracting("status.code", "status.desc", "result.message")
+                .contains(
+                        ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getCode(),
+                        ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getDesc(),
+                        "Password does not match"
+                );
     }
 
     @Test
