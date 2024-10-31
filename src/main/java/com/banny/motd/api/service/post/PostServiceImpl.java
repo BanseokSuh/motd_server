@@ -46,6 +46,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Post> getPostList(SearchRequest request) {
         return postRepository.getPostList(request);
     }

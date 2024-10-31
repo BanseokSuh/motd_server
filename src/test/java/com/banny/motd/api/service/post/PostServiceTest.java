@@ -8,6 +8,7 @@ import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.UserStatus;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +94,37 @@ class PostServiceTest {
                         ApiResponseStatusType.FAIL_USER_NOT_FOUND.getDesc(),
                         String.format("User %d is not found", userId)
                 );
+    }
 
+    @DisplayName("게시글이 정상적으로 조회된다.")
+    @Test
+    void getPostList() {
+        // given
+        createPosts(15);
+        SearchRequest request = SearchRequest.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        // when
+        List<Post> postList = postService.getPostList(request);
+
+        // then
+        assertThat(postList).hasSize(10)
+                .extracting("id")
+                .containsExactly(15L, 14L, 13L, 12L, 11L, 10L, 9L, 8L, 7L, 6L)
+                .doesNotContain(5L, 4L, 3L, 2L, 1L);
+    }
+
+    private void createPosts(int count) {
+        for (int i = 0; i < count; i++) {
+            Post post = Post.builder()
+                    .author(User.builder().id(1L).build())
+                    .content("content" + i)
+                    .imageUrls(List.of("image" + i))
+                    .build();
+            postRepository.save(post);
+        }
     }
 
 }
