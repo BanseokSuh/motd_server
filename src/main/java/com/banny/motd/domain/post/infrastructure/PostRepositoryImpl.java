@@ -54,4 +54,9 @@ public class PostRepositoryImpl implements PostRepository {
         postJpaRepository.delete(PostEntity.from(post));
     }
 
+    @Override
+    public void deleteAllInBatch() {
+        postJpaRepository.deleteAllInBatch();
+    }
+
 }

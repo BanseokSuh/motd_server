@@ -52,6 +52,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PostDetail getPost(Long postId) {
         Post post = postRepository.getById(postId);
         User user = userRepository.getById(post.getAuthor().getId());

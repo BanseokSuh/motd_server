@@ -2,6 +2,7 @@ package com.banny.motd.api.service.post;
 
 import com.banny.motd.api.service.post.request.PostCreateServiceRequest;
 import com.banny.motd.domain.post.Post;
+import com.banny.motd.domain.post.PostDetail;
 import com.banny.motd.domain.post.infrastructure.PostRepository;
 import com.banny.motd.domain.user.Gender;
 import com.banny.motd.domain.user.User;
@@ -11,6 +12,7 @@ import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.exception.ApplicationException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,12 @@ class PostServiceTest {
                 .userStatus(UserStatus.ACTIVE)
                 .build();
         userRepository.save(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
     }
 
     @DisplayName("게시글이 정상적으로 등록된다.")
@@ -96,7 +104,7 @@ class PostServiceTest {
                 );
     }
 
-    @DisplayName("게시글이 정상적으로 조회된다.")
+    @DisplayName("게시글 목록이 정상적으로 조회된다.")
     @Test
     void getPostList() {
         // given
@@ -116,8 +124,23 @@ class PostServiceTest {
                 .doesNotContain(5L, 4L, 3L, 2L, 1L);
     }
 
+    @DisplayName("게시글이 정상적으로 조회된다.")
+    @Test
+    void getPost() {
+        // given
+        createPosts(1);
+
+        // when
+        PostDetail post = postService.getPost(1L);
+
+        // then
+        assertThat(post)
+                .extracting("id", "content", "author.id", "likeList", "commentList")
+                .contains(1L, "content1", 1L, List.of(), List.of());
+    }
+
     private void createPosts(int count) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 1; i <= count; i++) {
             Post post = Post.builder()
                     .author(User.builder().id(1L).build())
                     .content("content" + i)
