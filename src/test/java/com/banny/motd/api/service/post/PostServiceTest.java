@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +59,6 @@ class PostServiceTest {
     @AfterEach
     void tearDown() {
         postRepository.deleteAllInBatch();
-        userRepository.deleteAllInBatch();
     }
 
     @DisplayName("게시글이 정상적으로 등록된다.")
@@ -66,10 +67,7 @@ class PostServiceTest {
         // given
         List<String> imageUrls = List.of("image1", "image2", "image3");
         String content = "content";
-        PostCreateServiceRequest request = PostCreateServiceRequest.builder()
-                .imageUrls(imageUrls)
-                .content(content)
-                .build();
+        PostCreateServiceRequest request = getPostCreateServiceRequest(imageUrls, content);
         Long userId = 1L;
 
         // when
@@ -87,10 +85,7 @@ class PostServiceTest {
         // given
         List<String> imageUrls = List.of("image1", "image2", "image3");
         String content = "content";
-        PostCreateServiceRequest request = PostCreateServiceRequest.builder()
-                .imageUrls(imageUrls)
-                .content(content)
-                .build();
+        PostCreateServiceRequest request = getPostCreateServiceRequest(imageUrls, content);
         Long userId = 2L;
 
         // when // then
@@ -108,7 +103,8 @@ class PostServiceTest {
     @Test
     void getPostList() {
         // given
-        createPosts(15);
+        List<Post> createdPosts = createPosts(15);
+        List<Long> createdPostIds = getPostIdsFrom(createdPosts, 10);
         SearchRequest request = SearchRequest.builder()
                 .page(1)
                 .size(10)
@@ -120,7 +116,7 @@ class PostServiceTest {
         // then
         assertThat(postList).hasSize(10)
                 .extracting("id")
-                .containsExactly(15L, 14L, 13L, 12L, 11L, 10L, 9L, 8L, 7L, 6L)
+                .containsExactly(createdPostIds.toArray())
                 .doesNotContain(5L, 4L, 3L, 2L, 1L);
     }
 
@@ -128,26 +124,48 @@ class PostServiceTest {
     @Test
     void getPost() {
         // given
-        createPosts(1);
+        Post createdPost = createSinglePost(1);
 
         // when
-        PostDetail post = postService.getPost(1L);
+        PostDetail post = postService.getPost(createdPost.getId());
 
         // then
         assertThat(post)
                 .extracting("id", "content", "author.id", "likeList", "commentList")
-                .contains(1L, "content1", 1L, List.of(), List.of());
+                .contains(createdPost.getId(), "content1", 1L, List.of(), List.of());
     }
 
-    private void createPosts(int count) {
+    private PostCreateServiceRequest getPostCreateServiceRequest(List<String> imageUrls, String content) {
+        return PostCreateServiceRequest.builder()
+                .imageUrls(imageUrls)
+                .content(content)
+                .build();
+    }
+
+    private List<Post> createPosts(int count) {
+        List<Post> posts = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
-            Post post = Post.builder()
-                    .author(User.builder().id(1L).build())
-                    .content("content" + i)
-                    .imageUrls(List.of("image" + i))
-                    .build();
-            postRepository.save(post);
+            Post createdPost = createSinglePost(i);
+            posts.add(createdPost);
         }
+        return posts;
+    }
+
+    private Post createSinglePost(int suffix) {
+        Post post = Post.builder()
+                .author(User.builder().id(1L).build())
+                .content("content" + suffix)
+                .imageUrls(List.of("image" + suffix))
+                .build();
+        return postRepository.save(post);
+    }
+
+    private static List<Long> getPostIdsFrom(List<Post> createdPosts, int limit) {
+        return createdPosts.stream()
+                .map(Post::getId)
+                .sorted(Comparator.reverseOrder())
+                .limit(limit)
+                .toList();
     }
 
 }
