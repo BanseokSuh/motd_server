@@ -41,7 +41,7 @@ class PostServiceTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         User user = User.builder()
                 .id(1L)
                 .loginId("test000")
@@ -153,6 +153,7 @@ class PostServiceTest {
 
     private Post createSinglePost(int suffix) {
         Post post = Post.builder()
+                .id((long) suffix)
                 .author(User.builder().id(1L).build())
                 .content("content" + suffix)
                 .imageUrls(List.of("image" + suffix))

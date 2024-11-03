@@ -41,14 +41,14 @@ public class ReactionServiceImpl implements ReactionService {
          * 기존 좋아요가 있으면 좋아요 삭제
          */
         if (like == null) {
-            Reaction reaction = Reaction.builder()
+            Reaction newLike = Reaction.builder()
                     .author(user)
                     .targetType(TargetType.POST)
                     .targetId(postId)
                     .reactionType(ReactionType.LIKE)
                     .build();
 
-            reactionRepository.save(reaction);
+            reactionRepository.save(newLike);
             alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
         } else {
             reactionRepository.delete(like);

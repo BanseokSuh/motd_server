@@ -29,11 +29,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void commentPost(Long postId, Long userId, CommentCreateServiceRequest request) {
-        User user = userRepository.getById(userId);
+    public void createPostComment(Long postId, Long userId, CommentCreateServiceRequest request) {
         Post post = postRepository.getById(postId);
+        User author = userRepository.getById(userId);
         Comment comment = Comment.builder()
-                .author(user)
+                .author(author)
                 .targetType(TargetType.POST)
                 .targetId(postId)
                 .comment(request.getComment())

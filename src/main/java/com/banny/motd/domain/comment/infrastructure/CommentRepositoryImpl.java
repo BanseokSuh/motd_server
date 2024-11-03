@@ -32,4 +32,9 @@ public class CommentRepositoryImpl implements CommentRepository {
         commentJpaRepository.save(CommentEntity.from(comment));
     }
 
+    @Override
+    public void deleteAllInBatch() {
+        commentJpaRepository.deleteAllInBatch();
+    }
+
 }

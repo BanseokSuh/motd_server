@@ -11,4 +11,6 @@ public interface CommentRepository {
 
     void save(Comment comment);
 
+    void deleteAllInBatch();
+
 }

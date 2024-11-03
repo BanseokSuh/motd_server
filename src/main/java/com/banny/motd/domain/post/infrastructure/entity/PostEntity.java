@@ -63,7 +63,6 @@ public class PostEntity extends BaseEntity {
                 .imageUrls(imageUrls)
                 .content(content)
                 .author(user.toDomain())
-                .createdAt(getCreatedAt())
                 .build();
     }
 

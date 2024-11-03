@@ -29,4 +29,5 @@ public class TestContainerConfiguration implements BeforeAllCallback, AfterAllCa
             redis.stop();
         }
     }
+
 }
