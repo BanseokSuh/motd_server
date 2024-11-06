@@ -1,9 +1,9 @@
-package com.banny.motd.domain.event;
+package com.banny.motd.domain.participation;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum EnrollmentStatus {
+public enum ParticipationStatus {
 
     PENDING("대기"),
     ENROLLED("참가"),

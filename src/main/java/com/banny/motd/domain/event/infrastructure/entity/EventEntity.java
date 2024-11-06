@@ -6,12 +6,13 @@ import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
-@Builder
+@NoArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"event\"")
@@ -29,8 +30,8 @@ public class EventEntity extends BaseEntity {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "enrollment_limit", nullable = false, columnDefinition = "INT")
-    private int enrollmentLimit;
+    @Column(name = "participation_limit", nullable = false, columnDefinition = "INT")
+    private int participationLimit;
 
     @Column(name = "event_type", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
@@ -52,12 +53,26 @@ public class EventEntity extends BaseEntity {
     @Column(name = "event_end_at", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime eventEndAt;
 
+    @Builder
+    private EventEntity(Long id, String title, String description, int participationLimit, EventType eventType, UserEntity user, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.participationLimit = participationLimit;
+        this.eventType = eventType;
+        this.user = user;
+        this.registerStartAt = registerStartAt;
+        this.registerEndAt = registerEndAt;
+        this.eventStartAt = eventStartAt;
+        this.eventEndAt = eventEndAt;
+    }
+
     public static EventEntity from(Event event) {
         return EventEntity.builder()
                 .id(event.getId())
                 .title(event.getTitle())
                 .description(event.getDescription())
-                .enrollmentLimit(event.getEnrollmentLimit())
+                .participationLimit(event.getParticipationLimit())
                 .eventType(event.getEventType())
                 .user(UserEntity.from(event.getManager()))
                 .registerStartAt(event.getRegisterStartAt())
@@ -67,11 +82,11 @@ public class EventEntity extends BaseEntity {
                 .build();
     }
 
-    public static EventEntity of(String title, String description, int enrollmentLimit, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
+    public static EventEntity of(String title, String description, int participationLimit, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
         return EventEntity.builder()
                 .title(title)
                 .description(description)
-                .enrollmentLimit(enrollmentLimit)
+                .participationLimit(participationLimit)
                 .eventType(eventType)
                 .registerStartAt(registerStartAt)
                 .registerEndAt(registerEndAt)
@@ -86,7 +101,7 @@ public class EventEntity extends BaseEntity {
                 .id(id)
                 .title(title)
                 .description(description)
-                .enrollmentLimit(enrollmentLimit)
+                .participationLimit(participationLimit)
                 .eventType(eventType)
                 .manager(user.toDomain())
                 .registerStartAt(registerStartAt)

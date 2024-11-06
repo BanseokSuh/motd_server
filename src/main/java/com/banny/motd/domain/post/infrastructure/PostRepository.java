@@ -1,7 +1,6 @@
 package com.banny.motd.domain.post.infrastructure;
 
 import com.banny.motd.domain.post.Post;
-import com.banny.motd.domain.post.PostList;
 import com.banny.motd.global.dto.request.SearchRequest;
 
 import java.util.List;

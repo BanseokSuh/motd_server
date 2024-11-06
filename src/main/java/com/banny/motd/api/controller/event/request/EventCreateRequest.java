@@ -20,7 +20,7 @@ public class EventCreateRequest {
     private String description;
 
     @Min(value = 1, message = "참가 인원은 1명 이상으로 입력해주세요.")
-    private int enrollmentLimit;
+    private int participationLimit;
 
     @NotBlank(message = "이벤트 타입을 입력해주세요.")
     private String eventType;
@@ -41,7 +41,7 @@ public class EventCreateRequest {
         return EventCreateServiceRequest.builder()
                 .title(title)
                 .description(description)
-                .enrollmentLimit(enrollmentLimit)
+                .participationLimit(participationLimit)
                 .eventType(eventType)
                 .registerStartAt(registerStartAt)
                 .registerEndAt(registerEndAt)

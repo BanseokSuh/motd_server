@@ -21,6 +21,14 @@ public enum ApiResponseStatusType {
     FAIL_POST_NOT_FOUND("3001", "post not found"),
     FAIL_INVALID_PERMISSION("3002", "invalid permission"),
 
+    // EVENT
+    FAIL_EVENT_NOT_FOUND("3201", "event not found"),
+    FAIL_ALREADY_FULL_EVENT("3202", "event is full"),
+    FAIL_ALREADY_PARTICIPATED_USER("3203", "already participated"),
+    FAIL_EVENT_NOT_STARTED("3204", "event not started"),
+    FAIL_EVENT_FINISHED("3025", "event finished"),
+
+
     // ALARM
     FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),
 
