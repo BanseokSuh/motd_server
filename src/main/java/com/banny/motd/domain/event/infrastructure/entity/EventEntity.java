@@ -30,8 +30,8 @@ public class EventEntity extends BaseEntity {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "participation_limit", nullable = false, columnDefinition = "INT")
-    private int participationLimit;
+    @Column(name = "max_participants", nullable = false, columnDefinition = "INT")
+    private int maxParticipants;
 
     @Column(name = "event_type", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
@@ -54,11 +54,11 @@ public class EventEntity extends BaseEntity {
     private LocalDateTime eventEndAt;
 
     @Builder
-    private EventEntity(Long id, String title, String description, int participationLimit, EventType eventType, UserEntity user, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
+    private EventEntity(Long id, String title, String description, int maxParticipants, EventType eventType, UserEntity user, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.participationLimit = participationLimit;
+        this.maxParticipants = maxParticipants;
         this.eventType = eventType;
         this.user = user;
         this.registerStartAt = registerStartAt;
@@ -72,7 +72,7 @@ public class EventEntity extends BaseEntity {
                 .id(event.getId())
                 .title(event.getTitle())
                 .description(event.getDescription())
-                .participationLimit(event.getParticipationLimit())
+                .maxParticipants(event.getMaxParticipants())
                 .eventType(event.getEventType())
                 .user(UserEntity.from(event.getManager()))
                 .registerStartAt(event.getRegisterStartAt())
@@ -82,11 +82,11 @@ public class EventEntity extends BaseEntity {
                 .build();
     }
 
-    public static EventEntity of(String title, String description, int participationLimit, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
+    public static EventEntity of(String title, String description, int maxParticipants, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
         return EventEntity.builder()
                 .title(title)
                 .description(description)
-                .participationLimit(participationLimit)
+                .maxParticipants(maxParticipants)
                 .eventType(eventType)
                 .registerStartAt(registerStartAt)
                 .registerEndAt(registerEndAt)
@@ -101,7 +101,7 @@ public class EventEntity extends BaseEntity {
                 .id(id)
                 .title(title)
                 .description(description)
-                .participationLimit(participationLimit)
+                .maxParticipants(maxParticipants)
                 .eventType(eventType)
                 .manager(user.toDomain())
                 .registerStartAt(registerStartAt)

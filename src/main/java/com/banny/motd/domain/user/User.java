@@ -1,7 +1,7 @@
 package com.banny.motd.domain.user;
 
 import com.banny.motd.global.enums.Device;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,9 +16,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
@@ -39,6 +36,20 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
+    @Builder
+    public User(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl) {
+        this.id = id;
+        this.loginId = loginId;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.userRole = userRole;
+        this.userStatus = userStatus;
+        this.profileImageUrl = profileImageUrl;
+    }
+
     /**
      * 비밀번호 일치 여부 확인
      *
@@ -47,7 +58,7 @@ public class User implements UserDetails {
      */
     public void checkPasswordMatch(String password, BCryptPasswordEncoder encoder) {
         if (!encoder.matches(password, this.password)) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH, "Password does not match");
+            throw new ApplicationException(ApiStatusType.FAIL_USER_PASSWORD_MISMATCH, "Password does not match");
         }
     }
 
@@ -56,7 +67,7 @@ public class User implements UserDetails {
      */
     public void checkUserStatus() {
         if (this.userStatus != UserStatus.ACTIVE) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_ACTIVE, "User status is not active");
+            throw new ApplicationException(ApiStatusType.FAIL_USER_NOT_ACTIVE, "User status is not active");
         }
     }
 

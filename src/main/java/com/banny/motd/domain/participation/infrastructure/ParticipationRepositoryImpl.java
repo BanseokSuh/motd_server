@@ -18,8 +18,8 @@ public class ParticipationRepositoryImpl implements ParticipationRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public void save(Participation participation) {
-        participationJpaRepository.save(ParticipationEntity.from(participation));
+    public Participation save(Participation participation) {
+        return participationJpaRepository.save(ParticipationEntity.from(participation)).toDomain();
     }
 
     @Override
@@ -32,6 +32,11 @@ public class ParticipationRepositoryImpl implements ParticipationRepository {
                 .where(participation.targetId.eq(eventId)
                         .and(participation.targetType.eq(TargetType.EVENT)))
                 .fetch();
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+        participationJpaRepository.deleteAllInBatch();
     }
 
 }

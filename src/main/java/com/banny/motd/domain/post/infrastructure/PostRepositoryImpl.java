@@ -5,7 +5,7 @@ import com.banny.motd.domain.post.infrastructure.entity.PostEntity;
 import com.banny.motd.domain.post.infrastructure.entity.QPostEntity;
 import com.banny.motd.domain.user.infrastructure.entity.QUserEntity;
 import com.banny.motd.global.dto.request.SearchRequest;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post getById(Long id) {
-        return findById(id).orElseThrow(() -> new ApplicationException(ApiResponseStatusType.FAIL_POST_NOT_FOUND, "The post is not found"));
+        return findById(id).orElseThrow(() -> new ApplicationException(ApiStatusType.FAIL_POST_NOT_FOUND, "The post is not found"));
     }
 
     @Override

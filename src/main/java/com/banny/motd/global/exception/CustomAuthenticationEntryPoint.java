@@ -1,7 +1,7 @@
 package com.banny.motd.global.exception;
 
 import com.banny.motd.global.dto.response.ApiResponse;
-import com.banny.motd.global.dto.response.ApiResponseStatus;
+import com.banny.motd.global.dto.response.ApiStatus;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().write(ApiResponse.toStream(
-                ApiResponseStatus.of(ApiResponseStatusType.FAIL_INVALID_TOKEN), "Token is invalid or expired."));
+                ApiStatus.of(ApiStatusType.FAIL_INVALID_TOKEN), "Token is invalid or expired."));
     }
 
 }

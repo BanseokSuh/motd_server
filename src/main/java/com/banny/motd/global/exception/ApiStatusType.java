@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ApiResponseStatusType {
+public enum ApiStatusType {
 
     SUCCESS("0000", "success"),
 
@@ -25,9 +25,7 @@ public enum ApiResponseStatusType {
     FAIL_EVENT_NOT_FOUND("3201", "event not found"),
     FAIL_ALREADY_FULL_EVENT("3202", "event is full"),
     FAIL_ALREADY_PARTICIPATED_USER("3203", "already participated"),
-    FAIL_EVENT_NOT_STARTED("3204", "event not started"),
-    FAIL_EVENT_FINISHED("3025", "event finished"),
-
+    FAIL_EVENT_NOT_REGISTER_PERIOD("3026", "event not register period"),
 
     // ALARM
     FAIL_ALARM_CONNECT_ERROR("5001", "alarm connect error"),

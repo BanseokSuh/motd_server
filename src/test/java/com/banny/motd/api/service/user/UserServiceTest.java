@@ -8,7 +8,7 @@ import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -88,8 +88,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_USER_DUPLICATED.getCode(),
-                        ApiResponseStatusType.FAIL_USER_DUPLICATED.getDesc(),
+                        ApiStatusType.FAIL_USER_DUPLICATED.getCode(),
+                        ApiStatusType.FAIL_USER_DUPLICATED.getDesc(),
                         String.format("User %s is duplicated", loginId)
                 );
     }
@@ -111,8 +111,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_INVALID_PARAMETER.getCode(),
-                        ApiResponseStatusType.FAIL_INVALID_PARAMETER.getDesc(),
+                        ApiStatusType.FAIL_INVALID_PARAMETER.getCode(),
+                        ApiStatusType.FAIL_INVALID_PARAMETER.getDesc(),
                         "Invalid gender"
                 );
     }
@@ -156,8 +156,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_USER_NOT_FOUND.getCode(),
-                        ApiResponseStatusType.FAIL_USER_NOT_FOUND.getDesc(),
+                        ApiStatusType.FAIL_USER_NOT_FOUND.getCode(),
+                        ApiStatusType.FAIL_USER_NOT_FOUND.getDesc(),
                         String.format("User %s is not found", loginId)
                 );
     }
@@ -183,8 +183,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_NOT_EXIST_DEVICE.getCode(),
-                        ApiResponseStatusType.FAIL_NOT_EXIST_DEVICE.getDesc(),
+                        ApiStatusType.FAIL_NOT_EXIST_DEVICE.getCode(),
+                        ApiStatusType.FAIL_NOT_EXIST_DEVICE.getDesc(),
                         String.format("Device not found. name: %s", device)
                 );
     }
@@ -211,8 +211,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getCode(),
-                        ApiResponseStatusType.FAIL_USER_PASSWORD_MISMATCH.getDesc(),
+                        ApiStatusType.FAIL_USER_PASSWORD_MISMATCH.getCode(),
+                        ApiStatusType.FAIL_USER_PASSWORD_MISMATCH.getDesc(),
                         "Password does not match"
                 );
     }
@@ -239,8 +239,8 @@ class UserServiceTest {
                 .isInstanceOf(ApplicationException.class)
                 .extracting("status.code", "status.desc", "result.message")
                 .contains(
-                        ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN.getCode(),
-                        ApiResponseStatusType.FAIL_ALREADY_LOGGED_IN.getDesc(),
+                        ApiStatusType.FAIL_ALREADY_LOGGED_IN.getCode(),
+                        ApiStatusType.FAIL_ALREADY_LOGGED_IN.getDesc(),
                         String.format("User %s is already logged in", loginId)
                 );
     }

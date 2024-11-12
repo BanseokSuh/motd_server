@@ -29,12 +29,12 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public void createEvent(EventCreateServiceRequest request, Long userId) {
+    public Event createEvent(EventCreateServiceRequest request, Long userId) {
         User manager = userRepository.getById(userId);
         Event event = Event.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .participationLimit(request.getParticipationLimit())
+                .maxParticipants(request.getMaxParticipants())
                 .eventType(EventType.from(request.getEventType()))
                 .manager(manager)
                 .registerStartAt(request.getRegisterStartAt())
@@ -42,12 +42,12 @@ public class EventServiceImpl implements EventService {
                 .eventStartAt(request.getEventStartAt())
                 .eventEndAt(request.getEventEndAt())
                 .build();
-        eventRepository.save(event);
+        return eventRepository.save(event);
     }
 
     @Transactional
     @Override
-    public void participateEvent(Long eventId, Long userId, LocalDateTime applyDate) {
+    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
         /*
          * 1)
          * eventRepository에서 eventEntity를 조회할 때
@@ -58,15 +58,21 @@ public class EventServiceImpl implements EventService {
          * participation은 participationRepository에서 별도로 조회하여 event.participation 필드에 할당
          *
          */
+
         Event event = eventRepository.getById(eventId);
-        event.checkIfStartOrThrowError(applyDate);
-        event.checkIfEndOrThrowError(applyDate);
+
+        log.info("event : {}", event);
+
+        event.checkIfParticipateAvailable(participateDate);
 
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        event.setParticipantsIds(participantsIds);
+        event.registerParticipant(participantsIds);
         event.checkIfFullOrThrowError();
 
         User user = userRepository.getById(userId);
+
+        log.info("user : {}", user);
+
         event.checkIfParticipatedOrThrowError(user);
 
         Participation participation = Participation.of(
@@ -74,7 +80,7 @@ public class EventServiceImpl implements EventService {
                 event.getId(),
                 user,
                 ParticipationStatus.PENDING);
-        participationRepository.save(participation);
+        return participationRepository.save(participation);
     }
 
 }

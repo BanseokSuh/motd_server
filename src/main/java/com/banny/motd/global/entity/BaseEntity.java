@@ -29,4 +29,5 @@ public abstract class BaseEntity {
     void updatedAt() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }

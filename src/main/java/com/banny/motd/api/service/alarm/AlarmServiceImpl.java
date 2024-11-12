@@ -7,7 +7,7 @@ import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
 import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class AlarmServiceImpl implements AlarmService {
         try {
             sseEmitter.send(SseEmitter.event().id("id").name(ALARM_NAME).data("connect completed"));
         } catch (IOException e) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
+            throw new ApplicationException(ApiStatusType.FAIL_ALARM_CONNECT_ERROR);
         }
 
         return sseEmitter;
@@ -70,7 +70,7 @@ public class AlarmServiceImpl implements AlarmService {
                 sseEmitter.send(SseEmitter.event().id(savedAlarm.getId().toString()).name(ALARM_NAME).data(message));
             } catch (IOException e) {
                 emitterRepository.delete(receiverUserId);
-                throw new ApplicationException(ApiResponseStatusType.FAIL_ALARM_CONNECT_ERROR);
+                throw new ApplicationException(ApiStatusType.FAIL_ALARM_CONNECT_ERROR);
             }
         }, () -> log.info("No emitter found"));
     }

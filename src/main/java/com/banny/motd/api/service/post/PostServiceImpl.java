@@ -12,7 +12,7 @@ import com.banny.motd.domain.reaction.Reaction;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.request.SearchRequest;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.getById(userId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
+            throw new ApplicationException(ApiStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
         }
 
         post.setPost(request.getContent());
@@ -90,7 +90,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getById(postId);
 
         if (!post.isAuthor(user.getId())) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
+            throw new ApplicationException(ApiStatusType.FAIL_INVALID_PERMISSION, String.format("%s has no permission with the post", user.getLoginId()));
         }
 
         postRepository.delete(post);

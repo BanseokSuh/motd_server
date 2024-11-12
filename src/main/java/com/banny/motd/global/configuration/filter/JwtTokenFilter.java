@@ -44,7 +44,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             Device device = JwtTokenUtils.getDeviceStr(token, secretKey); // Extract device from token
 
             User userDetails = userService.getByLoginId(loginId); // Get user details by loginId
-
             userDetails.setDevice(device); // Set device to user details
 
             if (!JwtTokenUtils.isTokenValid(token, loginId, secretKey)) {
@@ -57,7 +56,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             );
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (RuntimeException e) {
             log.error("Error occurs while validating. {}", e.toString());
@@ -67,4 +65,5 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

@@ -1,12 +1,12 @@
 package com.banny.motd.global.enums;
 
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
-import com.banny.motd.global.exception.ApiResponseStatusType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Device {
 
     WEB(1, "WEB"),
@@ -16,20 +16,13 @@ public enum Device {
     private final int value;
     private final String name;
 
-    /**
-     * 디바이스 타입 반환
-     *
-     * @param name 디바이스 타입 이름
-     * @return 디바이스 타입
-     */
     public static Device from(String name) {
         for (Device device : Device.values()) {
             if (device.getName().equals(name)) {
                 return device;
             }
         }
-
-        throw new ApplicationException(ApiResponseStatusType.FAIL_NOT_EXIST_DEVICE, "Device not found. name: " + name);
+        throw new ApplicationException(ApiStatusType.FAIL_NOT_EXIST_DEVICE, "Device not found. name: " + name);
     }
 
 }

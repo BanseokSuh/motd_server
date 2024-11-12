@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface ParticipationRepository {
 
-    void save(Participation participation);
+    Participation save(Participation participation);
 
     List<Long> getParticipantsIdBy(Long eventId);
+
+    void deleteAllInBatch();
 
 }

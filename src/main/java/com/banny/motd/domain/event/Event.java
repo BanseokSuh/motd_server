@@ -1,7 +1,7 @@
 package com.banny.motd.domain.event;
 
 import com.banny.motd.domain.user.User;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Builder
 public class Event {
 
     private Long id;
@@ -18,7 +17,7 @@ public class Event {
     private String description;
     private EventType eventType;
     private User manager;
-    private int participationLimit;
+    private int maxParticipants;
     private List<Long> participantsIds;
     private LocalDateTime registerStartAt;
     private LocalDateTime registerEndAt;
@@ -28,31 +27,43 @@ public class Event {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    public void setParticipantsIds(List<Long> participantsIds) {
+    @Builder
+    public Event(Long id, String title, String description, EventType eventType, User manager, int maxParticipants, List<Long> participantsIds, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.eventType = eventType;
+        this.manager = manager;
+        this.maxParticipants = maxParticipants;
+        this.participantsIds = participantsIds;
+        this.registerStartAt = registerStartAt;
+        this.registerEndAt = registerEndAt;
+        this.eventStartAt = eventStartAt;
+        this.eventEndAt = eventEndAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
+    }
+
+    public void registerParticipant(List<Long> participantsIds) {
         this.participantsIds = participantsIds;
     }
 
-    public void checkIfStartOrThrowError(LocalDateTime applyDate) {
-        if (this.eventStartAt.isAfter(applyDate)) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_EVENT_NOT_STARTED, "the event has not been started");
-        }
-    }
-
-    public void checkIfEndOrThrowError(LocalDateTime applyDate) {
-        if (this.eventEndAt.isBefore(applyDate)) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_EVENT_FINISHED, "the event is already finished");
+    public void checkIfParticipateAvailable(LocalDateTime registerDate) {
+        if (this.registerStartAt.isAfter(registerDate) || this.registerEndAt.isBefore(registerDate)) {
+            throw new ApplicationException(ApiStatusType.FAIL_EVENT_NOT_REGISTER_PERIOD, "event not register period");
         }
     }
 
     public void checkIfFullOrThrowError() {
-        if (this.participantsIds.size() >= participationLimit) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
+        if (this.participantsIds.size() >= maxParticipants) {
+            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
         }
     }
 
     public void checkIfParticipatedOrThrowError(User user) {
         if (isAlreadyParticipated(user)) {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_ALREADY_PARTICIPATED_USER, "this user is already participated");
+            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_PARTICIPATED_USER, "this user is already participated");
         }
     }
 
@@ -60,4 +71,5 @@ public class Event {
         return this.participantsIds.stream().anyMatch(
                 participantsId -> participantsId.equals(user.getId()));
     }
+
 }

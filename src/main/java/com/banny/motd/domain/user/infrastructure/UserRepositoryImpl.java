@@ -2,7 +2,7 @@ package com.banny.motd.domain.user.infrastructure;
 
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,7 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getById(Long id) {
         return findById(id).orElseThrow(() ->
-                new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)));
+                new ApplicationException(ApiStatusType.FAIL_USER_NOT_FOUND, String.format("User %d is not found", id)));
     }
 
     @Override
@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByLoginId(String loginId) {
         return findByLoginId(loginId).orElseThrow(() ->
-                new ApplicationException(ApiResponseStatusType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
+                new ApplicationException(ApiStatusType.FAIL_USER_NOT_FOUND, String.format("User %s is not found", loginId)));
     }
 
     @Override

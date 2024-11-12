@@ -1,6 +1,6 @@
 package com.banny.motd.domain.event;
 
-import com.banny.motd.global.exception.ApiResponseStatusType;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,7 @@ public enum EventType {
             }
         }
 
-        throw new ApplicationException(ApiResponseStatusType.FAIL_INVALID_PARAMETER, "Invalid eventType");
+        throw new ApplicationException(ApiStatusType.FAIL_INVALID_PARAMETER, "Invalid eventType");
     }
+
 }

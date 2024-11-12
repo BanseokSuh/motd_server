@@ -1,7 +1,7 @@
 package com.banny.motd.global.exception;
 
 import com.banny.motd.global.dto.response.ApiResponse;
-import com.banny.motd.global.dto.response.ApiResponseStatus;
+import com.banny.motd.global.dto.response.ApiStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -33,7 +33,7 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public ApiResponse<Object> internalServerExceptionHandler(RuntimeException e) {
-        return ApiResponse.of(ApiResponseStatus.serverError(), ErrorResult.of(e.getMessage()));
+        return ApiResponse.of(ApiStatus.serverError(), ApiExceptionResult.of(e.getMessage()));
     }
 
     /**
@@ -48,7 +48,7 @@ public class GlobalControllerAdvice {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return ApiResponse.of(ApiResponseStatus.validationError(), errors);
+        return ApiResponse.of(ApiStatus.validationError(), errors);
     }
 
 }

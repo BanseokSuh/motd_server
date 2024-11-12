@@ -5,9 +5,9 @@ import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
 import com.banny.motd.domain.user.*;
 import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.global.exception.ApiResponseStatusType;
 import com.banny.motd.global.email.EmailHandler;
 import com.banny.motd.global.enums.Device;
+import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User join(UserJoinServiceRequest request) {
         userRepository.findByLoginId(request.getLoginId()).ifPresent(userEntity -> {
-            throw new ApplicationException(ApiResponseStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", request.getLoginId()));
+            throw new ApplicationException(ApiStatusType.FAIL_USER_DUPLICATED, String.format("User %s is duplicated", request.getLoginId()));
         });
 
         User user = User.builder()
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.PENDING)
                 .build();
-
         User joinedUser = userRepository.save(user);
 
         emailHandler.sendWelcomeEmail(request.getEmail(), request.getLoginId());
@@ -59,7 +58,6 @@ public class UserServiceImpl implements UserService {
         Device device = Device.from(request.getDevice());
         user.setDevice(device);
 
-        // 비밀번호 일치 여부 확인
         user.checkPasswordMatch(request.getPassword(), encoder);
 
         // 이미 로그인된 사용자인지 확인

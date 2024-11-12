@@ -4,11 +4,10 @@ import com.banny.motd.domain.user.Gender;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.UserStatus;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class UserMyResponse {
 
     private Long id;
@@ -19,16 +18,27 @@ public class UserMyResponse {
     private UserRole userRole;
     private UserStatus userStatus;
 
+    @Builder
+    private UserMyResponse(Long id, String loginId, String userName, String email, Gender gender, UserRole userRole, UserStatus userStatus) {
+        this.id = id;
+        this.loginId = loginId;
+        this.userName = userName;
+        this.email = email;
+        this.gender = gender;
+        this.userRole = userRole;
+        this.userStatus = userStatus;
+    }
+
     public static UserMyResponse from(User user) {
-        return new UserMyResponse(
-                user.getId(),
-                user.getLoginId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getGender(),
-                user.getUserRole(),
-                user.getUserStatus()
-        );
+        return UserMyResponse.builder()
+                .id(user.getId())
+                .loginId(user.getLoginId())
+                .userName(user.getUsername())
+                .email(user.getEmail())
+                .gender(user.getGender())
+                .userRole(user.getUserRole())
+                .userStatus(user.getUserStatus())
+                .build();
     }
 
 }

@@ -1,7 +1,11 @@
 package com.banny.motd.api.controller.event;
 
 import com.banny.motd.api.controller.event.request.EventCreateRequest;
+import com.banny.motd.api.controller.event.response.EventCreateResponse;
+import com.banny.motd.api.controller.event.response.ParticipationCreateResponse;
 import com.banny.motd.api.service.event.EventService;
+import com.banny.motd.domain.event.Event;
+import com.banny.motd.domain.participation.Participation;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.dto.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -19,19 +23,19 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ApiResponse<Void> createEvent(@Valid @RequestBody EventCreateRequest request, Authentication authentication) {
+    public ApiResponse<EventCreateResponse> createEvent(@Valid @RequestBody EventCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        eventService.createEvent(request.toServiceRequest(), user.getId());
+        Event event = eventService.createEvent(request.toServiceRequest(), user.getId());
 
-        return ApiResponse.ok();
+        return ApiResponse.ok(EventCreateResponse.from(event));
     }
 
     @PostMapping("/{eventId}/participate")
-    public ApiResponse<Void> participateEvent(@PathVariable Long eventId, Authentication authentication) {
+    public ApiResponse<ParticipationCreateResponse> participateEvent(@PathVariable Long eventId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        eventService.participateEvent(eventId, user.getId(), LocalDateTime.now());
+        Participation participation = eventService.participateEvent(eventId, user.getId(), LocalDateTime.now());
 
-        return ApiResponse.ok();
+        return ApiResponse.ok(ParticipationCreateResponse.from(participation));
     }
 
 }

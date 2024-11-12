@@ -12,4 +12,6 @@ public interface EventRepository {
 
     Optional<Event> findById(Long eventId);
 
+    void deleteAllInBatch();
+
 }

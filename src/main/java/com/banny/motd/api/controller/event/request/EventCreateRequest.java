@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 public class EventCreateRequest {
 
     @NotBlank(message = "제목을 입력해주세요.")
@@ -20,7 +18,7 @@ public class EventCreateRequest {
     private String description;
 
     @Min(value = 1, message = "참가 인원은 1명 이상으로 입력해주세요.")
-    private int participationLimit;
+    private int maxParticipants;
 
     @NotBlank(message = "이벤트 타입을 입력해주세요.")
     private String eventType;
@@ -41,7 +39,7 @@ public class EventCreateRequest {
         return EventCreateServiceRequest.builder()
                 .title(title)
                 .description(description)
-                .participationLimit(participationLimit)
+                .maxParticipants(maxParticipants)
                 .eventType(eventType)
                 .registerStartAt(registerStartAt)
                 .registerEndAt(registerEndAt)

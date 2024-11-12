@@ -1,6 +1,7 @@
-package com.banny.motd.api.service.post;
+package com.banny.motd.api.service.event;
 
-import com.banny.motd.domain.post.infrastructure.PostRepository;
+import com.banny.motd.domain.event.infrastructure.EventRepository;
+import com.banny.motd.domain.participation.infrastructure.ParticipationRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +11,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class PostServiceTest {
+class EventServiceTest {
 
     @Autowired
-    private PostService postService;
+    private EventService eventService;
 
     @Autowired
-    private PostRepository postRepository;
+    private EventRepository eventRepository;
+
+    @Autowired
+    private ParticipationRepository participationRepository;
 
     @Autowired
     private UserRepository userRepository;
