@@ -4,10 +4,12 @@ import com.banny.motd.domain.user.User;
 import com.banny.motd.global.enums.TargetType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class Comment {
 
     private Long id;

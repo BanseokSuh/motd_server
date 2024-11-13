@@ -33,6 +33,7 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public ApiResponse<Object> internalServerExceptionHandler(RuntimeException e) {
+        log.error(e.toString());
         return ApiResponse.of(ApiStatus.serverError(), ApiExceptionResult.of(e.getMessage()));
     }
 

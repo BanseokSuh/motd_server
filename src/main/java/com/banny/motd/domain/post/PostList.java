@@ -3,11 +3,13 @@ package com.banny.motd.domain.post;
 import com.banny.motd.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class PostList {
 
     private Long id;

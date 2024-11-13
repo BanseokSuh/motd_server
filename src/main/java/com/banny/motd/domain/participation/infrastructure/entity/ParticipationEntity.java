@@ -73,6 +73,9 @@ public class ParticipationEntity extends BaseEntity {
                 .targetId(this.targetId)
                 .user(this.user.toDomain())
                 .participationStatus(this.participationStatus)
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
                 .build();
     }
 

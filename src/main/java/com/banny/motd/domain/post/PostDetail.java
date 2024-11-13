@@ -5,11 +5,13 @@ import com.banny.motd.domain.reaction.Reaction;
 import com.banny.motd.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class PostDetail {
 
     private Long id;

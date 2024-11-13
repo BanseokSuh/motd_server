@@ -5,7 +5,10 @@ import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
@@ -32,12 +36,15 @@ public class User implements UserDetails {
     private String profileImageUrl;
     @Setter
     private Device device;
+    @JsonIgnore
     private LocalDateTime createdAt;
+    @JsonIgnore
     private LocalDateTime updatedAt;
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     @Builder
-    public User(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl) {
+    private User(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl, Device device, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.loginId = loginId;
         this.userName = userName;
@@ -48,6 +55,10 @@ public class User implements UserDetails {
         this.userRole = userRole;
         this.userStatus = userStatus;
         this.profileImageUrl = profileImageUrl;
+        this.device = device;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     /**
@@ -77,7 +88,6 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(this.userRole.toString()));
     }
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return this.userName;

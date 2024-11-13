@@ -2,8 +2,10 @@ package com.banny.motd.domain.user;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Tokens {
 
     private String accessToken;

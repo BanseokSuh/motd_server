@@ -6,17 +6,12 @@ import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-@Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"reaction\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"reaction\"", indexes = {
@@ -44,6 +39,15 @@ public class ReactionEntity extends BaseEntity {
     @Column(name = "reaction_type", nullable = false, columnDefinition = "VARCHAR(20)")
     @Enumerated(EnumType.STRING)
     private ReactionType reactionType;
+
+    @Builder
+    private ReactionEntity(Long id, UserEntity user, TargetType targetType, Long targetId, ReactionType reactionType) {
+        this.id = id;
+        this.user = user;
+        this.targetType = targetType;
+        this.targetId = targetId;
+        this.reactionType = reactionType;
+    }
 
     public static ReactionEntity from(Reaction reaction) {
         return ReactionEntity.builder()
@@ -76,4 +80,5 @@ public class ReactionEntity extends BaseEntity {
                 .deletedAt(getDeletedAt())
                 .build();
     }
+
 }

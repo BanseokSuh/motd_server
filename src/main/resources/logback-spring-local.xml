@@ -1,6 +1,6 @@
 <included>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-
+    <!--  <include resource="org/springframework/boot/logging/logback/base.xml" />-->
     <!--  TRACE < DEBUG < ... < INFO < WARN < ERROR  -->
 
     <property resource="logback-variables.yml" />

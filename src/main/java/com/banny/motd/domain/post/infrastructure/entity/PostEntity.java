@@ -4,19 +4,14 @@ import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
-@Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"post\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"post\"", indexes = {
@@ -39,6 +34,14 @@ public class PostEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @Builder
+    private PostEntity(Long id, List<String> imageUrls, String content, UserEntity user) {
+        this.id = id;
+        this.imageUrls = imageUrls;
+        this.content = content;
+        this.user = user;
+    }
 
     public static PostEntity from(Post post) {
         return PostEntity.builder()
@@ -63,6 +66,9 @@ public class PostEntity extends BaseEntity {
                 .imageUrls(imageUrls)
                 .content(content)
                 .author(user.toDomain())
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
                 .build();
     }
 

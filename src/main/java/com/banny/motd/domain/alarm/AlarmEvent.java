@@ -2,8 +2,10 @@ package com.banny.motd.domain.alarm;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class AlarmEvent {
 
     private Long receiverUserId;

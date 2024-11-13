@@ -5,19 +5,14 @@ import com.banny.motd.domain.alarm.AlarmArgs;
 import com.banny.motd.domain.alarm.AlarmType;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
-@Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Convert(attributeName = "jsonb", converter = AttributeConverter.class)
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"alarm\" SET deleted_at = NOW() where id = ?")
@@ -43,6 +38,14 @@ public class AlarmEntity extends BaseEntity {
     @Column(name = "alarm_args", nullable = false, columnDefinition = "jsonb")
     private AlarmArgs alarmArgs;
 
+    @Builder
+    private AlarmEntity(Long id, Long userId, AlarmType alarmType, AlarmArgs alarmArgs) {
+        this.id = id;
+        this.userId = userId;
+        this.alarmType = alarmType;
+        this.alarmArgs = alarmArgs;
+    }
+
     public static AlarmEntity from(Alarm alarm) {
         return AlarmEntity.builder()
                 .id(alarm.getId())
@@ -67,6 +70,8 @@ public class AlarmEntity extends BaseEntity {
                 .alarmType(alarmType)
                 .alarmArgs(alarmArgs)
                 .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
                 .build();
     }
 

@@ -5,17 +5,12 @@ import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import com.banny.motd.global.enums.TargetType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-@Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE \"comment\" SET deleted_at = NOW() where id = ?")
 @Table(name = "\"comment\"", indexes = {
@@ -42,6 +37,15 @@ public class CommentEntity extends BaseEntity {
 
     @Column(name = "comment", nullable = false, columnDefinition = "TEXT")
     private String comment;
+
+    @Builder
+    private CommentEntity(Long id, UserEntity user, TargetType targetType, Long targetId, String comment) {
+        this.id = id;
+        this.user = user;
+        this.targetType = targetType;
+        this.targetId = targetId;
+        this.comment = comment;
+    }
 
     public static CommentEntity from(Comment comment) {
         return CommentEntity.builder()
@@ -70,6 +74,8 @@ public class CommentEntity extends BaseEntity {
                 .targetId(targetId)
                 .comment(comment)
                 .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
                 .build();
     }
 

@@ -6,18 +6,12 @@ import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.UserStatus;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-
-@Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @SQLRestriction("deleted_at IS NULL AND user_status != 'DELETED'")
 @SQLDelete(sql = "UPDATE \"user\" SET login_id = login_id || '_deleted_' || id, deleted_at = NOW(), user_status = 'DELETED' where id = ?")
 @Table(name = "\"user\"",
@@ -65,6 +59,20 @@ public class UserEntity extends BaseEntity {
     @Column(name = "profile_image_url", nullable = true, columnDefinition = "VARCHAR(255)")
     private String profileImageUrl;
 
+    @Builder
+    private UserEntity(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl) {
+        this.id = id;
+        this.loginId = loginId;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.userRole = userRole;
+        this.userStatus = userStatus;
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public static UserEntity from(User user) {
         return UserEntity.builder()
                 .id(user.getId())
@@ -92,6 +100,9 @@ public class UserEntity extends BaseEntity {
                 .userStatus(userStatus)
                 .profileImageUrl(profileImageUrl)
                 .gender(gender)
+                .createdAt(getCreatedAt())
+                .updatedAt(getUpdatedAt())
+                .deletedAt(getDeletedAt())
                 .build();
     }
 
