@@ -55,7 +55,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
 
     // redisson
-    implementation 'org.redisson:redisson-spring-boot-starter:3.38.1'
+//    implementation 'org.redisson:redisson-spring-boot-starter:3.38.1'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
