@@ -171,7 +171,7 @@ class PostServiceTest {
     void modifyPostWithNotAuthor() {
         // given
         Long postId = 1L;
-        Long userId = 5L;
+        Long userId = 5L; // is not author
         String content = "I've modified the content of a post";
         PostModifyServiceRequest request = PostModifyServiceRequest.builder()
                 .content(content)
@@ -181,6 +181,35 @@ class PostServiceTest {
         assertThatThrownBy(() -> postService.modifyPost(postId, request, userId))
                 .extracting("status.code", "status.desc")
                 .contains(ApiStatusType.FAIL_INVALID_PERMISSION.getCode(), ApiStatusType.FAIL_INVALID_PERMISSION.getDesc());
+    }
+
+    @Test
+    @DisplayName("게시글을 삭제한다.")
+    void deletePost() {
+        // given
+        Long postId = 1L;
+        Long userId = 1L;
+
+        // when
+        postService.deletePost(postId, userId);
+
+        // then
+        assertThatThrownBy(() -> postService.getPost(postId))
+                .extracting("status.code", "status.desc")
+                .contains(ApiStatusType.FAIL_POST_NOT_FOUND.getCode(), ApiStatusType.FAIL_POST_NOT_FOUND.getDesc());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 시 게시글이 존재하지 않으면 예외를 반환한다.")
+    void deletePostWithNotExistPost() {
+        // given
+        Long postId = 999L;
+        Long userId = 1L;
+
+        // when // then
+        assertThatThrownBy(() -> postService.deletePost(postId, userId))
+                .extracting("status.code", "status.desc")
+                .contains(ApiStatusType.FAIL_POST_NOT_FOUND.getCode(), ApiStatusType.FAIL_POST_NOT_FOUND.getDesc());
     }
 
 
