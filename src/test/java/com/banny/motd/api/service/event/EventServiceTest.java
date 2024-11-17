@@ -82,4 +82,14 @@ class EventServiceTest {
                 .contains(1L, TargetType.EVENT, eventId, userId, ParticipationStatus.PENDING);
     }
 
+    @Test
+    @DisplayName("여러명이 동시에 이벤트에 참여한다.")
+    void participateEventMultipleUsers() {
+        // given
+
+        // when
+
+        // then
+    }
+
 }

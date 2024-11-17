@@ -89,15 +89,15 @@ class PostServiceTest {
                 .extracting("id", "imageUrls", "content")
                 .contains(
                         tuple(10L, List.of("imageUrl010", "imageUrl010-1"), "content10"),
-                        tuple(9L, List.of("imageUrl009", "imageUrl009-1"), "content9"),
-                        tuple(8L, List.of("imageUrl008", "imageUrl008-1"), "content8"),
-                        tuple(7L, List.of("imageUrl007", "imageUrl007-1"), "content7"),
-                        tuple(6L, List.of("imageUrl006", "imageUrl006-1"), "content6"),
-                        tuple(5L, List.of("imageUrl005", "imageUrl005-1"), "content5"),
-                        tuple(4L, List.of("imageUrl004", "imageUrl004-1"), "content4"),
-                        tuple(3L, List.of("imageUrl003", "imageUrl003-1"), "content3"),
-                        tuple(2L, List.of("imageUrl002", "imageUrl002-1"), "content2"),
-                        tuple(1L, List.of("imageUrl001", "imageUrl001-1"), "content1")
+                        tuple(9L, List.of("imageUrl009", "imageUrl009-1"), "content09"),
+                        tuple(8L, List.of("imageUrl008", "imageUrl008-1"), "content08"),
+                        tuple(7L, List.of("imageUrl007", "imageUrl007-1"), "content07"),
+                        tuple(6L, List.of("imageUrl006", "imageUrl006-1"), "content06"),
+                        tuple(5L, List.of("imageUrl005", "imageUrl005-1"), "content05"),
+                        tuple(4L, List.of("imageUrl004", "imageUrl004-1"), "content04"),
+                        tuple(3L, List.of("imageUrl003", "imageUrl003-1"), "content03"),
+                        tuple(2L, List.of("imageUrl002", "imageUrl002-1"), "content02"),
+                        tuple(1L, List.of("imageUrl001", "imageUrl001-1"), "content01")
                 );
     }
 
@@ -113,7 +113,7 @@ class PostServiceTest {
         // then
         assertThat(postDetail)
                 .extracting("id", "imageUrls", "content", "likeList", "likeList")
-                .contains(postId, List.of("imageUrl001", "imageUrl001-1"), "content1", List.of(), List.of());
+                .contains(postId, List.of("imageUrl001", "imageUrl001-1"), "content01", List.of(), List.of());
     }
 
     @Test
