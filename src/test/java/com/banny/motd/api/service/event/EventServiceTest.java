@@ -1,14 +1,26 @@
 package com.banny.motd.api.service.event;
 
-import com.banny.motd.domain.event.infrastructure.EventRepository;
-import com.banny.motd.domain.participation.infrastructure.ParticipationRepository;
-import com.banny.motd.domain.user.infrastructure.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.banny.motd.api.service.event.request.EventCreateServiceRequest;
+import com.banny.motd.domain.event.Event;
+import com.banny.motd.domain.event.EventType;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
+
+@Sql(scripts = {"/sql/schema.sql"}, executionPhase = BEFORE_TEST_CLASS)
+@Sql(scripts = {
+        "/sql/init/createUsers.sql",
+        "/sql/init/createEvents.sql"
+}, executionPhase = BEFORE_TEST_METHOD)
+@Sql(scripts = {"/sql/reset.sql"}, executionPhase = AFTER_TEST_METHOD)
 @ActiveProfiles("test")
 @SpringBootTest
 class EventServiceTest {
@@ -16,21 +28,40 @@ class EventServiceTest {
     @Autowired
     private EventService eventService;
 
-    @Autowired
-    private EventRepository eventRepository;
+    @Test
+    @DisplayName("이벤트를 등록한다.")
+    void createEvent() {
+        // given
+        String title = "event title";
+        String description = "event description";
+        int maxParticipants = 30;
+        String eventType = EventType.REGULAR.toString();
+        LocalDateTime registerStartAt = LocalDateTime.of(2024, 11, 15, 0, 0);
+        LocalDateTime registerEndAt = LocalDateTime.of(2024, 11, 16, 0, 0);
+        LocalDateTime eventStartAt = LocalDateTime.of(2024, 12, 1, 9, 0);
+        LocalDateTime eventEndAt = LocalDateTime.of(2024, 12, 1, 15, 0);
 
-    @Autowired
-    private ParticipationRepository participationRepository;
+        EventCreateServiceRequest request = EventCreateServiceRequest.builder()
+                .title(title)
+                .description(description)
+                .maxParticipants(maxParticipants)
+                .eventType(eventType)
+                .registerStartAt(registerStartAt)
+                .registerEndAt(registerEndAt)
+                .eventStartAt(eventStartAt)
+                .eventEndAt(eventEndAt)
+                .build();
+        Long userId = 1L;
 
-    @Autowired
-    private UserRepository userRepository;
+        // when
+        Event event = eventService.createEvent(request, userId);
 
-    @BeforeEach
-    void setUp() {
+        // then
+        assertThat(event)
+                .extracting("id", "title", "description", "eventType", "maxParticipants")
+                .contains(event.getId(), event.getTitle(), event.getDescription(), event.getEventType(), event.getMaxParticipants());
     }
 
-    @AfterEach
-    void tearDown() {
-    }
+
 
 }

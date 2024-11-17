@@ -4,13 +4,9 @@ import com.banny.motd.api.service.post.request.PostCreateServiceRequest;
 import com.banny.motd.api.service.post.request.PostModifyServiceRequest;
 import com.banny.motd.domain.post.Post;
 import com.banny.motd.domain.post.PostDetail;
-import com.banny.motd.domain.post.infrastructure.PostRepository;
-import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +24,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
         "/sql/init/createUsers.sql",
         "/sql/init/createPosts.sql"
 }, executionPhase = BEFORE_TEST_METHOD)
-@Sql(scripts = {"/sql/reset/reset.sql"}, executionPhase = AFTER_TEST_METHOD)
+@Sql(scripts = {"/sql/reset.sql"}, executionPhase = AFTER_TEST_METHOD)
 @ActiveProfiles("test")
 @SpringBootTest
 class PostServiceTest {
@@ -36,22 +32,8 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
-    @DisplayName("게시글이 정상적으로 등록된다.")
+    @DisplayName("게시글을 등록한다.")
     void createPost() {
         // given
         List<String> imageUrls = List.of("image_url_001", "image_url_002");
@@ -211,6 +193,5 @@ class PostServiceTest {
                 .extracting("status.code", "status.desc")
                 .contains(ApiStatusType.FAIL_POST_NOT_FOUND.getCode(), ApiStatusType.FAIL_POST_NOT_FOUND.getDesc());
     }
-
 
 }

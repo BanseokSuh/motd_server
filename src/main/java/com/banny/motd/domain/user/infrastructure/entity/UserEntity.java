@@ -48,11 +48,11 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "userRole", nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "user_role", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @Column(name = "userStatus", nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "user_status", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
