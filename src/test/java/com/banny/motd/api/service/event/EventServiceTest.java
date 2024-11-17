@@ -3,6 +3,9 @@ package com.banny.motd.api.service.event;
 import com.banny.motd.api.service.event.request.EventCreateServiceRequest;
 import com.banny.motd.domain.event.Event;
 import com.banny.motd.domain.event.EventType;
+import com.banny.motd.domain.participation.Participation;
+import com.banny.motd.domain.participation.ParticipationStatus;
+import com.banny.motd.global.enums.TargetType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,21 @@ class EventServiceTest {
                 .contains(event.getId(), event.getTitle(), event.getDescription(), event.getEventType(), event.getMaxParticipants());
     }
 
+    @Test
+    @DisplayName("이벤트에 참여한다.")
+    void participateEvent() {
+        // given
+        Long eventId = 1L;
+        Long userId = 1L;
+        LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
 
+        // when
+        Participation participation = eventService.participateEvent(eventId, userId, participateDate);
+
+        // then
+        assertThat(participation)
+                .extracting("id", "targetType", "targetId", "user.id", "participationStatus")
+                .contains(1L, TargetType.EVENT, eventId, userId, ParticipationStatus.PENDING);
+    }
 
 }
