@@ -58,21 +58,14 @@ public class EventServiceImpl implements EventService {
          * participation은 participationRepository에서 별도로 조회하여 event.participation 필드에 할당
          *
          */
-
         Event event = eventRepository.getById(eventId);
 
-        log.info("event : {}", event);
-
-        event.checkIfParticipateAvailable(participateDate);
+        event.isRegisterDateValid(participateDate);
 
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        event.registerParticipant(participantsIds);
-        event.checkIfFullOrThrowError();
+        event.setParticipantsUserId(participantsIds);
 
         User user = userRepository.getById(userId);
-
-        log.info("user : {}", user);
-
         event.checkIfParticipatedOrThrowError(user);
 
         Participation participation = Participation.of(
@@ -80,7 +73,15 @@ public class EventServiceImpl implements EventService {
                 event.getId(),
                 user,
                 ParticipationStatus.PENDING);
-        return participationRepository.save(participation);
+
+        if (!event.isParticipantsFull()) {
+            log.info("participation success!!");
+            return participationRepository.save(participation);
+        } else {
+            log.error("participation fail :(");
+        }
+
+        return null;
     }
 
 }

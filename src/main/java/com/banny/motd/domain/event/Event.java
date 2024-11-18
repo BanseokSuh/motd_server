@@ -6,10 +6,12 @@ import com.banny.motd.global.exception.ApplicationException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Getter
 @NoArgsConstructor
 public class Event {
@@ -47,11 +49,11 @@ public class Event {
         this.deletedAt = deletedAt;
     }
 
-    public void registerParticipant(List<Long> participantsIds) {
+    public void setParticipantsUserId(List<Long> participantsIds) {
         this.participantsIds = participantsIds;
     }
 
-    public void checkIfParticipateAvailable(LocalDateTime registerDate) {
+    public void isRegisterDateValid(LocalDateTime registerDate) {
         if (this.registerStartAt.isAfter(registerDate) || this.registerEndAt.isBefore(registerDate)) {
             throw new ApplicationException(ApiStatusType.FAIL_EVENT_NOT_REGISTER_PERIOD, "event not register period");
         }
@@ -59,7 +61,9 @@ public class Event {
 
     public void checkIfFullOrThrowError() {
         if (this.participantsIds.size() >= maxParticipants) {
-            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
+            log.error("participation fail");
+            return;
+//            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
         }
     }
 
@@ -72,6 +76,10 @@ public class Event {
     private boolean isAlreadyParticipated(User user) {
         return this.participantsIds.stream().anyMatch(
                 participantsId -> participantsId.equals(user.getId()));
+    }
+
+    public boolean isParticipantsFull() {
+        return this.maxParticipants <= this.participantsIds.size();
     }
 
 }
