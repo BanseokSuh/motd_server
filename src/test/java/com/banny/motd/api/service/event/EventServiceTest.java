@@ -99,11 +99,13 @@ class EventServiceTest {
     void participateEventMultipleUsersSynchronously() throws InterruptedException {
         // given
         Long eventId = 1L;
+        Event event = eventRepository.getById(eventId);
+
         LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
 
-        int requestUserCount = 70;
-        ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount); // 스레드 생성
-        CountDownLatch latch = new CountDownLatch(requestUserCount); // 스레드 완료 대기
+        int requestUserCount = 70; // 70명
+        ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount);
+        CountDownLatch latch = new CountDownLatch(requestUserCount);
 
         // when
         for (int i = 1; i <= requestUserCount; i++) {
@@ -124,7 +126,7 @@ class EventServiceTest {
 
         // then
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        assertThat(participantsIds.size()).isNotEqualTo(30);
+        assertThat(participantsIds.size()).isNotEqualTo(event.getMaxParticipants());
     }
 
 }

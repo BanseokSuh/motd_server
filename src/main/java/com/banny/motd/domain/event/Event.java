@@ -62,7 +62,6 @@ public class Event {
     public void checkIfFullOrThrowError() {
         if (this.participantsIds.size() >= maxParticipants) {
             log.error("participation fail");
-            return;
 //            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
         }
     }

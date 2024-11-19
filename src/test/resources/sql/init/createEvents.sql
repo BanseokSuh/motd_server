@@ -14,7 +14,7 @@ INSERT INTO "event" (
 )
 VALUES
     ('title01', 'description01', 30, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
-    ('title02', 'description02', 30, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
-    ('title03', 'description03', 30, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
-    ('title04', 'description04', 30, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
-    ('title05', 'description05', 30, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null);
+    ('title02', 'description02', 40, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
+    ('title03', 'description03', 50, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
+    ('title04', 'description04', 60, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null),
+    ('title05', 'description05', 70, 'REGULAR', 1, '2024-11-15', '2024-11-16', '2024-12-01', '2024-12-01', NOW(), null, null);
