@@ -10,8 +10,6 @@ import com.banny.motd.domain.participation.infrastructure.ParticipationRepositor
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.enums.TargetType;
-import com.banny.motd.global.exception.ApiStatusType;
-import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -53,19 +51,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
-        /*
-         * 1)
-         * eventRepository에서 eventEntity를 조회할 때
-         * event와 연관관계를 맺고 있는 participation 정보를 함께 조회
-         *
-         * 2) v
-         * eventRepository에서는 eventEntity만 조회하고
-         * participation은 participationRepository에서 별도로 조회하여 event.participation 필드에 할당
-         *
-         */
         final String lockName = eventId.toString() + ":lock";
         final RLock lock = redissonClient.getLock(lockName);
-        final String worker = Thread.currentThread().getName();
 
         try {
             if (!lock.tryLock(1, 3, TimeUnit.SECONDS)) {
@@ -89,10 +76,10 @@ public class EventServiceImpl implements EventService {
                     ParticipationStatus.PENDING);
 
             if (!event.isParticipantsFull()) {
-                log.info("[{}] participation success!!", worker);
+                log.info("participation success!!");
                 return participationRepository.save(participation);
             } else {
-                log.error("[{}] participation fail :(", worker);
+                log.error("participation fail :(");
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -101,7 +88,6 @@ public class EventServiceImpl implements EventService {
                 lock.unlock();
             }
         }
-
 
 
         return null;

@@ -103,12 +103,12 @@ class EventServiceTest {
 
         LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
 
-        int requestUserCount = 70; // 70명
-        ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount);
-        CountDownLatch latch = new CountDownLatch(requestUserCount);
+        int people = 70; // 70명
+        ExecutorService executorService = Executors.newFixedThreadPool(people);
+        CountDownLatch latch = new CountDownLatch(people);
 
         // when
-        for (int i = 1; i <= requestUserCount; i++) {
+        for (int i = 1; i <= people; i++) {
             final long userId = i;
             executorService.submit(() -> {
                 try {
@@ -130,20 +130,18 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 해피 케이스")
-    void participateEventMultipleUsersHappy() throws InterruptedException {
+    @DisplayName("여러 명이 동시에 이벤트에 참여한다.v2 - 해피 케이스")
+    void participateEventMultipleUsersHappyV2() throws InterruptedException {
         // given
         Long eventId = 1L;
-        Event event = eventRepository.getById(eventId);
-
         LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
 
-        int requestUserCount = 70; // 70명
-        ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount);
-        CountDownLatch latch = new CountDownLatch(requestUserCount);
+        int people = 70;
+        ExecutorService executorService = Executors.newFixedThreadPool(people);
+        CountDownLatch latch = new CountDownLatch(people);
 
         // when
-        for (int i = 1; i <= requestUserCount; i++) {
+        for (int i = 1; i <= people; i++) {
             final long userId = i;
             executorService.submit(() -> {
                 try {
@@ -161,7 +159,8 @@ class EventServiceTest {
 
         // then
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        assertThat(participantsIds.size()).isEqualTo(event.getMaxParticipants());
+        int maxParticipants = eventRepository.getById(eventId).getMaxParticipants();
+        assertThat(participantsIds.size()).isEqualTo(maxParticipants);
     }
 
 
