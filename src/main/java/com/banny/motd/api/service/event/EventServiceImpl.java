@@ -10,6 +10,8 @@ import com.banny.motd.domain.participation.infrastructure.ParticipationRepositor
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.enums.TargetType;
+import com.banny.motd.global.exception.ApiStatusType;
+import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -56,7 +58,7 @@ public class EventServiceImpl implements EventService {
 
         try {
             if (!lock.tryLock(1, 3, TimeUnit.SECONDS)) {
-                return null;
+                throw new ApplicationException(ApiStatusType.FAIL_ENABLE_ACQUIRE_LOCK);
             }
 
             Event event = eventRepository.getById(eventId);
@@ -80,17 +82,14 @@ public class EventServiceImpl implements EventService {
                 return participationRepository.save(participation);
             } else {
                 log.error("participation fail :(");
+                throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new ApplicationException(ApiStatusType.FAIL_SERVER_ERROR, e.toString());
         } finally {
             if (lock != null && lock.isLocked()) {
                 lock.unlock();
             }
         }
-
-
-        return null;
     }
-
 }

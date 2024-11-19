@@ -23,7 +23,7 @@ public enum ApiStatusType {
 
     // EVENT
     FAIL_EVENT_NOT_FOUND("3201", "event not found"),
-    FAIL_ALREADY_FULL_EVENT("3202", "event is full"),
+    FAIL_EVENT_FULL("3202", "event is full"),
     FAIL_ALREADY_PARTICIPATED_USER("3203", "already participated"),
     FAIL_EVENT_NOT_REGISTER_PERIOD("3026", "event not register period"),
 
@@ -37,7 +37,8 @@ public enum ApiStatusType {
     FAIL_EMAIL_MIME_MESSAGE_HELPER("9996", "Failed to set MimeMessageHelper"),
     FAIL_INVALID_PARAMETER("9997", "invalid parameter"),
     FAIL_VALIDATION_ERROR("9998", "validate error"),
-    FAIL_SERVER_ERROR("9999", "server error");
+    FAIL_SERVER_ERROR("9999", "server error"),
+    FAIL_ENABLE_ACQUIRE_LOCK("10000", "enable acquire lock");
 
 
     private final String code;
