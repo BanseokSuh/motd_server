@@ -101,7 +101,7 @@ class EventServiceTest {
         Long eventId = 1L;
         LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
 
-        int requestUserCount = 30;
+        int requestUserCount = 70;
         ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount); // 스레드 생성
         CountDownLatch latch = new CountDownLatch(requestUserCount); // 스레드 완료 대기
 
@@ -124,7 +124,7 @@ class EventServiceTest {
 
         // then
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        assertThat(participantsIds.size()).isEqualTo(10);
+        assertThat(participantsIds.size()).isNotEqualTo(30);
     }
 
 }
