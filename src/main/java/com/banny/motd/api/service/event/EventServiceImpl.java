@@ -50,6 +50,35 @@ public class EventServiceImpl implements EventService {
         return eventRepository.save(event);
     }
 
+    // 락 걸지 않은 경우
+//    @Transactional
+//    @Override
+//    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
+//        Event event = eventRepository.getById(eventId);
+//
+//        event.isRegisterDateValid(participateDate);
+//
+//        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
+//        event.setParticipantsUserId(participantsIds);
+//
+//        User user = userRepository.getById(userId);
+//        event.checkIfParticipatedOrThrowError(user);
+//
+//        Participation participation = Participation.of(
+//                TargetType.EVENT,
+//                event.getId(),
+//                user,
+//                ParticipationStatus.PENDING);
+//
+//        if (!event.isParticipantsFull()) {
+//            log.info("participation success!!");
+//            return participationRepository.save(participation);
+//        } else {
+//            log.error("participation fail :(");
+//            throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
+//        }
+//    }
+
     @Transactional
     @Override
     public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
@@ -62,7 +91,6 @@ public class EventServiceImpl implements EventService {
             }
 
             Event event = eventRepository.getById(eventId);
-
             event.isRegisterDateValid(participateDate);
 
             List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
@@ -92,4 +120,5 @@ public class EventServiceImpl implements EventService {
             }
         }
     }
+
 }

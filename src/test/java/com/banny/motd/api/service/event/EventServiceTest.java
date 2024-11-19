@@ -130,8 +130,8 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("여러 명이 동시에 이벤트에 참여한다.v2 - 해피 케이스")
-    void participateEventMultipleUsersHappyV2() throws InterruptedException {
+    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 해피 케이스")
+    void participateEventMultipleUsersHappy() throws InterruptedException {
         // given
         Long eventId = 1L;
         LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
