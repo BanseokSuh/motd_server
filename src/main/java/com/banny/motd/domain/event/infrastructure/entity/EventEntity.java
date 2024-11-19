@@ -2,7 +2,6 @@ package com.banny.motd.domain.event.infrastructure.entity;
 
 import com.banny.motd.domain.event.Event;
 import com.banny.motd.domain.event.EventType;
-import com.banny.motd.domain.user.infrastructure.entity.UserEntity;
 import com.banny.motd.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -37,9 +36,8 @@ public class EventEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
+    private Long userId;
 
     @Column(name = "register_start_at", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime registerStartAt;
@@ -54,13 +52,13 @@ public class EventEntity extends BaseEntity {
     private LocalDateTime eventEndAt;
 
     @Builder
-    private EventEntity(Long id, String title, String description, int maxParticipants, EventType eventType, UserEntity user, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
+    private EventEntity(Long id, String title, String description, int maxParticipants, EventType eventType, Long userId, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.maxParticipants = maxParticipants;
         this.eventType = eventType;
-        this.user = user;
+        this.userId = userId;
         this.registerStartAt = registerStartAt;
         this.registerEndAt = registerEndAt;
         this.eventStartAt = eventStartAt;
@@ -74,7 +72,7 @@ public class EventEntity extends BaseEntity {
                 .description(event.getDescription())
                 .maxParticipants(event.getMaxParticipants())
                 .eventType(event.getEventType())
-                .user(UserEntity.from(event.getManager()))
+                .userId(event.getManagerUserId())
                 .registerStartAt(event.getRegisterStartAt())
                 .registerEndAt(event.getRegisterEndAt())
                 .eventStartAt(event.getEventStartAt())
@@ -82,7 +80,7 @@ public class EventEntity extends BaseEntity {
                 .build();
     }
 
-    public static EventEntity of(String title, String description, int maxParticipants, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, UserEntity userEntity) {
+    public static EventEntity of(String title, String description, int maxParticipants, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, Long userId) {
         return EventEntity.builder()
                 .title(title)
                 .description(description)
@@ -92,7 +90,7 @@ public class EventEntity extends BaseEntity {
                 .registerEndAt(registerEndAt)
                 .eventStartAt(eventStartAt)
                 .eventEndAt(eventEndAt)
-                .user(userEntity)
+                .userId(userId)
                 .build();
     }
 
@@ -103,7 +101,7 @@ public class EventEntity extends BaseEntity {
                 .description(description)
                 .maxParticipants(maxParticipants)
                 .eventType(eventType)
-                .manager(user.toDomain())
+                .userId(userId)
                 .registerStartAt(registerStartAt)
                 .registerEndAt(registerEndAt)
                 .eventStartAt(eventStartAt)

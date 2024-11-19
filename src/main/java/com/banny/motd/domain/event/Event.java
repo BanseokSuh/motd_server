@@ -20,7 +20,7 @@ public class Event {
     private String title;
     private String description;
     private EventType eventType;
-    private User manager;
+    private Long managerUserId;
     private int maxParticipants;
     private List<Long> participantsIds;
     private LocalDateTime registerStartAt;
@@ -32,12 +32,12 @@ public class Event {
     private LocalDateTime deletedAt;
 
     @Builder
-    public Event(Long id, String title, String description, EventType eventType, User manager, int maxParticipants, List<Long> participantsIds, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    public Event(Long id, String title, String description, EventType eventType, Long userId, int maxParticipants, List<Long> participantsIds, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.eventType = eventType;
-        this.manager = manager;
+        this.managerUserId = userId;
         this.maxParticipants = maxParticipants;
         this.participantsIds = participantsIds;
         this.registerStartAt = registerStartAt;

@@ -30,13 +30,12 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public Event createEvent(EventCreateServiceRequest request, Long userId) {
-        User manager = userRepository.getById(userId);
         Event event = Event.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .maxParticipants(request.getMaxParticipants())
                 .eventType(EventType.from(request.getEventType()))
-                .manager(manager)
+                .userId(userId)
                 .registerStartAt(request.getRegisterStartAt())
                 .registerEndAt(request.getRegisterEndAt())
                 .eventStartAt(request.getEventStartAt())

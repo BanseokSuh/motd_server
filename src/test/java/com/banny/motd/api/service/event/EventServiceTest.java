@@ -95,7 +95,7 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("여러명이 동시에 이벤트에 참여한다.")
+    @DisplayName("여러 명이 동시에 이벤트에 참여한다.")
     void participateEventMultipleUsersSynchronously() throws InterruptedException {
         // given
         Long eventId = 1L;
