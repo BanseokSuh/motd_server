@@ -10,13 +10,18 @@ import com.banny.motd.domain.participation.infrastructure.ParticipationRepositor
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.enums.TargetType;
+import com.banny.motd.global.exception.ApiStatusType;
+import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -26,6 +31,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
+    private final RedissonClient redissonClient;
 
     @Transactional
     @Override
@@ -57,28 +63,46 @@ public class EventServiceImpl implements EventService {
          * participation은 participationRepository에서 별도로 조회하여 event.participation 필드에 할당
          *
          */
-        Event event = eventRepository.getById(eventId);
+        final String lockName = eventId.toString() + ":lock";
+        final RLock lock = redissonClient.getLock(lockName);
+        final String worker = Thread.currentThread().getName();
 
-        event.isRegisterDateValid(participateDate);
+        try {
+            if (!lock.tryLock(1, 3, TimeUnit.SECONDS)) {
+                return null;
+            }
 
-        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        event.setParticipantsUserId(participantsIds);
+            Event event = eventRepository.getById(eventId);
 
-        User user = userRepository.getById(userId);
-        event.checkIfParticipatedOrThrowError(user);
+            event.isRegisterDateValid(participateDate);
 
-        Participation participation = Participation.of(
-                TargetType.EVENT,
-                event.getId(),
-                user,
-                ParticipationStatus.PENDING);
+            List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
+            event.setParticipantsUserId(participantsIds);
 
-        if (!event.isParticipantsFull()) {
-            log.info("participation success!!");
-            return participationRepository.save(participation);
-        } else {
-            log.error("participation fail :(");
+            User user = userRepository.getById(userId);
+            event.checkIfParticipatedOrThrowError(user);
+
+            Participation participation = Participation.of(
+                    TargetType.EVENT,
+                    event.getId(),
+                    user,
+                    ParticipationStatus.PENDING);
+
+            if (!event.isParticipantsFull()) {
+                log.info("[{}] participation success!!", worker);
+                return participationRepository.save(participation);
+            } else {
+                log.error("[{}] participation fail :(", worker);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (lock != null && lock.isLocked()) {
+                lock.unlock();
+            }
         }
+
+
 
         return null;
     }

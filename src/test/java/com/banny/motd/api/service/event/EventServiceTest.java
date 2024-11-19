@@ -95,8 +95,8 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("여러 명이 동시에 이벤트에 참여한다.")
-    void participateEventMultipleUsersSynchronously() throws InterruptedException {
+    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 예외 케이스")
+    void participateEventMultipleUsersException() throws InterruptedException {
         // given
         Long eventId = 1L;
         Event event = eventRepository.getById(eventId);
@@ -128,5 +128,41 @@ class EventServiceTest {
         List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
         assertThat(participantsIds.size()).isNotEqualTo(event.getMaxParticipants());
     }
+
+    @Test
+    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 해피 케이스")
+    void participateEventMultipleUsersHappy() throws InterruptedException {
+        // given
+        Long eventId = 1L;
+        Event event = eventRepository.getById(eventId);
+
+        LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
+
+        int requestUserCount = 70; // 70명
+        ExecutorService executorService = Executors.newFixedThreadPool(requestUserCount);
+        CountDownLatch latch = new CountDownLatch(requestUserCount);
+
+        // when
+        for (int i = 1; i <= requestUserCount; i++) {
+            final long userId = i;
+            executorService.submit(() -> {
+                try {
+                    System.out.println(userId + "번째 스레드 접근 시작");
+                    eventService.participateEvent(eventId, userId, participateDate);
+                } finally {
+                    latch.countDown();
+                    System.out.println(userId + "번째 스레드 접근 종료");
+                }
+            });
+        }
+
+        latch.await(); // 모든 스레드 작업이 완료될 때까지 대기
+        executorService.shutdown();
+
+        // then
+        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
+        assertThat(participantsIds.size()).isEqualTo(event.getMaxParticipants());
+    }
+
 
 }
