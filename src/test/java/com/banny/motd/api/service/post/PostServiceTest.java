@@ -19,12 +19,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
 
-@Sql(scripts = {"/sql/schema.sql"}, executionPhase = BEFORE_TEST_CLASS)
-@Sql(scripts = {
-        "/sql/init/createUsers.sql",
-        "/sql/init/createPosts.sql"
-}, executionPhase = BEFORE_TEST_METHOD)
-@Sql(scripts = {"/sql/reset.sql"}, executionPhase = AFTER_TEST_METHOD)
+@Sql(executionPhase = BEFORE_TEST_CLASS, scripts = {"/sql/schema.sql"})
+@Sql(executionPhase = BEFORE_TEST_METHOD, scripts = {"/sql/init/createUsers.sql", "/sql/init/createPosts.sql"})
+@Sql(executionPhase = AFTER_TEST_METHOD, scripts = {"/sql/reset.sql"})
 @ActiveProfiles("test")
 @SpringBootTest
 class PostServiceTest {

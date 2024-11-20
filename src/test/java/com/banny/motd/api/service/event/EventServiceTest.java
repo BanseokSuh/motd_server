@@ -24,12 +24,9 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
 
-@Sql(scripts = {"/sql/schema.sql"}, executionPhase = BEFORE_TEST_CLASS)
-@Sql(scripts = {
-        "/sql/init/createUsers.sql",
-        "/sql/init/createEvents.sql"
-}, executionPhase = BEFORE_TEST_METHOD)
-@Sql(scripts = {"/sql/reset.sql"}, executionPhase = AFTER_TEST_METHOD)
+@Sql(executionPhase = BEFORE_TEST_CLASS, scripts = {"/sql/schema.sql"})
+@Sql(executionPhase = BEFORE_TEST_METHOD, scripts = {"/sql/init/createUsers.sql", "/sql/init/createEvents.sql"})
+@Sql(executionPhase = AFTER_TEST_METHOD, scripts = {"/sql/reset.sql"})
 @ActiveProfiles("test")
 @SpringBootTest
 class EventServiceTest {
@@ -95,42 +92,7 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 예외 케이스")
-    void participateEventMultipleUsersException() throws InterruptedException {
-        // given
-        Long eventId = 1L;
-        Event event = eventRepository.getById(eventId);
-
-        LocalDateTime participateDate = LocalDateTime.of(2024, 11, 15, 12, 0);
-
-        int people = 70; // 70명
-        ExecutorService executorService = Executors.newFixedThreadPool(people);
-        CountDownLatch latch = new CountDownLatch(people);
-
-        // when
-        for (int i = 1; i <= people; i++) {
-            final long userId = i;
-            executorService.submit(() -> {
-                try {
-                    System.out.println(userId + "번째 스레드 접근 시작");
-                    eventService.participateEvent(eventId, userId, participateDate);
-                } finally {
-                    latch.countDown();
-                    System.out.println(userId + "번째 스레드 접근 종료");
-                }
-            });
-        }
-
-        latch.await(); // 모든 스레드 작업이 완료될 때까지 대기
-        executorService.shutdown();
-
-        // then
-        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-        assertThat(participantsIds.size()).isNotEqualTo(event.getMaxParticipants());
-    }
-
-    @Test
-    @DisplayName("여러 명이 동시에 이벤트에 참여한다. - 해피 케이스")
+    @DisplayName("제한 인원 이상이 동시에 이벤트에 참여할 때 제한 인원만 이벤트에 참여한다.")
     void participateEventMultipleUsersHappy() throws InterruptedException {
         // given
         Long eventId = 1L;

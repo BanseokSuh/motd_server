@@ -82,12 +82,17 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
-        final String lockName = eventId.toString() + ":lock";
+        final String lockName = "lock-event:" + eventId.toString();
         final RLock lock = redissonClient.getLock(lockName);
 
         try {
-            if (!lock.tryLock(1, 3, TimeUnit.SECONDS)) {
+            boolean isLocked = lock.tryLock(1, 3, TimeUnit.SECONDS);
+
+            if (!isLocked) {
+                log.info("락 획득하지 못함 :(");
                 throw new ApplicationException(ApiStatusType.FAIL_ENABLE_ACQUIRE_LOCK);
+            } else {
+                log.info("락 획득 :)");
             }
 
             Event event = eventRepository.getById(eventId);
@@ -106,15 +111,17 @@ public class EventServiceImpl implements EventService {
                     ParticipationStatus.PENDING);
 
             if (!event.isParticipantsFull()) {
-                log.info("participation success!!");
+                log.info("이벤트 참여 성공!!");
                 return participationRepository.save(participation);
             } else {
-                log.error("participation fail :(");
+                log.error("이벤트 참여 실패 :(");
                 throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
             }
         } catch (InterruptedException e) {
+            log.info("InterruptedException :(");
             throw new ApplicationException(ApiStatusType.FAIL_SERVER_ERROR, e.toString());
         } finally {
+            log.info("락 해제 !! \n");
             if (lock != null && lock.isLocked()) {
                 lock.unlock();
             }
