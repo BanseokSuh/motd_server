@@ -84,9 +84,11 @@ public class EventServiceImpl implements EventService {
     public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
         final String lockName = "lock-event:" + eventId.toString();
         final RLock lock = redissonClient.getLock(lockName);
+        long waitTime = 1L;
+        long leaseTime = 3L;
 
         try {
-            boolean isLocked = lock.tryLock(1, 3, TimeUnit.SECONDS);
+            boolean isLocked = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 
             if (!isLocked) {
                 log.info("락 획득하지 못함 :(");
