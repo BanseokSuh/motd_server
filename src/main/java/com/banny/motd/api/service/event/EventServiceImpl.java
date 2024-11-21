@@ -9,19 +9,18 @@ import com.banny.motd.domain.participation.ParticipationStatus;
 import com.banny.motd.domain.participation.infrastructure.ParticipationRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.global.annotation.DistributedLock;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -50,84 +49,84 @@ public class EventServiceImpl implements EventService {
         return eventRepository.save(event);
     }
 
-    // 락 걸지 않은 경우
-//    @Transactional
-//    @Override
-//    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
-//        Event event = eventRepository.getById(eventId);
-//
-//        event.isRegisterDateValid(participateDate);
-//
-//        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-//        event.setParticipantsUserId(participantsIds);
-//
-//        User user = userRepository.getById(userId);
-//        event.checkIfParticipatedOrThrowError(user);
-//
-//        Participation participation = Participation.of(
-//                TargetType.EVENT,
-//                event.getId(),
-//                user,
-//                ParticipationStatus.PENDING);
-//
-//        if (!event.isParticipantsFull()) {
-//            log.info("participation success!!");
-//            return participationRepository.save(participation);
-//        } else {
-//            log.error("participation fail :(");
-//            throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
-//        }
-//    }
-
+    @DistributedLock(key = "#eventId")
     @Transactional
     @Override
     public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
-        final String lockName = "lock-event:" + eventId.toString();
-        final RLock lock = redissonClient.getLock(lockName);
-        long waitTime = 1L;
-        long leaseTime = 3L;
+        Event event = eventRepository.getById(eventId);
 
-        try {
-            boolean isLocked = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+        event.isRegisterDateValid(participateDate);
 
-            if (!isLocked) {
-                log.info("락 획득하지 못함 :(");
-                throw new ApplicationException(ApiStatusType.FAIL_ENABLE_ACQUIRE_LOCK);
-            } else {
-                log.info("락 획득 :)");
-            }
+        List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
+        event.setParticipantsUserId(participantsIds);
 
-            Event event = eventRepository.getById(eventId);
-            event.isRegisterDateValid(participateDate);
+        User user = userRepository.getById(userId);
+        event.checkIfParticipatedOrThrowError(user);
 
-            List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
-            event.setParticipantsUserId(participantsIds);
+        Participation participation = Participation.of(
+                TargetType.EVENT,
+                event.getId(),
+                user,
+                ParticipationStatus.PENDING);
 
-            User user = userRepository.getById(userId);
-            event.checkIfParticipatedOrThrowError(user);
-
-            Participation participation = Participation.of(
-                    TargetType.EVENT,
-                    event.getId(),
-                    user,
-                    ParticipationStatus.PENDING);
-
-            if (!event.isParticipantsFull()) {
-                log.info("이벤트 참여 성공!!");
-                return participationRepository.save(participation);
-            } else {
-                log.error("이벤트 참여 실패 :(");
-                throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
-            }
-        } catch (InterruptedException e) {
-            log.info("InterruptedException :(");
-            throw new ApplicationException(ApiStatusType.FAIL_SERVER_ERROR, e.toString());
-        } finally {
-            log.info("락 해제 !! \n");
-            if (lock != null && lock.isLocked()) {
-                lock.unlock();
-            }
+        if (!event.isParticipantsFull()) {
+            log.info("participation success!!");
+            return participationRepository.save(participation);
+        } else {
+            log.error("participation fail :(");
+            throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
         }
     }
+
+//    @Transactional
+//    @Override
+//    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
+//        final String lockName = "lock-event:" + eventId.toString();
+//        final RLock lock = redissonClient.getLock(lockName);
+//        long waitTime = 5L;
+//        long leaseTime = 3L;
+//
+//        try {
+//            boolean isLocked = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+//
+//            if (!isLocked) {
+//                log.info("락 획득하지 못함 :(");
+//                throw new ApplicationException(ApiStatusType.FAIL_ENABLE_ACQUIRE_LOCK);
+//            } else {
+//                log.info("락 획득 :)");
+//            }
+//
+//            Event event = eventRepository.getById(eventId);
+//            event.isRegisterDateValid(participateDate);
+//
+//            List<Long> participantsIds = participationRepository.getParticipantsIdBy(eventId);
+//            event.setParticipantsUserId(participantsIds);
+//
+//            User user = userRepository.getById(userId);
+//            event.checkIfParticipatedOrThrowError(user);
+//
+//            Participation participation = Participation.of(
+//                    TargetType.EVENT,
+//                    event.getId(),
+//                    user,
+//                    ParticipationStatus.PENDING);
+//
+//            if (!event.isParticipantsFull()) {
+//                log.info("이벤트 참여 성공!!");
+//                return participationRepository.save(participation);
+//            } else {
+//                log.error("이벤트 참여 실패 :(");
+//                throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
+//            }
+//        } catch (InterruptedException e) {
+//            log.info("InterruptedException :(");
+//            throw new ApplicationException(ApiStatusType.FAIL_SERVER_ERROR, e.toString());
+//        } finally {
+//            log.info("락 해제 !! \n");
+//            if (lock != null && lock.isLocked()) {
+//                lock.unlock();
+//            }
+//        }
+//    }
 
 }

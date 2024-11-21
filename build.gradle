@@ -35,6 +35,8 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // thymeleaf-layout
 
     implementation 'com.fasterxml.jackson.core:jackson-databind' // jackson
+    implementation 'org.redisson:redisson-spring-boot-starter:3.38.1' // redisson
+    implementation 'org.springframework.boot:spring-boot-starter-aop' // aop
 
     // querydsl
     implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
@@ -53,10 +55,7 @@ dependencies {
 
     // postgresql
     runtimeOnly 'org.postgresql:postgresql'
-
-    // redisson
-    implementation 'org.redisson:redisson-spring-boot-starter:3.38.1'
-
+    
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
