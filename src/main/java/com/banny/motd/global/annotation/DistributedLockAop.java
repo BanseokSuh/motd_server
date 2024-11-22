@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 @RequiredArgsConstructor
 public class DistributedLockAop {
 
-    private static final String REDISSON_LOCK_PREFIX = "RLOCK:";
+    private static final String REDISSON_LOCK_PREFIX = "RLOCK:EVENT:";
 
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
@@ -50,6 +50,7 @@ public class DistributedLockAop {
             Thread.currentThread().interrupt();
             throw new ApplicationException(ApiStatusType.FAIL_SERVER_ERROR);
         } finally {
+            log.info("Unlock!! [{}]", key);
             rLock.unlock();
         }
     }

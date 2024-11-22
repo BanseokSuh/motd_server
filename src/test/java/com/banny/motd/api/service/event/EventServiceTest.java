@@ -92,7 +92,7 @@ class EventServiceTest {
     }
 
     @Test
-    @DisplayName("제한 인원 이상이 동시에 이벤트에 참여할 때 제한 인원만 이벤트에 참여한다.")
+    @DisplayName("제한 인원 이상이 동시에 이벤트 참여를 신청할 때 제한 인원만 신청 처리된다.")
     void participateEventMultipleUsersHappy() throws InterruptedException {
         // given
         Long eventId = 1L;

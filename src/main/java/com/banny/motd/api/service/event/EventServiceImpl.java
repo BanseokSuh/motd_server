@@ -81,15 +81,15 @@ public class EventServiceImpl implements EventService {
 //    @Transactional
 //    @Override
 //    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
-//        final String lockName = "lock-event:" + eventId.toString();
+//        final String lockName = "RLock:EVENT:" + eventId.toString();
 //        final RLock lock = redissonClient.getLock(lockName);
 //        long waitTime = 5L;
 //        long leaseTime = 3L;
 //
 //        try {
-//            boolean isLocked = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+//            boolean available = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 //
-//            if (!isLocked) {
+//            if (!available) {
 //                log.info("락 획득하지 못함 :(");
 //                throw new ApplicationException(ApiStatusType.FAIL_ENABLE_ACQUIRE_LOCK);
 //            } else {
