@@ -2,7 +2,10 @@ package com.banny.motd.api.service.user;
 
 import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
 import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
-import com.banny.motd.domain.user.*;
+import com.banny.motd.domain.user.Tokens;
+import com.banny.motd.domain.user.User;
+import com.banny.motd.domain.user.UserRole;
+import com.banny.motd.domain.user.UserStatus;
 import com.banny.motd.domain.user.infrastructure.UserCacheRepository;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.email.EmailHandler;
@@ -39,7 +42,6 @@ public class UserServiceImpl implements UserService {
                 .nickName(request.getNickName())
                 .password(encoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .gender(Gender.from(request.getGender()))
                 .userRole(UserRole.USER)
                 .userStatus(UserStatus.PENDING)
                 .build();
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
         user.checkPasswordMatch(request.getPassword(), encoder);
 
         // 이미 로그인된 사용자인지 확인
-        userTokenManager.checkAlreadyLoggedIn(user, device);
+//        userTokenManager.checkAlreadyLoggedIn(user, device);
 
         // 토큰 생성
         String accessToken = userTokenManager.generateAccessToken(user, device);

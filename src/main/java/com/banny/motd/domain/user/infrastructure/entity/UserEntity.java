@@ -1,6 +1,5 @@
 package com.banny.motd.domain.user.infrastructure.entity;
 
-import com.banny.motd.domain.user.Gender;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.UserRole;
 import com.banny.motd.domain.user.UserStatus;
@@ -35,7 +34,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "user_name", nullable = false, columnDefinition = "VARCHAR(100)")
     private String userName;
 
-    @Column(name = "nick_name", nullable = false, columnDefinition = "VARCHAR(100)")
+    @Column(name = "nick_name", columnDefinition = "VARCHAR(100)")
     private String nickName;
 
     @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(50)")
@@ -43,10 +42,6 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(100)")
     private String password;
-
-    @Column(name = "gender", nullable = false, columnDefinition = "VARCHAR(10)")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
 
     @Column(name = "user_role", nullable = false, columnDefinition = "VARCHAR(10)")
     @Enumerated(EnumType.STRING)
@@ -60,14 +55,13 @@ public class UserEntity extends BaseEntity {
     private String profileImageUrl;
 
     @Builder
-    private UserEntity(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl) {
+    private UserEntity(Long id, String loginId, String userName, String nickName, String email, String password, UserRole userRole, UserStatus userStatus, String profileImageUrl) {
         this.id = id;
         this.loginId = loginId;
         this.userName = userName;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-        this.gender = gender;
         this.userRole = userRole;
         this.userStatus = userStatus;
         this.profileImageUrl = profileImageUrl;
@@ -84,7 +78,6 @@ public class UserEntity extends BaseEntity {
                 .userRole(user.getUserRole())
                 .userStatus(user.getUserStatus())
                 .profileImageUrl(user.getProfileImageUrl())
-                .gender(user.getGender())
                 .build();
     }
 
@@ -99,7 +92,6 @@ public class UserEntity extends BaseEntity {
                 .userRole(userRole)
                 .userStatus(userStatus)
                 .profileImageUrl(profileImageUrl)
-                .gender(gender)
                 .createdAt(getCreatedAt())
                 .updatedAt(getUpdatedAt())
                 .deletedAt(getDeletedAt())

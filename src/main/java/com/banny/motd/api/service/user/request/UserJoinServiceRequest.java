@@ -14,16 +14,14 @@ public class UserJoinServiceRequest {
     private String nickName;
     private String email;
     private String password;
-    private String gender;
 
     @Builder
-    public UserJoinServiceRequest(String loginId, String userName, String nickName, String password, String email, String gender) {
+    public UserJoinServiceRequest(String loginId, String userName, String nickName, String password, String email) {
         this.loginId = loginId;
         this.userName = userName;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-        this.gender = gender;
     }
 
 }

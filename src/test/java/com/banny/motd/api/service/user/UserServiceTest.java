@@ -2,7 +2,6 @@ package com.banny.motd.api.service.user;
 
 import com.banny.motd.api.service.user.request.UserJoinServiceRequest;
 import com.banny.motd.api.service.user.request.UserLoginServiceRequest;
-import com.banny.motd.domain.user.Gender;
 import com.banny.motd.domain.user.Tokens;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
@@ -18,13 +17,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
+@Sql(executionPhase = AFTER_TEST_METHOD, scripts = {"/sql/reset.sql"})
 @ActiveProfiles("test")
 @SpringBootTest
 class UserServiceTest {
@@ -43,7 +45,6 @@ class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAllInBatch();
         redisTemplate.getConnectionFactory().getConnection().serverCommands().flushDb();
     }
 
@@ -56,8 +57,7 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
-        UserJoinServiceRequest request = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest request = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
 
         // when
         User joinedUser = userService.join(request);
@@ -65,7 +65,7 @@ class UserServiceTest {
         // then
         assertThat(joinedUser)
                 .extracting("loginId", "userName", "nickName", "email", "gender")
-                .contains(loginId, userName, loginId, email, Gender.from(gender));
+                .contains(loginId, userName, loginId, email);
 
         verify(emailHandler, times(1)).sendWelcomeEmail(any(), any());
     }
@@ -79,8 +79,7 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
-        UserJoinServiceRequest request = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest request = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         userService.join(request); // 1회 회원가입
 
         // when // then
@@ -94,29 +93,6 @@ class UserServiceTest {
                 );
     }
 
-    @DisplayName("회원가입 시 잘못된 성별로 요청이 들어오면 예외가 발생한다.")
-    @Test
-    void joinWithWrongGender() {
-        // given
-        String loginId = "test000";
-        String userName = "서반석";
-        String nickName = "반석";
-        String email = "still3028@gmail.com";
-        String password = "test001!";
-        String gender = "WRONG_GENDER";
-        UserJoinServiceRequest request = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
-
-        // when // then
-        assertThatThrownBy(() -> userService.join(request))
-                .isInstanceOf(ApplicationException.class)
-                .extracting("status.code", "status.desc", "result.message")
-                .contains(
-                        ApiStatusType.FAIL_INVALID_PARAMETER.getCode(),
-                        ApiStatusType.FAIL_INVALID_PARAMETER.getDesc(),
-                        "Invalid gender"
-                );
-    }
-
     @DisplayName("로그인이 정상적으로 동작한다.")
     @Test
     void login() {
@@ -126,9 +102,8 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
         String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         userService.join(joinRequest); // 회원가입
 
         UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
@@ -171,9 +146,8 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
         String device = "WRONG_DEVICE";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         userService.join(joinRequest); // 회원가입
 
         UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
@@ -199,9 +173,8 @@ class UserServiceTest {
         String email = "still3028@gmail.com";
         String password = "test001!";
         String wrongPassword = "wrong_password";
-        String gender = "MALE";
         String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, wrongPassword, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, wrongPassword);
         userService.join(joinRequest); // 회원가입
 
         UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
@@ -226,9 +199,8 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
         String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         userService.join(joinRequest); // 회원가입
 
         UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
@@ -254,9 +226,8 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
         String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         User joinedUser = userService.join(joinRequest); // 회원가입
 
         UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
@@ -280,9 +251,8 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
         String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         User joinedUser = userService.join(joinRequest); // 회원가입
 
         // when
@@ -304,8 +274,7 @@ class UserServiceTest {
         String nickName = "반석";
         String email = "still3028@gmail.com";
         String password = "test001!";
-        String gender = "MALE";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password, gender);
+        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
         User joinedUser = userService.join(joinRequest); // 회원가입
 
         // when
@@ -313,8 +282,8 @@ class UserServiceTest {
 
         // then
         assertThat(myUser)
-               .extracting("loginId", "userName", "nickName", "email", "gender")
-                .contains(loginId, userName, nickName, email, Gender.from(gender));
+                .extracting("loginId", "userName", "nickName", "email", "gender")
+                .contains(loginId, userName, nickName, email);
     }
 
     private static UserLoginServiceRequest getUserLoginServiceRequest(String loginId, String password, String device) {
@@ -325,14 +294,13 @@ class UserServiceTest {
                 .build();
     }
 
-    private static UserJoinServiceRequest getUserJoinServiceRequest(String loginId, String userName, String nickName, String email, String password, String gender) {
+    private static UserJoinServiceRequest getUserJoinServiceRequest(String loginId, String userName, String nickName, String email, String password) {
         return UserJoinServiceRequest.builder()
                 .loginId(loginId)
                 .userName(userName)
                 .nickName(nickName)
                 .email(email)
                 .password(password)
-                .gender(gender)
                 .build();
     }
 

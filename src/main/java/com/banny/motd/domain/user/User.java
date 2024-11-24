@@ -30,7 +30,6 @@ public class User implements UserDetails {
     private String email;
     @JsonIgnore
     private String password;
-    private Gender gender;
     private UserRole userRole;
     private UserStatus userStatus;
     private String profileImageUrl;
@@ -44,14 +43,13 @@ public class User implements UserDetails {
     private LocalDateTime deletedAt;
 
     @Builder
-    private User(Long id, String loginId, String userName, String nickName, String email, String password, Gender gender, UserRole userRole, UserStatus userStatus, String profileImageUrl, Device device, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
+    private User(Long id, String loginId, String userName, String nickName, String email, String password, UserRole userRole, UserStatus userStatus, String profileImageUrl, Device device, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.loginId = loginId;
         this.userName = userName;
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-        this.gender = gender;
         this.userRole = userRole;
         this.userStatus = userStatus;
         this.profileImageUrl = profileImageUrl;

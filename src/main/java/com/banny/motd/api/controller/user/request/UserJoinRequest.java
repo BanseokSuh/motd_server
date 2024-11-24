@@ -17,7 +17,6 @@ public class UserJoinRequest {
     @NotBlank(message = "이름을 입력해주세요.")
     private String userName;
 
-    @NotBlank(message = "별명을 입력해주세요.")
     private String nickName;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
@@ -28,9 +27,6 @@ public class UserJoinRequest {
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식을 지켜주세요")
     private String email;
 
-    @NotBlank(message = "성별을 입력해주세요.")
-    private String gender;
-
     public UserJoinServiceRequest toServiceRequest() {
         return UserJoinServiceRequest.builder()
                 .loginId(loginId)
@@ -38,7 +34,6 @@ public class UserJoinRequest {
                 .nickName(nickName)
                 .password(password)
                 .email(email)
-                .gender(gender)
                 .build();
     }
 }
