@@ -27,7 +27,7 @@ public class AuthenticationConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login", "/h2-console/**"); // Ignore requests for user join, login, and h2-console
+        return (web) -> web.ignoring().requestMatchers("/api/*/user/join", "/api/*/user/login", "/h2-console/**", "/"); // Ignore requests for user join, login, and h2-console
     }
 
     @Bean
