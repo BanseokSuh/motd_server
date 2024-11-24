@@ -41,7 +41,12 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
 
-        alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.COMMENT, new AlarmArgs(userId, postId)));
+        AlarmEvent alarmEvent = AlarmEvent.builder()
+                .receiverUserId(post.getAuthor().getId())
+                .alarmType(AlarmType.COMMENT)
+                .alarmArgs(AlarmArgs.builder().fromUserId(userId).targetId(postId).build())
+                .build();
+        alarmProducer.send(alarmEvent);
     }
 
     @Override
