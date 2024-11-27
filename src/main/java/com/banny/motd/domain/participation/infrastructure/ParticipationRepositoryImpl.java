@@ -57,14 +57,12 @@ public class ParticipationRepositoryImpl implements ParticipationRepository {
     }
 
     @Override
-    public void cancelParticipateEvent(Long eventId, Long userId, TargetType targetType) {
-
-        log.info("eventId: {}, userId: {}, targetType: {}", eventId, userId, targetType);
-
+    public void cancelParticipateEvent(Long eventId, Long userId, TargetType targetType, ParticipationStatus participationStatus) {
         QParticipationEntity participation = QParticipationEntity.participationEntity;
 
         jpaQueryFactory.update(participation)
                 .set(participation.deletedAt, LocalDateTime.now())
+                .set(participation.participationStatus, participationStatus)
                 .where(participation.targetId.eq(eventId)
                         .and(participation.user.id.eq(userId))
                         .and(participation.targetType.eq(targetType)))

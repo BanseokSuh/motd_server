@@ -16,6 +16,6 @@ public interface ParticipationRepository {
 
     ParticipationStatus getParticipationStatus(Long eventId, Long userId);
 
-    void cancelParticipateEvent(Long eventId, Long userId, TargetType targetType);
+    void cancelParticipateEvent(Long eventId, Long userId, TargetType targetType, ParticipationStatus participationStatus);
 
 }

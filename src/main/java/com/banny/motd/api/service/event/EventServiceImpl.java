@@ -89,7 +89,7 @@ public class EventServiceImpl implements EventService {
                 TargetType.EVENT,
                 event.getId(),
                 user,
-                ParticipationStatus.PENDING);
+                ParticipationStatus.PARTICIPATED);
 
         if (!event.isParticipantsFull()) {
             log.info("participation success!!");
@@ -103,7 +103,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public void cancelParticipateEvent(Long eventId, Long userId) {
-        participationRepository.cancelParticipateEvent(eventId, userId, TargetType.EVENT);
+        participationRepository.cancelParticipateEvent(eventId, userId, TargetType.EVENT, ParticipationStatus.CANCELED);
     }
 
 //    @Transactional

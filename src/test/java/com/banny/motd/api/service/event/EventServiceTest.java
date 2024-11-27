@@ -88,7 +88,7 @@ class EventServiceTest {
         // then
         assertThat(participation)
                 .extracting("id", "targetType", "targetId", "user.id", "participationStatus")
-                .contains(1L, TargetType.EVENT, eventId, userId, ParticipationStatus.PENDING);
+                .contains(1L, TargetType.EVENT, eventId, userId, ParticipationStatus.PARTICIPATED);
     }
 
     @Test
