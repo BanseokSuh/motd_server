@@ -16,24 +16,24 @@ public class PostDetailResponse {
     private List<String> imageUrls;
     private String content;
     private LocalDateTime createdAt;
-    private AuthorResponse author;
+    private RegisterUser registerUser;
     private LikeResponse like;
     private CommentResponse comment;
 
     @Builder
-    private PostDetailResponse(Long id, List<String> imageUrls, String content, LocalDateTime createdAt, AuthorResponse author, LikeResponse like, CommentResponse comment) {
+    private PostDetailResponse(Long id, List<String> imageUrls, String content, LocalDateTime createdAt, RegisterUser registerUser, LikeResponse like, CommentResponse comment) {
         this.id = id;
         this.imageUrls = imageUrls;
         this.content = content;
         this.createdAt = createdAt;
-        this.author = author;
+        this.registerUser = registerUser;
         this.like = like;
         this.comment = comment;
     }
 
     @Getter
     @Builder
-    private static class AuthorResponse {
+    private static class RegisterUser {
         private Long id;
         private String loginId;
         private String userName;
@@ -51,7 +51,7 @@ public class PostDetailResponse {
     private static class LikeListResponse {
         private Long id;
         private LocalDateTime createdAt;
-        private AuthorResponse author;
+        private RegisterUser author;
     }
 
     @Getter
@@ -67,7 +67,7 @@ public class PostDetailResponse {
         private Long id;
         private String content;
         private LocalDateTime createdAt;
-        private AuthorResponse author;
+        private RegisterUser author;
     }
 
     public static PostDetailResponse from(PostDetail postDetail) {
@@ -76,40 +76,40 @@ public class PostDetailResponse {
                 .imageUrls(postDetail.getImageUrls())
                 .content(postDetail.getContent())
                 .createdAt(postDetail.getCreatedAt())
-                .author(AuthorResponse.builder() // 게시글 작성자
-                                .id(postDetail.getAuthor().getId()) // 게시글 작성자 고유값
-                                .loginId(postDetail.getAuthor().getLoginId()) // 게시글 작성자 아이디
-                                .userName(postDetail.getAuthor().getUsername()) // 게시글 작성자 이름
-                                .build())
+                .registerUser(RegisterUser.builder() // 게시글 작성자
+                        .id(postDetail.getRegisterUser().getId()) // 게시글 작성자 고유값
+                        .loginId(postDetail.getRegisterUser().getLoginId()) // 게시글 작성자 아이디
+                        .userName(postDetail.getRegisterUser().getUsername()) // 게시글 작성자 이름
+                        .build())
                 .like(LikeResponse.builder() // 좋아요
-                                .count(postDetail.getLikeList().size()) // 좋아요 개수
-                                .list(postDetail.getLikeList().stream() // 좋아요 목록
-                                        .map(postReaction -> LikeListResponse.builder()
-                                                .id(postReaction.getId()) // 좋아요 식별값
-                                                .createdAt(postReaction.getCreatedAt()) // 좋아요 생성일
-                                                .author(AuthorResponse.builder() // 좋아요 작성자
-                                                        .id(postReaction.getAuthor().getId()) // 좋아요 작성자 식별값
-                                                        .loginId(postReaction.getAuthor().getLoginId()) // 좋아요 작성자 아이디
-                                                        .userName(postReaction.getAuthor().getUsername()) // 좋아요 작성자 이름
-                                                        .build())
+                        .count(postDetail.getLikeList().size()) // 좋아요 개수
+                        .list(postDetail.getLikeList().stream() // 좋아요 목록
+                                .map(postReaction -> LikeListResponse.builder()
+                                        .id(postReaction.getId()) // 좋아요 식별값
+                                        .createdAt(postReaction.getCreatedAt()) // 좋아요 생성일
+                                        .author(RegisterUser.builder() // 좋아요 작성자
+                                                .id(postReaction.getAuthor().getId()) // 좋아요 작성자 식별값
+                                                .loginId(postReaction.getAuthor().getLoginId()) // 좋아요 작성자 아이디
+                                                .userName(postReaction.getAuthor().getUsername()) // 좋아요 작성자 이름
                                                 .build())
-                                        .toList())
-                                .build())
+                                        .build())
+                                .toList())
+                        .build())
                 .comment(CommentResponse.builder() // 댓글
-                                .count(postDetail.getCommentList().size()) // 댓글 개수
-                                .list(postDetail.getCommentList().stream() // 댓글 목록
-                                        .map(postComment -> CommentListResponse.builder()
-                                                .id(postComment.getId()) // 댓글 식별값
-                                                .content(postComment.getComment()) // 댓글 내용
-                                                .createdAt(postComment.getCreatedAt()) // 댓글 생성일
-                                                .author(AuthorResponse.builder() // 댓글 작성자
-                                                        .id(postComment.getAuthor().getId()) // 댓글 작성자 식별값
-                                                        .loginId(postComment.getAuthor().getLoginId()) // 댓글 작성자 아이디
-                                                        .userName(postComment.getAuthor().getUsername()) // 댓글 작성자 이름
-                                                        .build())
+                        .count(postDetail.getCommentList().size()) // 댓글 개수
+                        .list(postDetail.getCommentList().stream() // 댓글 목록
+                                .map(postComment -> CommentListResponse.builder()
+                                        .id(postComment.getId()) // 댓글 식별값
+                                        .content(postComment.getComment()) // 댓글 내용
+                                        .createdAt(postComment.getCreatedAt()) // 댓글 생성일
+                                        .author(RegisterUser.builder() // 댓글 작성자
+                                                .id(postComment.getAuthor().getId()) // 댓글 작성자 식별값
+                                                .loginId(postComment.getAuthor().getLoginId()) // 댓글 작성자 아이디
+                                                .userName(postComment.getAuthor().getUsername()) // 댓글 작성자 이름
                                                 .build())
-                                        .toList())
-                                .build())
+                                        .build())
+                                .toList())
+                        .build())
                 .build();
     }
 

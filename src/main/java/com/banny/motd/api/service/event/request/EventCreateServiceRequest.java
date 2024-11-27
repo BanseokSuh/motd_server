@@ -12,6 +12,7 @@ public class EventCreateServiceRequest {
 
     private String title;
     private String description;
+    private String imageUrl;
     private int maxParticipants;
     private String eventType;
     private LocalDateTime registerStartAt;
@@ -20,9 +21,10 @@ public class EventCreateServiceRequest {
     private LocalDateTime eventEndAt;
 
     @Builder
-    public EventCreateServiceRequest(String title, String description, int maxParticipants, String eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, Long userId) {
+    public EventCreateServiceRequest(String title, String description, String imageUrl, int maxParticipants, String eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, Long userId) {
         this.title = title;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.maxParticipants = maxParticipants;
         this.eventType = eventType;
         this.registerStartAt = registerStartAt;

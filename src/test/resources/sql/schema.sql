@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS "post" (
 CREATE TABLE IF NOT EXISTS "event" (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(50) NOT NULL,
+    image_url VARCHAR(100),
     description TEXT NOT NULL,
     max_participants INT NOT NULL,
     event_type VARCHAR(10) NOT NULL,

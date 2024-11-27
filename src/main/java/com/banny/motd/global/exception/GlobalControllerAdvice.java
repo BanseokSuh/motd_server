@@ -21,7 +21,7 @@ public class GlobalControllerAdvice {
     /**
      * 애플리케이션에서 정의된 예외 핸들링
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(ApplicationException.class)
     public ApiResponse<Object> applicationExceptionHandler(ApplicationException e) {
         return ApiResponse.of(e.getStatus(), e.getResult());
@@ -30,7 +30,7 @@ public class GlobalControllerAdvice {
     /**
      * 애플리케이션에서 정의되지 않은 런테입 예외 핸들링
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(RuntimeException.class)
     public ApiResponse<Object> internalServerExceptionHandler(RuntimeException e) {
         log.error(e.toString());
@@ -40,7 +40,7 @@ public class GlobalControllerAdvice {
     /**
      * Dto에서 검증되지 못한 Validation 예외 핸들링
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResponse<Object> validationExceptionHandler(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();

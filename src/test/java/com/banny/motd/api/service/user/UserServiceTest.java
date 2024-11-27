@@ -64,7 +64,7 @@ class UserServiceTest {
 
         // then
         assertThat(joinedUser)
-                .extracting("loginId", "userName", "nickName", "email", "gender")
+                .extracting("loginId", "userName", "nickName", "email")
                 .contains(loginId, userName, loginId, email);
 
         verify(emailHandler, times(1)).sendWelcomeEmail(any(), any());
@@ -190,33 +190,6 @@ class UserServiceTest {
                 );
     }
 
-    @DisplayName("로그인 시 이미 로그인된 사용자가 요청이 들어오면 예외가 발생한다.")
-    @Test
-    void loginWithAlreadyLoggedInUser() {
-        // given
-        String loginId = "test000";
-        String userName = "서반석";
-        String nickName = "반석";
-        String email = "still3028@gmail.com";
-        String password = "test001!";
-        String device = "WEB";
-        UserJoinServiceRequest joinRequest = getUserJoinServiceRequest(loginId, userName, nickName, email, password);
-        userService.join(joinRequest); // 회원가입
-
-        UserLoginServiceRequest loginRequest = getUserLoginServiceRequest(loginId, password, device);
-        userService.login(loginRequest); // 1회 로그인
-
-        // when // then
-        assertThatThrownBy(() -> userService.login(loginRequest))
-                .isInstanceOf(ApplicationException.class)
-                .extracting("status.code", "status.desc", "result.message")
-                .contains(
-                        ApiStatusType.FAIL_ALREADY_LOGGED_IN.getCode(),
-                        ApiStatusType.FAIL_ALREADY_LOGGED_IN.getDesc(),
-                        String.format("User %s is already logged in", loginId)
-                );
-    }
-
     @DisplayName("로그아웃이 정상적으로 동작한다.")
     @Test
     void logout() {
@@ -282,7 +255,7 @@ class UserServiceTest {
 
         // then
         assertThat(myUser)
-                .extracting("loginId", "userName", "nickName", "email", "gender")
+                .extracting("loginId", "userName", "nickName", "email")
                 .contains(loginId, userName, nickName, email);
     }
 

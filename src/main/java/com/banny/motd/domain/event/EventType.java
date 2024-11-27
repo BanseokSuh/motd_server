@@ -14,13 +14,10 @@ public enum EventType {
 
     private final String text;
 
-    public static EventType from(String eventType) {
-
-        log.info("eventType: {}", eventType);
-
-        for (EventType e : EventType.values()) {
-            if (e.name().equalsIgnoreCase(eventType)) {
-                return e;
+    public static EventType from(String eventTypeStr) {
+        for (EventType eventType : EventType.values()) {
+            if (eventType.name().equalsIgnoreCase(eventTypeStr)) {
+                return eventType;
             }
         }
 

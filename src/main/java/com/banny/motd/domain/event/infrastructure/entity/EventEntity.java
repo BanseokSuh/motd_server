@@ -26,7 +26,10 @@ public class EventEntity extends BaseEntity {
     @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(50)")
     private String title;
 
-    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "image_url", columnDefinition = "VARCHAR(100)")
+    private String imageUrl;
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "max_participants", nullable = false, columnDefinition = "INT")
@@ -52,9 +55,10 @@ public class EventEntity extends BaseEntity {
     private LocalDateTime eventEndAt;
 
     @Builder
-    private EventEntity(Long id, String title, String description, int maxParticipants, EventType eventType, Long userId, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
+    private EventEntity(Long id, String title, String imageUrl, String description, int maxParticipants, EventType eventType, Long userId, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
         this.id = id;
         this.title = title;
+        this.imageUrl = imageUrl;
         this.description = description;
         this.maxParticipants = maxParticipants;
         this.eventType = eventType;
@@ -69,10 +73,11 @@ public class EventEntity extends BaseEntity {
         return EventEntity.builder()
                 .id(event.getId())
                 .title(event.getTitle())
+                .imageUrl(event.getImageUrl())
                 .description(event.getDescription())
                 .maxParticipants(event.getMaxParticipants())
                 .eventType(event.getEventType())
-                .userId(event.getManagerUserId())
+                .userId(event.getRegisterUserId())
                 .registerStartAt(event.getRegisterStartAt())
                 .registerEndAt(event.getRegisterEndAt())
                 .eventStartAt(event.getEventStartAt())
@@ -80,9 +85,10 @@ public class EventEntity extends BaseEntity {
                 .build();
     }
 
-    public static EventEntity of(String title, String description, int maxParticipants, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, Long userId) {
+    public static EventEntity of(String title, String imageUrl, String description, int maxParticipants, EventType eventType, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, Long userId) {
         return EventEntity.builder()
                 .title(title)
+                .imageUrl(imageUrl)
                 .description(description)
                 .maxParticipants(maxParticipants)
                 .eventType(eventType)
@@ -98,6 +104,7 @@ public class EventEntity extends BaseEntity {
         return Event.builder()
                 .id(id)
                 .title(title)
+                .imageUrl(imageUrl)
                 .description(description)
                 .maxParticipants(maxParticipants)
                 .eventType(eventType)

@@ -2,6 +2,7 @@ package com.banny.motd.api.service.event;
 
 import com.banny.motd.api.service.event.request.EventCreateServiceRequest;
 import com.banny.motd.domain.event.Event;
+import com.banny.motd.domain.event.EventDetail;
 import com.banny.motd.domain.event.EventType;
 import com.banny.motd.domain.event.infrastructure.EventRepository;
 import com.banny.motd.domain.participation.Participation;
@@ -10,6 +11,7 @@ import com.banny.motd.domain.participation.infrastructure.ParticipationRepositor
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
 import com.banny.motd.global.annotation.DistributedLock;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
@@ -31,6 +33,19 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
     private final RedissonClient redissonClient;
+
+    @Override
+    public List<Event> getEventList(SearchRequest request) {
+        return eventRepository.getEventList(request);
+    }
+
+    @Override
+    public EventDetail getEvent(Long eventId) {
+        Event event = eventRepository.getById(eventId);
+        User user = userRepository.getById(event.getRegisterUserId());
+
+        return new EventDetail(event, user);
+    }
 
     @Transactional
     @Override

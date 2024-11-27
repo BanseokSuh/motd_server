@@ -14,11 +14,11 @@ public class PostListResponse {
     private List<String> imageUrls;
     private String content;
     private LocalDateTime createdAt;
-    private AuthorResponse author;
+    private RegisterUser registerUser;
 
     @Getter
     @Builder
-    public static class AuthorResponse {
+    private static class RegisterUser {
         private Long id;
         private String loginId;
         private String userName;
@@ -26,12 +26,12 @@ public class PostListResponse {
     }
 
     @Builder
-    private PostListResponse(Long id, List<String> imageUrls, String content, LocalDateTime createdAt, AuthorResponse author) {
+    private PostListResponse(Long id, List<String> imageUrls, String content, LocalDateTime createdAt, RegisterUser registerUser) {
         this.id = id;
         this.imageUrls = imageUrls;
         this.content = content;
         this.createdAt = createdAt;
-        this.author = author;
+        this.registerUser = registerUser;
     }
 
     public static PostListResponse from(Post post) {
@@ -40,7 +40,7 @@ public class PostListResponse {
                 .imageUrls(post.getImageUrls())
                 .content(post.getContent())
                 .createdAt(post.getCreatedAt())
-                .author(AuthorResponse.builder()
+                .registerUser(RegisterUser.builder()
                         .id(post.getAuthor().getId())
                         .loginId(post.getAuthor().getLoginId())
                         .userName(post.getAuthor().getUsername())

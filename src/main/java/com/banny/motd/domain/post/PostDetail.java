@@ -17,7 +17,7 @@ public class PostDetail {
     private Long id;
     private List<String> imageUrls;
     private String content;
-    private User author;
+    private User registerUser;
     private List<Reaction> likeList;
     private List<Comment> commentList;
     private LocalDateTime createdAt;
@@ -29,7 +29,7 @@ public class PostDetail {
         this.id = post.getId();
         this.imageUrls = post.getImageUrls();
         this.content = post.getContent();
-        this.author = user;
+        this.registerUser = user;
         this.likeList = likeList;
         this.commentList = commentList;
         this.createdAt = post.getCreatedAt();
