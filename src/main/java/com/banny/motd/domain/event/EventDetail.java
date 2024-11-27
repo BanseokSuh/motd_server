@@ -1,5 +1,6 @@
 package com.banny.motd.domain.event;
 
+import com.banny.motd.domain.participation.ParticipationStatus;
 import com.banny.motd.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,13 +19,14 @@ public class EventDetail {
     private EventType eventType;
     private User registerUser;
     private int maxParticipants;
+    private ParticipationStatus status;
     private LocalDateTime registerStartAt;
     private LocalDateTime registerEndAt;
     private LocalDateTime eventStartAt;
     private LocalDateTime eventEndAt;
 
     @Builder
-    public EventDetail(Long id, String title, String imageUrl, String description, EventType eventType, User registerUser, int maxParticipants, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
+    public EventDetail(Long id, String title, String imageUrl, String description, EventType eventType, User registerUser, int maxParticipants, ParticipationStatus status, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -32,6 +34,7 @@ public class EventDetail {
         this.eventType = eventType;
         this.registerUser = registerUser;
         this.maxParticipants = maxParticipants;
+        this.status = status;
         this.registerStartAt = registerStartAt;
         this.registerEndAt = registerEndAt;
         this.eventStartAt = eventStartAt;
@@ -39,7 +42,7 @@ public class EventDetail {
     }
 
     @Builder
-    public EventDetail(Event event, User registerUser) {
+    public EventDetail(Event event, User registerUser, ParticipationStatus status) {
         this.id = event.getId();
         this.title = event.getTitle();
         this.imageUrl = event.getImageUrl();
@@ -47,6 +50,7 @@ public class EventDetail {
         this.eventType = event.getEventType();
         this.registerUser = registerUser;
         this.maxParticipants = event.getMaxParticipants();
+        this.status = status;
         this.registerStartAt = event.getRegisterStartAt();
         this.registerEndAt = event.getRegisterEndAt();
         this.eventStartAt = event.getEventStartAt();

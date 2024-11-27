@@ -36,8 +36,9 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<EventDetailResponse> getEvent(@PathVariable Long id) {
-        EventDetail event = eventService.getEvent(id);
+    public ApiResponse<EventDetailResponse> getEvent(@PathVariable Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        EventDetail event = eventService.getEvent(id, user.getId());
 
         return ApiResponse.ok(EventDetailResponse.from(event));
     }
@@ -56,6 +57,14 @@ public class EventController {
         Participation participation = eventService.participateEvent(id, user.getId(), LocalDateTime.now());
 
         return ApiResponse.ok(ParticipationCreateResponse.from(participation));
+    }
+
+    @PostMapping("/{id}/participate-cancel")
+    public ApiResponse<Void> cancelParticipateEvent(@PathVariable Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        eventService.cancelParticipateEvent(id, user.getId());
+
+        return ApiResponse.ok();
     }
 
 }

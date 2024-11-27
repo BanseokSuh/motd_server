@@ -31,7 +31,7 @@ public class ParticipationEntity extends BaseEntity {
     private Long targetId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "participation_status", nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "participation_status", nullable = false, columnDefinition = "VARCHAR(20)")
     private ParticipationStatus participationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)

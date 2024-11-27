@@ -13,10 +13,12 @@ public interface EventService {
 
     List<Event> getEventList(SearchRequest request);
 
-    EventDetail getEvent(Long id);
+    EventDetail getEvent(Long eventId, Long userId);
 
     Event createEvent(EventCreateServiceRequest request, Long userId);
 
     Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate);
+
+    void cancelParticipateEvent(Long eventId, Long userId);
 
 }

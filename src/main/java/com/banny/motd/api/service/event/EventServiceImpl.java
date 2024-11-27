@@ -36,15 +36,22 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventList(SearchRequest request) {
-        return eventRepository.getEventList(request);
+        List<Event> eventList = eventRepository.getEventList(request);
+        eventList.forEach(event -> {
+            List<Long> participantsIds = participationRepository.getParticipantsIdBy(event.getId());
+            event.setParticipantsUserId(participantsIds);
+        });
+
+        return eventList;
     }
 
     @Override
-    public EventDetail getEvent(Long eventId) {
+    public EventDetail getEvent(Long eventId, Long userId) {
         Event event = eventRepository.getById(eventId);
-        User user = userRepository.getById(event.getRegisterUserId());
+        ParticipationStatus status = participationRepository.getParticipationStatus(eventId, userId);
+        User registerUser = userRepository.getById(event.getRegisterUserId());
 
-        return new EventDetail(event, user);
+        return new EventDetail(event, registerUser, status);
     }
 
     @Transactional
@@ -91,6 +98,12 @@ public class EventServiceImpl implements EventService {
             log.error("participation fail :(");
             throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
         }
+    }
+
+    @Transactional
+    @Override
+    public void cancelParticipateEvent(Long eventId, Long userId) {
+        participationRepository.cancelParticipateEvent(eventId, userId, TargetType.EVENT);
     }
 
 //    @Transactional
