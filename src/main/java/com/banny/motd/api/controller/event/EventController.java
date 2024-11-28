@@ -59,7 +59,7 @@ public class EventController {
         return ApiResponse.ok(ParticipationCreateResponse.from(participation));
     }
 
-    @PostMapping("/{id}/participate-cancel")
+    @PostMapping("/{id}/participate/cancel")
     public ApiResponse<Void> cancelParticipateEvent(@PathVariable Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         eventService.cancelParticipateEvent(id, user.getId());

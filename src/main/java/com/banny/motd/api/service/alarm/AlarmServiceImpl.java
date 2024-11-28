@@ -1,5 +1,6 @@
 package com.banny.motd.api.service.alarm;
 
+import com.banny.motd.api.service.alarm.response.AlarmListServiceResponse;
 import com.banny.motd.domain.alarm.Alarm;
 import com.banny.motd.domain.alarm.AlarmArgs;
 import com.banny.motd.domain.alarm.AlarmType;
@@ -7,16 +8,17 @@ import com.banny.motd.domain.alarm.infrastructure.AlarmRepository;
 import com.banny.motd.domain.alarm.infrastructure.EmitterRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
+import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,8 +32,15 @@ public class AlarmServiceImpl implements AlarmService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<Alarm> getAlarmList(Long userId, Pageable pageable) {
-        return null;
+    public List<AlarmListServiceResponse> getAlarmList(Long userId, SearchRequest request) {
+        List<Alarm> alarmList = alarmRepository.getAlarmListBy(userId, request);
+
+        return alarmList.stream()
+                .map(alarm -> AlarmListServiceResponse.from(alarm, getAlarmMessage(
+                        alarm.getAlarmType(),
+                        alarm.getAlarmArgs(),
+                        userRepository.getById(alarm.getAlarmArgs().getFromUserId()))))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,17 +85,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     private String getAlarmMessage(AlarmType alarmType, AlarmArgs alarmArgs, User senderUser) {
-        StringBuilder message = new StringBuilder();
-
-        if (alarmType == AlarmType.COMMENT) {
-            message.append(String.format("%s from %s", alarmType.getText(), senderUser.getUsername()));
-        } else if (alarmType == AlarmType.LIKE) {
-            message.append(String.format("%s from %s", alarmType.getText(), senderUser.getUsername()));
-        } else {
-            message.append(String.format("New alarm %s", senderUser.getUsername()));
-        }
-
-        return message.toString();
+        return alarmType.generateMessage(senderUser.getUsername());
     }
 
 }

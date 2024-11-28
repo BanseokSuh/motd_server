@@ -12,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Convert(attributeName = "jsonb", converter = AttributeConverter.class)
 @SQLRestriction("deleted_at IS NULL")
@@ -38,12 +40,16 @@ public class AlarmEntity extends BaseEntity {
     @Column(name = "alarm_args", nullable = false, columnDefinition = "jsonb")
     private AlarmArgs alarmArgs;
 
+    @Column(name = "read_at")
+    private LocalDateTime readAt;
+
     @Builder
-    private AlarmEntity(Long id, Long userId, AlarmType alarmType, AlarmArgs alarmArgs) {
+    private AlarmEntity(Long id, Long userId, AlarmType alarmType, AlarmArgs alarmArgs, LocalDateTime readAt) {
         this.id = id;
         this.userId = userId;
         this.alarmType = alarmType;
         this.alarmArgs = alarmArgs;
+        this.readAt = readAt;
     }
 
     public static AlarmEntity from(Alarm alarm) {
@@ -52,14 +58,16 @@ public class AlarmEntity extends BaseEntity {
                 .userId(alarm.getUserId())
                 .alarmType(alarm.getAlarmType())
                 .alarmArgs(alarm.getAlarmArgs())
+                .readAt(alarm.getReadAt())
                 .build();
     }
 
-    public static AlarmEntity of(Long userId, AlarmType alarmType, AlarmArgs alarmArgs) {
+    public static AlarmEntity of(Long userId, AlarmType alarmType, AlarmArgs alarmArgs, LocalDateTime readAt) {
         return AlarmEntity.builder()
                 .userId(userId)
                 .alarmType(alarmType)
                 .alarmArgs(alarmArgs)
+                .readAt(readAt)
                 .build();
     }
 
@@ -69,6 +77,7 @@ public class AlarmEntity extends BaseEntity {
                 .userId(userId)
                 .alarmType(alarmType)
                 .alarmArgs(alarmArgs)
+                .readAt(readAt)
                 .createdAt(getCreatedAt())
                 .updatedAt(getUpdatedAt())
                 .deletedAt(getDeletedAt())

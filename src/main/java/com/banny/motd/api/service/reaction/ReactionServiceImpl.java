@@ -49,7 +49,7 @@ public class ReactionServiceImpl implements ReactionService {
                     .build();
 
             reactionRepository.save(newLike);
-            alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.LIKE, new AlarmArgs(userId, postId)));
+            alarmProducer.send(new AlarmEvent(post.getAuthor().getId(), AlarmType.LIKE, new AlarmArgs(userId, postId, TargetType.POST)));
         } else {
             reactionRepository.delete(like);
         }

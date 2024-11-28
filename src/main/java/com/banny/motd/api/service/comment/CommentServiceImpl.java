@@ -44,7 +44,11 @@ public class CommentServiceImpl implements CommentService {
         AlarmEvent alarmEvent = AlarmEvent.builder()
                 .receiverUserId(post.getAuthor().getId())
                 .alarmType(AlarmType.COMMENT)
-                .alarmArgs(AlarmArgs.builder().fromUserId(userId).targetId(postId).build())
+                .alarmArgs(AlarmArgs.builder()
+                        .fromUserId(userId)
+                        .targetId(postId)
+                        .targetType(TargetType.POST)
+                        .build())
                 .build();
         alarmProducer.send(alarmEvent);
     }
