@@ -1,8 +1,8 @@
 package com.banny.motd.api.service.event;
 
 import com.banny.motd.api.service.event.request.EventCreateServiceRequest;
+import com.banny.motd.api.service.event.response.EventServiceResponse;
 import com.banny.motd.domain.event.Event;
-import com.banny.motd.domain.event.EventDetail;
 import com.banny.motd.domain.event.EventType;
 import com.banny.motd.domain.event.infrastructure.EventRepository;
 import com.banny.motd.domain.participation.Participation;
@@ -46,12 +46,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDetail getEvent(Long eventId, Long userId) {
+    public EventServiceResponse getEvent(Long eventId, Long userId) {
         Event event = eventRepository.getById(eventId);
         ParticipationStatus status = participationRepository.getParticipationStatus(eventId, userId);
         User registerUser = userRepository.getById(event.getRegisterUserId());
 
-        return new EventDetail(event, registerUser, status);
+        return EventServiceResponse.from(event, registerUser, status);
     }
 
     @Transactional

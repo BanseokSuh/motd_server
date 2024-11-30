@@ -1,23 +1,23 @@
 package com.banny.motd.api.controller.event.response;
 
-
-import com.banny.motd.domain.event.Event;
+import com.banny.motd.api.service.event.response.EventServiceResponse;
 import com.banny.motd.domain.event.EventType;
+import com.banny.motd.domain.participation.ParticipationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
-public class EventListResponse {
+public class EventResponse {
 
     private Long id;
     private String title;
     private String imageUrl;
+    private String description;
     private EventType eventType;
     private int maxParticipants;
-    private List<Long> participantsIds;
+    private ParticipationStatus status;
     private LocalDateTime registerStartAt;
     private LocalDateTime registerEndAt;
     private LocalDateTime eventStartAt;
@@ -34,13 +34,14 @@ public class EventListResponse {
     }
 
     @Builder
-    private EventListResponse(Long id, String title, String imageUrl, EventType eventType, int maxParticipants, List<Long> participantsIds, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, RegisterUser registerUser) {
+    private EventResponse(Long id, String title, String imageUrl, String description, EventType eventType, int maxParticipants, ParticipationStatus status, LocalDateTime registerStartAt, LocalDateTime registerEndAt, LocalDateTime eventStartAt, LocalDateTime eventEndAt, RegisterUser registerUser) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
+        this.description = description;
         this.eventType = eventType;
         this.maxParticipants = maxParticipants;
-        this.participantsIds = participantsIds;
+        this.status = status;
         this.registerStartAt = registerStartAt;
         this.registerEndAt = registerEndAt;
         this.eventStartAt = eventStartAt;
@@ -48,24 +49,24 @@ public class EventListResponse {
         this.registerUser = registerUser;
     }
 
-    public static EventListResponse from(Event event) {
-        return EventListResponse.builder()
+    public static EventResponse from(EventServiceResponse event) {
+        return EventResponse.builder()
                 .id(event.getId())
                 .title(event.getTitle())
-                .imageUrl(event.getImageUrl())
+                .description(event.getDescription())
                 .eventType(event.getEventType())
                 .maxParticipants(event.getMaxParticipants())
-                .participantsIds(event.getParticipantsIds())
+                .status(event.getStatus())
                 .registerStartAt(event.getRegisterStartAt())
                 .registerEndAt(event.getRegisterEndAt())
                 .eventStartAt(event.getEventStartAt())
                 .eventEndAt(event.getEventEndAt())
-//                .registerUser(RegisterUser.builder()
-//                        .id(user.getId())
-//                        .loginId(user.getLoginId())
-//                        .userName(user.getUsername())
-//                        .profileImageUrl(user.getProfileImageUrl())
-//                        .build())
+                .registerUser(RegisterUser.builder()
+                        .id(event.getRegisterUser().getId())
+                        .loginId(event.getRegisterUser().getLoginId())
+                        .userName(event.getRegisterUser().getUsername())
+                        .profileImageUrl(event.getRegisterUser().getProfileImageUrl())
+                        .build())
                 .build();
     }
 

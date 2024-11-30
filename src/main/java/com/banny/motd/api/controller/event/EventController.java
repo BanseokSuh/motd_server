@@ -2,12 +2,12 @@ package com.banny.motd.api.controller.event;
 
 import com.banny.motd.api.controller.event.request.EventCreateRequest;
 import com.banny.motd.api.controller.event.response.EventCreateResponse;
-import com.banny.motd.api.controller.event.response.EventDetailResponse;
-import com.banny.motd.api.controller.event.response.EventListResponse;
+import com.banny.motd.api.controller.event.response.EventListItemResponse;
+import com.banny.motd.api.controller.event.response.EventResponse;
 import com.banny.motd.api.controller.event.response.ParticipationCreateResponse;
 import com.banny.motd.api.service.event.EventService;
+import com.banny.motd.api.service.event.response.EventServiceResponse;
 import com.banny.motd.domain.event.Event;
-import com.banny.motd.domain.event.EventDetail;
 import com.banny.motd.domain.participation.Participation;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.global.dto.request.SearchRequest;
@@ -28,19 +28,18 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ApiResponse<List<EventListResponse>> getEventList(SearchRequest request) {
-        List<Event> events = eventService.getEventList(request);
-        List<EventListResponse> eventListResponses = events.stream().map(EventListResponse::from).toList();
+    public ApiResponse<List<EventListItemResponse>> getEventList(SearchRequest request) {
+        List<Event> eventList = eventService.getEventList(request);
 
-        return ApiResponse.ok(eventListResponses);
+        return ApiResponse.ok(eventList.stream().map(EventListItemResponse::from).toList());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<EventDetailResponse> getEvent(@PathVariable Long id, Authentication authentication) {
+    public ApiResponse<EventResponse> getEvent(@PathVariable Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        EventDetail event = eventService.getEvent(id, user.getId());
+        EventServiceResponse event = eventService.getEvent(id, user.getId());
 
-        return ApiResponse.ok(EventDetailResponse.from(event));
+        return ApiResponse.ok(EventResponse.from(event));
     }
 
     @PostMapping
