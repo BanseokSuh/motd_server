@@ -10,14 +10,22 @@ import lombok.NoArgsConstructor;
 public class AlarmArgs {
 
     private Long fromUserId;
-    private Long targetId;
     private TargetType targetType;
+    private Long targetId;
 
     @Builder
-    public AlarmArgs(Long fromUserId, Long targetId, TargetType targetType) {
+    private AlarmArgs(Long fromUserId, TargetType targetType, Long targetId) {
         this.fromUserId = fromUserId;
-        this.targetId = targetId;
         this.targetType = targetType;
+        this.targetId = targetId;
+    }
+
+    public static AlarmArgs from(Long fromUserId, TargetType targetType, Long targetId) {
+        return AlarmArgs.builder()
+                .fromUserId(fromUserId)
+                .targetType(targetType)
+                .targetId(targetId)
+                .build();
     }
 
 }

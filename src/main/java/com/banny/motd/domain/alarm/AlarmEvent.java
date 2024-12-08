@@ -13,10 +13,18 @@ public class AlarmEvent {
     private AlarmArgs alarmArgs;
 
     @Builder
-    public AlarmEvent(Long receiverUserId, AlarmType alarmType, AlarmArgs alarmArgs) {
+    private AlarmEvent(Long receiverUserId, AlarmType alarmType, AlarmArgs alarmArgs) {
         this.receiverUserId = receiverUserId;
         this.alarmType = alarmType;
         this.alarmArgs = alarmArgs;
+    }
+
+    public static AlarmEvent from(Long receiverUserId, AlarmType alarmType, AlarmArgs alarmArgs) {
+        return AlarmEvent.builder()
+                .receiverUserId(receiverUserId)
+                .alarmType(alarmType)
+                .alarmArgs(alarmArgs)
+                .build();
     }
 
 }
