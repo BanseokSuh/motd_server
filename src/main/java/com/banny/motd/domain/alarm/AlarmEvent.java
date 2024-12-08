@@ -19,7 +19,7 @@ public class AlarmEvent {
         this.alarmArgs = alarmArgs;
     }
 
-    public static AlarmEvent from(Long receiverUserId, AlarmType alarmType, AlarmArgs alarmArgs) {
+    public static AlarmEvent of(Long receiverUserId, AlarmType alarmType, AlarmArgs alarmArgs) {
         return AlarmEvent.builder()
                 .receiverUserId(receiverUserId)
                 .alarmType(alarmType)

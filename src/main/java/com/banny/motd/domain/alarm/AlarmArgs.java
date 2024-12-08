@@ -20,7 +20,7 @@ public class AlarmArgs {
         this.targetId = targetId;
     }
 
-    public static AlarmArgs from(Long fromUserId, TargetType targetType, Long targetId) {
+    public static AlarmArgs of(Long fromUserId, TargetType targetType, Long targetId) {
         return AlarmArgs.builder()
                 .fromUserId(fromUserId)
                 .targetType(targetType)

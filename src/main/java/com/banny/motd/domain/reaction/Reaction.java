@@ -33,4 +33,13 @@ public class Reaction {
         this.deletedAt = deletedAt;
     }
 
+    public static Reaction of(User author, TargetType targetType, Long targetId, ReactionType reactionType) {
+        return Reaction.builder()
+                .author(author)
+                .targetType(targetType)
+                .targetId(targetId)
+                .reactionType(reactionType)
+                .build();
+    }
+
 }
