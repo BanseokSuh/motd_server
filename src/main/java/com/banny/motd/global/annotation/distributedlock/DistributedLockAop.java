@@ -1,4 +1,4 @@
-package com.banny.motd.global.annotation;
+package com.banny.motd.global.annotation.distributedlock;
 
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
@@ -27,7 +27,7 @@ public class DistributedLockAop {
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
 
-    @Around("@annotation(com.banny.motd.global.annotation.DistributedLock)")
+    @Around("@annotation(com.banny.motd.global.annotation.distributedlock.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

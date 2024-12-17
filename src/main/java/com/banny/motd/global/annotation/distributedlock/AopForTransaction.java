@@ -1,4 +1,4 @@
-package com.banny.motd.global.annotation;
+package com.banny.motd.global.annotation.distributedlock;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Component;

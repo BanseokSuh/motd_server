@@ -1,4 +1,4 @@
-package com.banny.motd.global.annotation;
+package com.banny.motd.global.annotation.distributedlock;
 
 import lombok.NoArgsConstructor;
 import org.springframework.expression.spel.standard.SpelExpressionParser;

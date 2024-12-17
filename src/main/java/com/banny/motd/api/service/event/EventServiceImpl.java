@@ -10,7 +10,7 @@ import com.banny.motd.domain.participation.ParticipationStatus;
 import com.banny.motd.domain.participation.infrastructure.ParticipationRepository;
 import com.banny.motd.domain.user.User;
 import com.banny.motd.domain.user.infrastructure.UserRepository;
-import com.banny.motd.global.annotation.DistributedLock;
+import com.banny.motd.global.annotation.distributedlock.DistributedLock;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.enums.TargetType;
 import com.banny.motd.global.exception.ApiStatusType;
@@ -91,13 +91,11 @@ public class EventServiceImpl implements EventService {
                 user,
                 ParticipationStatus.PARTICIPATED);
 
-        if (!event.isParticipantsFull()) {
-            log.info("participation success!!");
-            return participationRepository.save(participation);
-        } else {
-            log.error("participation fail :(");
+        if (event.isParticipantsFull()) {
             throw new ApplicationException(ApiStatusType.FAIL_EVENT_FULL);
         }
+
+        return participationRepository.save(participation);
     }
 
     @Transactional
@@ -110,12 +108,12 @@ public class EventServiceImpl implements EventService {
 //    @Override
 //    public Participation participateEvent(Long eventId, Long userId, LocalDateTime participateDate) {
 //        final String lockName = "RLock:EVENT:" + eventId.toString();
-//        final RLock lock = redissonClient.getLock(lockName);
+//        final RLock rLock = redissonClient.getLock(lockName);
 //        long waitTime = 5L;
 //        long leaseTime = 3L;
 //
 //        try {
-//            boolean available = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
+//            boolean available = rLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 //
 //            if (!available) {
 //                log.info("락 획득하지 못함 :(");

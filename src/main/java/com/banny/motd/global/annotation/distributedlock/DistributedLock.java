@@ -1,4 +1,4 @@
-package com.banny.motd.global.annotation;
+package com.banny.motd.global.annotation.distributedlock;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
