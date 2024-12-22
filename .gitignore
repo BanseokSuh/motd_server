@@ -350,6 +350,9 @@ gradle-app.setting
 
 **/scripts_docker/
 
+.gitignore/workflows/main_*.yml
+
+scripts/*
 
 
 frontend
