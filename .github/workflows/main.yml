@@ -44,10 +44,7 @@ jobs:
       - name: make application-prod.yml
         if: contains(github.ref, 'main')
         run: |
-          mkdir -p src/main/resources
-            && touch src/main/resources/application.yml
-            && touch src/main/resources/application-test.yml
-            && touch src/main/resources/application-prod.yml
+          mkdir -p src/main/resources && touch src/main/resources/application.yml && touch src/main/resources/application-test.yml && touch src/main/resources/application-prod.yml
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           echo "${{ secrets.APPLICATION_TEST_YML }}" | base64 --decode > src/main/resources/application-test.yml
           echo "${{ secrets.APPLICATION_PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
