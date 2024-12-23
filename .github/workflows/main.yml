@@ -44,10 +44,10 @@ jobs:
       - name: make application-prod.yml
         if: contains(github.ref, 'main')
         run: |
-          cd ./src/main/resources
-          touch ./application.yml
-          touch ./application-test.yml
-          touch ./application-prod.yml
+          mkdir -p src/main/resources
+            && touch src/main/resources/application.yml
+            && touch src/main/resources/application-test.yml
+            && touch src/main/resources/application-prod.yml
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           echo "${{ secrets.APPLICATION_TEST_YML }}" | base64 --decode > src/main/resources/application-test.yml
           echo "${{ secrets.APPLICATION_PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
@@ -69,3 +69,28 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/motd
 
 
+#  run-docker-image-on-ec2:
+#    # build-docker-image 작업이 완료되어야 실행됨
+#    needs: build-docker-image
+#
+#    # self-hosted-runner에서 동작
+#    runs-on: self-hosted
+#
+#    steps:
+#      # 1. 최신 이미지 Pull
+#      - name: docker pull
+#        run: |
+#          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+#          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/project-name
+#
+#      # 2. 기존 컨테이너 중지
+#      - name: docker stop container
+#        run: docker stop $(docker ps -q) 2>/dev/null || true
+#
+#      # 3. 최신 이미지 컨테이너화하여 실행시
+#      - name: docker run new container
+#        run: docker run --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/project-name
+#
+#      # 4. 기존 이미지 정리
+#      - name: delete old docker image
+#        run: docker system prune -f
