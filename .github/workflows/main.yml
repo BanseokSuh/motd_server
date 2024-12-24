@@ -45,9 +45,8 @@ jobs:
         if: contains(github.ref, 'main')
         run: |
           mkdir -p src/main/resources
-          cd src/main/resources
-          touch application.yml
-          touch application-prod.yml
+          touch src/main/resources/application.yml
+          touch src/main/resources/application-prod.yml
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
           echo "${{ secrets.APPLICATION_PROD_YML }}" | base64 --decode > src/main/resources/application-prod.yml
         shell: bash
