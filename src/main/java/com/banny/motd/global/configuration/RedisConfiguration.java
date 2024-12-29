@@ -2,6 +2,7 @@ package com.banny.motd.global.configuration;
 
 import com.banny.motd.domain.user.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@Slf4j
 @Configuration
 @EnableRedisRepositories
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class RedisConfiguration {
      */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+        log.info("[DB connection : redis] host: {}, port: {}", redisHost, redisPort);
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
