@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-@Order(2)
+@Order(1)
 @Slf4j
 @Aspect
 @Component
