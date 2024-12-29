@@ -77,18 +77,8 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            #            sudo apt-get update
-            #            sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-            #            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-            #            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-            #            sudo apt-get update
-            #            sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-            #            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-                    sudo docker pull ${{ secrets.DOCKER_USERNAME }}/motd:prod
-                    sudo docker stop $(sudo docker ps -a -q)
-                    sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
-                    sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
-                    sudo docker image prune -a -f
-#                    sudo docker-compose -f $COMPOSE down
-#                    sudo docker pull ${{ secrets.DOCKER_REPO }}/preonb
-#                    sudo docker-compose -f $COMPOSE up -d
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/motd:prod
+            sudo docker stop $(sudo docker ps -a -q)
+            sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
+            sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
+            sudo docker image prune -a -f
