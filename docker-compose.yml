@@ -8,8 +8,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    #    environment:
-    #      - SPRING_PROFILES_ACTIVE=prod
+    container_name: motd-server
     networks:
       - app-network
 
