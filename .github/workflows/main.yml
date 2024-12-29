@@ -89,3 +89,6 @@ jobs:
                     sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
                     sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
                     sudo docker image prune -a -f
+#                    sudo docker-compose -f $COMPOSE down
+#                    sudo docker pull ${{ secrets.DOCKER_REPO }}/preonb
+#                    sudo docker-compose -f $COMPOSE up -d
