@@ -15,7 +15,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@Order(0)
+@Order(1)
 @Slf4j
 @Configuration
 @EnableRedisRepositories
