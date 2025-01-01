@@ -354,6 +354,8 @@ gradle-app.setting
 
 scripts/*
 
+docker-compose.yml
+
 
 frontend
 frontend/logs
