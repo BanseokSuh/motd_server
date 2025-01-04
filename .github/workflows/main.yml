@@ -77,5 +77,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/motd:prod
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
-            sudo docker run -d --name ${{ DOCKER_CONTAINER_NAME }} --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
+            sudo docker run -d --name ${{ env.DOCKER_CONTAINER_NAME }} --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
             sudo docker image prune -a -f
