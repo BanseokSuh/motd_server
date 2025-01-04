@@ -1,8 +1,5 @@
-#env:
-#  AWS_REGION: ap-northeast-2
-#  AWS_S3_BUCKET: motd-bucket-v1
-#  AWS_CODE_DEPLOY_APPLICATION: motd-cicd-CD
-#  AWS_CODE_DEPLOY_GROUP: motd-cicd-CD-group
+ENV:
+  DOCKER_CONTAINER_NAME: motd_server
 
 name: MOTD CI/CD
 run-name: ${{ github.actor }} is deploying MOTD
@@ -79,6 +76,6 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/motd:prod
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --name motd_server --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
+            sudo docker run -d --name ${{ DOCKER_CONTAINER_NAME }} --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/motd:prod
             sudo docker image prune -a -f
