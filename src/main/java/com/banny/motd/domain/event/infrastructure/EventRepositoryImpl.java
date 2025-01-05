@@ -6,6 +6,8 @@ import com.banny.motd.domain.event.infrastructure.entity.QEventEntity;
 import com.banny.motd.global.dto.request.SearchRequest;
 import com.banny.motd.global.exception.ApiStatusType;
 import com.banny.motd.global.exception.ApplicationException;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,7 @@ public class EventRepositoryImpl implements EventRepository {
         QEventEntity event = QEventEntity.eventEntity;
         return jpaQueryFactory
                 .selectFrom(event)
+                .orderBy(new OrderSpecifier<>(Order.DESC, event.createdAt))
                 .limit(request.getSize())
                 .offset(request.getOffset())
                 .stream().map(EventEntity::toDomain)

@@ -61,13 +61,6 @@ public class Event {
         }
     }
 
-    public void checkIfFullOrThrowError() {
-        if (this.participantsIds.size() >= maxParticipants) {
-            log.error("participation fail");
-//            throw new ApplicationException(ApiStatusType.FAIL_ALREADY_FULL_EVENT, "this event is already full");
-        }
-    }
-
     public void checkIfParticipatedOrThrowError(User user) {
         if (isAlreadyParticipated(user)) {
             throw new ApplicationException(ApiStatusType.FAIL_ALREADY_PARTICIPATED_USER, "this user is already participated");
